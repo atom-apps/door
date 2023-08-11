@@ -2,6 +2,7 @@ package md5
 
 import (
 	"crypto/md5"
+	"encoding/hex"
 
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"
@@ -35,7 +36,7 @@ func Provide(opts ...opt.Option) error {
 func (c *Hash) Hash(raw string) string {
 	hash := md5.New()
 	hash.Write([]byte(raw))
-	return string(hash.Sum(nil))
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 func (c *Hash) Compare(plain, hashed string) bool {

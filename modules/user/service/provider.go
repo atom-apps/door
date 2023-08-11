@@ -2,16 +2,25 @@ package service
 
 import (
 	"github.com/atom-apps/door/modules/user/dao"
+	"github.com/atom-apps/door/providers/jwt"
+	"github.com/atom-apps/door/providers/md5"
+	"github.com/atom-providers/uuid"
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"
 )
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
+		hash *md5.Hash,
 		sessionDao *dao.SessionDao,
+		tokenDao *dao.TokenDao,
+		uuid *uuid.Generator,
 	) (*SessionService, error) {
 		obj := &SessionService{
+			hash:       hash,
 			sessionDao: sessionDao,
+			tokenDao:   tokenDao,
+			uuid:       uuid,
 		}
 		return obj, nil
 	}); err != nil {
@@ -41,10 +50,16 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		hash *md5.Hash,
+		jwt *jwt.JWT,
 		tokenDao *dao.TokenDao,
+		uuid *uuid.Generator,
 	) (*TokenService, error) {
 		obj := &TokenService{
+			hash:     hash,
+			jwt:      jwt,
 			tokenDao: tokenDao,
+			uuid:     uuid,
 		}
 		return obj, nil
 	}); err != nil {

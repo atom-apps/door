@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/atom-apps/door/common/consts"
+	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
 
@@ -17,16 +18,19 @@ const TableNameToken = "tokens"
 type Token struct {
 	ID            int64            `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt     time.Time        `gorm:"column:created_at;type:timestamp with time zone" json:"created_at"`
+	UpdatedAt     time.Time        `gorm:"column:updated_at;type:timestamp with time zone" json:"updated_at"`
+	DeletedAt     gorm.DeletedAt   `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at"`
 	UserID        int64            `gorm:"column:user_id;type:bigint" json:"user_id"`
+	SessionID     int64            `gorm:"column:session_id;type:bigint" json:"session_id"`
 	AccessToken   string           `gorm:"column:access_token;type:text" json:"access_token"`
 	RefreshToken  string           `gorm:"column:refresh_token;type:text" json:"refresh_token"`
+	ExpireAt      time.Time        `gorm:"column:expire_at;type:timestamp with time zone" json:"expire_at"`
 	Scope         string           `gorm:"column:scope;type:character varying(128)" json:"scope"`
 	TokenType     consts.TokenType `gorm:"column:token_type;type:character varying(128)" json:"token_type"`
 	CodeChallenge string           `gorm:"column:code_challenge;type:character varying(128)" json:"code_challenge"`
 	Code          string           `gorm:"column:code;type:text" json:"code"`
 	CodeExpireAt  time.Time        `gorm:"column:code_expire_at;type:timestamp with time zone" json:"code_expire_at"`
 	Used          bool             `gorm:"column:used;type:boolean" json:"used"`
-	SessionID     int64            `gorm:"column:session_id;type:bigint" json:"session_id"`
 }
 
 func (*Token) TableName(namer schema.Namer) string {

@@ -1,10 +1,16 @@
+//go:generate atomctl gen enum
 //go:generate atomctl gen routes
+//go:generate atomctl gen provider
 //go:generate swag fmt
 //go:generate swag init -ot json
 package main
 
 import (
 	"log"
+
+	moduleAuth "github.com/atom-apps/door/modules/auth"
+	moduleService "github.com/atom-apps/door/modules/service"
+	moduleUser "github.com/atom-apps/door/modules/user"
 
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/providers/bcrypt"
@@ -22,17 +28,23 @@ import (
 )
 
 func main() {
-	providers := service.Default(
-		redis.DefaultProvider(),
-		md5.DefaultProvider(),
-		bcrypt.DefaultProvider(),
-		uuid.DefaultProvider(),
-		oauth.DefaultProvider(),
-		swagger.DefaultProvider(),
-		query.DefaultProvider(),
-		jwt.DefaultProvider(),
-		databasePostgres.DefaultProvider(),
-	)
+	providers := service.
+		Default(
+			redis.DefaultProvider(),
+			md5.DefaultProvider(),
+			bcrypt.DefaultProvider(),
+			uuid.DefaultProvider(),
+			oauth.DefaultProvider(),
+			swagger.DefaultProvider(),
+			query.DefaultProvider(),
+			jwt.DefaultProvider(),
+			databasePostgres.DefaultProvider(),
+		).
+		With(
+			moduleUser.Providers(),
+			moduleAuth.Providers(),
+			moduleService.Providers(),
+		)
 
 	opts := []atom.Option{
 		atom.Name("door"),

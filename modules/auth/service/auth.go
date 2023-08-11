@@ -81,10 +81,15 @@ func (svc *AuthService) CheckPasswordComplex(ctx context.Context, password strin
 
 // CreateUser
 func (svc *AuthService) CreateUser(ctx context.Context, form *dto.SignUpForm) (*models.User, error) {
+	m, _ := svc.userSvc.GetByUsernameOrEmailOrPhone(ctx, *common.OneOf(form.Username, form.Email, form.Phone))
+	if m != nil {
+		return nil, errorx.ErrorUsernameOrEmailOrPhoneAlreadyExists
+	}
+
 	model := &models.User{
 		UUID:          svc.uuid.MustGenerate(),
 		Username:      common.PtrToValue(form.Username, ""),
-		Password:      common.PtrToValue(form.Password, ""),
+		Password:      svc.hash.Hash(common.PtrToValue(form.Password, "")),
 		Email:         common.PtrToValue(form.Email, ""),
 		Phone:         common.PtrToValue(form.Phone, ""),
 		EmailVerified: true,
@@ -100,7 +105,7 @@ func (svc *AuthService) CreateUser(ctx context.Context, form *dto.SignUpForm) (*
 
 // ComparePassword
 func (svc *AuthService) ComparePassword(ctx context.Context, user *models.User, password string) error {
-	if svc.hash.Compare(password, user.Username) {
+	if svc.hash.Compare(password, user.Password) {
 		return nil
 	}
 	return errorx.ErrorUsernameOrPasswordInvalid
@@ -109,7 +114,7 @@ func (svc *AuthService) ComparePassword(ctx context.Context, user *models.User, 
 // VerifySignInPasswordOrCode
 func (svc *AuthService) VerifySignInPasswordOrCode(ctx context.Context, form *dto.SignInForm, user *models.User) error {
 	if form.Method == oauth.SignInMethodCode {
-		if !svc.sendSvc.VerifyCode(ctx, *form.Username, *form.Code) {
+		if !svc.sendSvc.VerifyCode(ctx, form.Username, *form.Code) {
 			return oauth.ErrVerifyCodeInvalid
 		}
 	}

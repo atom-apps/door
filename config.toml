@@ -1,3 +1,6 @@
+[App]
+Mode = "development" # development, release, test, product
+
 [Http]
 Port = 9800
 
@@ -8,6 +11,11 @@ Description = "Api Docs"
 BasePath = "/v1"
 Version = "1.0.0"
 
+[Redis]
+Address = ["10.58.144.6:6379"]
+Password = "xixi@0202"
+DB = 0
+
 [Postgres]
 Username = "postgres"
 Password = "xixi@0202"
@@ -17,11 +25,14 @@ Port = 30432
 
 [OAuth]
 [[OAuth.App]]
+Name="app"
 ClientID = "asdfasdfasdf"
 ClientSecret = "asdfasdfasfdasfdasdf"
+CallbackUrl = "http://www.baidu.com/auth/callback"
 Register = ["email"]
 PasswordComplexRule = { MinLength = 6, MaxLength = 10, UpperCase = 2, SpecialChars = 3 }
 
 [[OAuth.App]]
+Name="app1"
 ClientID = "asdfasdfasdf"
 ClientSecret = "asdfasdfasfdasfdasdf"

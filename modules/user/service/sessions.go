@@ -86,6 +86,11 @@ func (svc *SessionService) Delete(ctx context.Context, id int64) error {
 
 // CreateForUser
 func (svc *SessionService) CreateForUser(ctx context.Context, userID int64, sessionID string) (*models.Session, error) {
+	sess, _ := svc.sessionDao.GetBySessionID(ctx, sessionID)
+	if sess != nil {
+		return sess, nil
+	}
+
 	model := &models.Session{
 		UserID:    userID,
 		SessionID: sessionID,

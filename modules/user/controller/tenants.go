@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 )
 
-// @provider
+//	@provider
 type TenantController struct {
 	tenantSvc *service.TenantService
 }
@@ -41,8 +41,8 @@ func (c *TenantController) Show(ctx *fiber.Ctx, id int64) (*dto.TenantItem, erro
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.TenantListQueryFilter	true	"TenantListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.TenantItem}
 //	@Router			/tenants [get]
 func (c *TenantController) List(

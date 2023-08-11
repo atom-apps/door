@@ -19,17 +19,6 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		tenantUserSvc *service.TenantUserService,
-	) (*TenantUserController, error) {
-		obj := &TenantUserController{
-			tenantUserSvc: tenantUserSvc,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
 		tenantSvc *service.TenantService,
 	) (*TenantController, error) {
 		obj := &TenantController{
@@ -45,17 +34,6 @@ func Provide(opts ...opt.Option) error {
 	) (*TokenController, error) {
 		obj := &TokenController{
 			tokenSvc: tokenSvc,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
-		userInfoSvc *service.UserInfoService,
-	) (*UserInfoController, error) {
-		obj := &UserInfoController{
-			userInfoSvc: userInfoSvc,
 		}
 		return obj, nil
 	}); err != nil {

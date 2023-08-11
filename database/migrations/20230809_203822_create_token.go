@@ -15,6 +15,7 @@ func (m *Migration20230809_203822CreateToken) table() interface{} {
 		SessionID     uint
 		AccessToken   string
 		RefreshToken  string
+		ExpireAt      time.Time
 		Scope         string `gorm:"size:128"`
 		TokenType     string `gorm:"size:128"`
 		CodeChallenge string `gorm:"size:128"`

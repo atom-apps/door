@@ -13,6 +13,8 @@ import (
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/uuid"
+	"github.com/samber/lo"
+	"golang.org/x/oauth2"
 
 	"github.com/jinzhu/copier"
 )
@@ -95,6 +97,11 @@ func (svc *TokenService) getClaims(ctx context.Context, userID int64) *jwt.Claim
 
 // CreateForUser
 func (svc *TokenService) CreateForUser(ctx context.Context, userID, sessID int64, app *oauth.App) (*models.Token, error) {
+	m, err := svc.tokenDao.GetBySessionID(ctx, sessID, app.Name)
+	if m != nil {
+		return m, nil
+	}
+
 	claim := svc.getClaims(ctx, userID)
 	token, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
 	if err != nil {
@@ -111,6 +118,7 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, sessID int64
 		SessionID:     sessID,
 		AccessToken:   token,
 		RefreshToken:  refreshToken,
+		ExpireAt:      time.Now().Add(lo.Must1(time.ParseDuration(app.TokenDuration))),
 		Scope:         app.Name,
 		TokenType:     consts.TokenTypeBearer,
 		CodeChallenge: "",
@@ -155,9 +163,34 @@ func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token, 
 
 	token.AccessToken = accessToken
 	token.RefreshToken = refreshToken
+	token.ExpireAt = time.Now().Add(lo.Must1(time.ParseDuration(app.TokenDuration)))
 
 	if err := svc.UpdateFromModel(ctx, token); err != nil {
 		return nil, err
 	}
 	return token, nil
+}
+
+// GetByCode
+func (svc *TokenService) GetOAuthTokenByCode(ctx context.Context, code, scope string) (*oauth2.Token, error) {
+	model, err := svc.tokenDao.GetByCode(ctx, code, scope)
+	if err != nil {
+		return nil, err
+	}
+
+	model.Used = true
+	if err := svc.UpdateFromModel(ctx, model); err != nil {
+		return nil, err
+	}
+
+	return &oauth2.Token{
+		AccessToken:  model.AccessToken,
+		RefreshToken: model.RefreshToken,
+		Expiry:       model.ExpireAt,
+	}, nil
+}
+
+// GetBySessionID
+func (svc *TokenService) GetBySessionID(ctx context.Context, sessionID int64, scope string) (*models.Token, error) {
+	return svc.tokenDao.GetBySessionID(ctx, sessionID, scope)
 }

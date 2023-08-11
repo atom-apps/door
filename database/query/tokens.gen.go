@@ -29,16 +29,19 @@ func newToken(db *gorm.DB, opts ...gen.DOOption) token {
 	_token.ALL = field.NewAsterisk(tableName)
 	_token.ID = field.NewInt64(tableName, "id")
 	_token.CreatedAt = field.NewTime(tableName, "created_at")
+	_token.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_token.DeletedAt = field.NewField(tableName, "deleted_at")
 	_token.UserID = field.NewInt64(tableName, "user_id")
+	_token.SessionID = field.NewInt64(tableName, "session_id")
 	_token.AccessToken = field.NewString(tableName, "access_token")
 	_token.RefreshToken = field.NewString(tableName, "refresh_token")
+	_token.ExpireAt = field.NewTime(tableName, "expire_at")
 	_token.Scope = field.NewString(tableName, "scope")
 	_token.TokenType = field.NewField(tableName, "token_type")
 	_token.CodeChallenge = field.NewString(tableName, "code_challenge")
 	_token.Code = field.NewString(tableName, "code")
 	_token.CodeExpireAt = field.NewTime(tableName, "code_expire_at")
 	_token.Used = field.NewBool(tableName, "used")
-	_token.SessionID = field.NewInt64(tableName, "session_id")
 
 	_token.fillFieldMap()
 
@@ -51,16 +54,19 @@ type token struct {
 	ALL           field.Asterisk
 	ID            field.Int64
 	CreatedAt     field.Time
+	UpdatedAt     field.Time
+	DeletedAt     field.Field
 	UserID        field.Int64
+	SessionID     field.Int64
 	AccessToken   field.String
 	RefreshToken  field.String
+	ExpireAt      field.Time
 	Scope         field.String
 	TokenType     field.Field
 	CodeChallenge field.String
 	Code          field.String
 	CodeExpireAt  field.Time
 	Used          field.Bool
-	SessionID     field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -79,16 +85,19 @@ func (t *token) updateTableName(table string) *token {
 	t.ALL = field.NewAsterisk(table)
 	t.ID = field.NewInt64(table, "id")
 	t.CreatedAt = field.NewTime(table, "created_at")
+	t.UpdatedAt = field.NewTime(table, "updated_at")
+	t.DeletedAt = field.NewField(table, "deleted_at")
 	t.UserID = field.NewInt64(table, "user_id")
+	t.SessionID = field.NewInt64(table, "session_id")
 	t.AccessToken = field.NewString(table, "access_token")
 	t.RefreshToken = field.NewString(table, "refresh_token")
+	t.ExpireAt = field.NewTime(table, "expire_at")
 	t.Scope = field.NewString(table, "scope")
 	t.TokenType = field.NewField(table, "token_type")
 	t.CodeChallenge = field.NewString(table, "code_challenge")
 	t.Code = field.NewString(table, "code")
 	t.CodeExpireAt = field.NewTime(table, "code_expire_at")
 	t.Used = field.NewBool(table, "used")
-	t.SessionID = field.NewInt64(table, "session_id")
 
 	t.fillFieldMap()
 
@@ -113,19 +122,22 @@ func (t *token) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *token) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 12)
+	t.fieldMap = make(map[string]field.Expr, 15)
 	t.fieldMap["id"] = t.ID
 	t.fieldMap["created_at"] = t.CreatedAt
+	t.fieldMap["updated_at"] = t.UpdatedAt
+	t.fieldMap["deleted_at"] = t.DeletedAt
 	t.fieldMap["user_id"] = t.UserID
+	t.fieldMap["session_id"] = t.SessionID
 	t.fieldMap["access_token"] = t.AccessToken
 	t.fieldMap["refresh_token"] = t.RefreshToken
+	t.fieldMap["expire_at"] = t.ExpireAt
 	t.fieldMap["scope"] = t.Scope
 	t.fieldMap["token_type"] = t.TokenType
 	t.fieldMap["code_challenge"] = t.CodeChallenge
 	t.fieldMap["code"] = t.Code
 	t.fieldMap["code_expire_at"] = t.CodeExpireAt
 	t.fieldMap["used"] = t.Used
-	t.fieldMap["session_id"] = t.SessionID
 }
 
 func (t token) clone(db *gorm.DB) token {

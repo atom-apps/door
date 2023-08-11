@@ -3,6 +3,8 @@ package dto
 import "github.com/atom-apps/door/providers/oauth"
 
 type SignUpForm struct {
+	AppName string `json:"app_name"`
+
 	Username *string `json:"username,omitempty"`
 
 	Email     *string `json:"email,omitempty"`
@@ -18,8 +20,9 @@ type SignUpForm struct {
 }
 
 type SignInForm struct {
+	AppName   string             `json:"app_name,omitempty"`
 	Method    oauth.SignInMethod `json:"method"`
-	Username  *string            `json:"username,omitempty"`
+	Username  string             `json:"username,omitempty"`
 	Code      *string            `json:"code,omitempty"`
 	Password  *string            `json:"password,omitempty"`
 	Captcha   *string            `json:"captcha,omitempty"`
@@ -34,4 +37,9 @@ type LogoutForm struct {
 type RefreshTokenForm struct {
 	RefreshToken string `json:"token,omitempty"`
 	AppName      string `json:"app_name,omitempty"`
+}
+
+type ExchangeTokenByCodeForm struct {
+	Code  string `json:"code,omitempty"`
+	Scope string `json:"scope,omitempty"`
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 )
 
-// @provider
+//	@provider
 type SessionController struct {
 	sessionSvc *service.SessionService
 }
@@ -41,8 +41,8 @@ func (c *SessionController) Show(ctx *fiber.Ctx, id int64) (*dto.SessionItem, er
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.SessionListQueryFilter	true	"SessionListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.SessionItem}
 //	@Router			/sessions [get]
 func (c *SessionController) List(

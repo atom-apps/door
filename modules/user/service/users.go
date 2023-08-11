@@ -14,7 +14,7 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-// @provider
+//	@provider
 type UserService struct {
 	userDao *dao.UserDao
 }

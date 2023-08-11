@@ -26,8 +26,7 @@ type App struct {
 	Name                 string
 	ClientID             string
 	ClientSecret         string
-	SignInCallbackURL    string
-	SignUpCallbackURL    string
+	CallbackUrl          string
 	TokenDuration        string
 	RefreshTokenDuration string
 	RegisterFields       []RegisterField
@@ -108,22 +107,17 @@ func (c *App) PasswordComplexRules() []PasswordRuleFunc {
 	return rules
 }
 
-func (c *App) createRedirectURL(redirect, code, scope string) (string, error) {
-	u, err := url.Parse(redirect)
+func (c *App) GetCallbackURL(code, scope string) (string, error) {
+	u, err := url.Parse(c.CallbackUrl)
 	if err != nil {
 		return "", err
 	}
 
-	u.Query().Set("code", code)
-	u.Query().Set("scope", scope)
+	query := u.Query()
+	query.Set("code", code)
+	query.Set("scope", scope)
+
+	u.RawQuery = query.Encode()
 
 	return u.String(), nil
-}
-
-func (c *App) GetSignInRedirectURL(code, scope string) (string, error) {
-	return c.createRedirectURL(c.SignInCallbackURL, code, scope)
-}
-
-func (c *App) GetSignUpRedirectURL(code, scope string) (string, error) {
-	return c.createRedirectURL(c.SignUpCallbackURL, code, scope)
 }

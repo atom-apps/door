@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @provider
+//	@provider
 type SendController struct {
 	userSvc *userSvc.UserService
 	authSvc *authSvc.AuthService
@@ -18,12 +18,12 @@ type SendController struct {
 
 // Sms send sms code
 //
-//	@Summary		send sms code
-//	@Tags			Service
-//	@Accept			json
-//	@Produce		json
-//	@Param			body	body		dto.SendSmsVerifyCodeForm	true	"SendSmsVerifyCodeForm"
-//	@Router			/send/sms [post]
+//	@Summary	send sms code
+//	@Tags		Service
+//	@Accept		json
+//	@Produce	json
+//	@Param		body	body	dto.SendSmsVerifyCodeForm	true	"SendSmsVerifyCodeForm"
+//	@Router		/send/sms [post]
 func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) error {
 	if !c.userSvc.IsPhoneValid(ctx.Context(), body.Phone) {
 		return oauth.ErrPhoneInvalid
@@ -34,12 +34,12 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) er
 
 // Email send email code
 //
-//	@Summary		send email code
-//	@Tags			Service
-//	@Accept			json
-//	@Produce		json
-//	@Param			body	body		dto.SendEmailVerifyCodeForm	true	"SendEmailVerifyCodeForm"
-//	@Router			/send/email [post]
+//	@Summary	send email code
+//	@Tags		Service
+//	@Accept		json
+//	@Produce	json
+//	@Param		body	body	dto.SendEmailVerifyCodeForm	true	"SendEmailVerifyCodeForm"
+//	@Router		/send/email [post]
 func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendEmailVerifyCodeForm) error {
 	if !c.userSvc.IsEmailValid(ctx.Context(), body.Address) {
 		return oauth.ErrEmailInvalid

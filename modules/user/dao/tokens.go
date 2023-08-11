@@ -180,3 +180,21 @@ func (dao *TokenDao) GetByRefreshToken(ctx context.Context, refreshToken, scope 
 		table.Scope.Eq(scope),
 	).First()
 }
+
+// GetByCode
+func (dao *TokenDao) GetByCode(ctx context.Context, code, scope string) (*models.Token, error) {
+	table, query := dao.query.Token, dao.Context(ctx)
+	return query.Where(
+		table.Code.Eq(code),
+		table.Scope.Eq(scope),
+	).First()
+}
+
+// GetBySessionID
+func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID int64, scope string) (*models.Token, error) {
+	table, query := dao.query.Token, dao.Context(ctx)
+	return query.Where(
+		table.SessionID.Eq(sessionID),
+		table.Scope.Eq(scope),
+	).First()
+}

@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 )
 
-// @provider
+//	@provider
 type TokenController struct {
 	tokenSvc *service.TokenService
 }
@@ -41,8 +41,8 @@ func (c *TokenController) Show(ctx *fiber.Ctx, id int64) (*dto.TokenItem, error)
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.TokenListQueryFilter	true	"TokenListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.TokenItem}
 //	@Router			/tokens [get]
 func (c *TokenController) List(

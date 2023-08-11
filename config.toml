@@ -1,0 +1,27 @@
+[Http]
+Port = 9800
+
+[Swagger]
+BaseRoute = "doc"
+Title = "Api"
+Description = "Api Docs"
+BasePath = "/v1"
+Version = "1.0.0"
+
+[Postgres]
+Username = "postgres"
+Password = "xixi@0202"
+Database = "atom"
+Host = "10.58.144.6"
+Port = 30432
+
+[OAuth]
+[[OAuth.App]]
+ClientID = "asdfasdfasdf"
+ClientSecret = "asdfasdfasfdasfdasdf"
+Register = ["email"]
+PasswordComplexRule = { MinLength = 6, MaxLength = 10, UpperCase = 2, SpecialChars = 3 }
+
+[[OAuth.App]]
+ClientID = "asdfasdfasdf"
+ClientSecret = "asdfasdfasfdasfdasdf"

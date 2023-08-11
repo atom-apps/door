@@ -50,7 +50,7 @@ func (c *AuthController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, b
 		return "", false
 	}
 
-	redirect, err := app.GetCallbackURL(token.Code, token.Scope)
+	redirect, err := app.GetCallbackURL(token.Code, token.Scope, ctx.Query("redirect", ""))
 	if err != nil {
 		return "", false
 	}
@@ -176,7 +176,7 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) error {
 		return err
 	}
 
-	redirect, err := app.GetCallbackURL(token.Code, token.Scope)
+	redirect, err := app.GetCallbackURL(token.Code, token.Scope, "")
 	if err != nil {
 		return err
 	}

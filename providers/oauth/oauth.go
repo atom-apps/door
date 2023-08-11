@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"
@@ -107,10 +108,17 @@ func (c *App) PasswordComplexRules() []PasswordRuleFunc {
 	return rules
 }
 
-func (c *App) GetCallbackURL(code, scope string) (string, error) {
+func (c *App) GetCallbackURL(code, scope, redirect string) (string, error) {
 	u, err := url.Parse(c.CallbackUrl)
 	if err != nil {
 		return "", err
+	}
+
+	if redirect != "" && strings.HasPrefix(redirect, c.CallbackUrl) {
+		u, err = url.Parse(redirect)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	query := u.Query()

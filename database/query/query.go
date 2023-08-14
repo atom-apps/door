@@ -11,6 +11,7 @@ func Provide(...opt.Option) error {
 		return Use(db)
 	})
 }
+
 func DefaultProvider() container.ProviderContainer {
 	return container.ProviderContainer{
 		Provider: Provide,

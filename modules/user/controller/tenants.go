@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 )
 
-//	@provider
+// @provider
 type TenantController struct {
 	tenantSvc *service.TenantService
 }

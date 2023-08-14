@@ -1,8 +1,9 @@
-//go:generate atomctl gen enum
 //go:generate atomctl gen routes
+//go:generate atomctl gen enum
 //go:generate atomctl gen provider
 //go:generate swag fmt
-//go:generate swag init -ot json
+//go:generate swag init -ot json --pd --generatedTime
+//go:generate gofumpt -l -w .
 package main
 
 import (

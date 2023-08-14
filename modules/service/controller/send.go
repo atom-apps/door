@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-//	@provider
+// @provider
 type SendController struct {
 	userSvc *userSvc.UserService
 	authSvc *authSvc.AuthService

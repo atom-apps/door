@@ -9,6 +9,8 @@ package main
 import (
 	"log"
 
+	"github.com/atom-apps/door/modules/boot"
+
 	moduleAuth "github.com/atom-apps/door/modules/auth"
 	moduleService "github.com/atom-apps/door/modules/service"
 	moduleUser "github.com/atom-apps/door/modules/user"
@@ -41,6 +43,7 @@ func main() {
 			jwt.DefaultProvider(),
 			databasePostgres.DefaultProvider(),
 		).
+		With(boot.Providers()).
 		With(
 			moduleUser.Providers(),
 			moduleAuth.Providers(),

@@ -1,12 +1,10 @@
 package controller
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/consts"
-	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/auth/dto"
 	"github.com/atom-apps/door/modules/auth/service"
 	userSvc "github.com/atom-apps/door/modules/user/service"
@@ -67,20 +65,7 @@ func (c *AuthController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, b
 //	@Produce		json
 //	@Router			/auth/signin/{app_name} [get]
 func (c *AuthController) SigninPage(ctx *fiber.Ctx, appName string) error {
-	if u, ok := c.canAutoLogin(ctx, appName); ok {
-		return ctx.Redirect(u, http.StatusTemporaryRedirect)
-	}
-
-	sessID := c.sessionSvc.GenerateSessionID()
-	ctx.Cookie(&fiber.Cookie{
-		Name:     consts.SessionName,
-		Path:     "/",
-		Value:    sessID,
-		Expires:  time.Now().Add(time.Hour * 24 * 7),
-		HTTPOnly: true,
-	})
-	// todo: render page
-	return ctx.SendString("OK")
+	return ctx.Render("./frontend/dist/index.html", fiber.Map{})
 }
 
 // Signup page
@@ -92,12 +77,7 @@ func (c *AuthController) SigninPage(ctx *fiber.Ctx, appName string) error {
 //	@Produce		json
 //	@Router			/auth/signup/{app_name} [get]
 func (c *AuthController) SignupPage(ctx *fiber.Ctx, appName string) error {
-	if u, ok := c.canAutoLogin(ctx, appName); ok {
-		return ctx.Redirect(u, http.StatusTemporaryRedirect)
-	}
-
-	// todo: render signup page
-	return nil
+	return ctx.Render("./frontend/dist/index.html", fiber.Map{})
 }
 
 // Signup
@@ -108,28 +88,25 @@ func (c *AuthController) SignupPage(ctx *fiber.Ctx, appName string) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body	dto.SignUpForm	true	"SignUpForm"
+//	@Success			200	{object}	dto.ExchangeTokenByCodeForm
 //	@Router			/auth/signup [post]
-func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) error {
+func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.ExchangeTokenByCodeForm, error) {
 	app, err := c.oauth.GetAppByName(form.AppName)
 	if err != nil {
-		return err
-	}
-
-	session := ctx.Cookies(consts.SessionName, "")
-	if session == "" {
-		return ctx.SendStatus(http.StatusBadRequest)
+		return nil, err
 	}
 
 	if err := c.authSvc.SignUpCheckRegisterMethod(ctx.Context(), form, app); err != nil {
-		return err
+		return nil, err
 	}
 
 	if _, err = c.authSvc.CreateUser(ctx.Context(), form); err != nil {
-		return err
+		return nil, err
 	}
 
 	return c.SignIn(ctx, &dto.SignInForm{
 		AppName:  form.AppName,
+		SID:      form.SID,
 		Username: *common.OneOf(form.Username, form.Email, form.Phone),
 		Password: form.Password,
 		Method:   oauth.SignInMethodPassword,
@@ -144,47 +121,38 @@ func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body	dto.SignInForm	true	"SignInForm"
+//	@Success			200	{object}	dto.ExchangeTokenByCodeForm
 //	@Router			/auth/signin [post]
-func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) error {
+func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.ExchangeTokenByCodeForm, error) {
 	app, err := c.oauth.GetAppByName(form.AppName)
 	if err != nil {
-		return err
-	}
-
-	session := ctx.Cookies(consts.SessionName, "")
-	if session == "" {
-		return ctx.SendStatus(http.StatusBadRequest)
+		return nil, err
 	}
 
 	user, err := c.userSvc.GetByUsernameOrEmailOrPhone(ctx.Context(), form.Username)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if err := c.authSvc.VerifySignInPasswordOrCode(ctx.Context(), form, user); err != nil {
-		return err
+		return nil, err
 	}
 
 	// write user session id
-	sess, err := c.sessionSvc.CreateForUser(ctx.Context(), user.ID, session)
+	sess, err := c.sessionSvc.CreateForUser(ctx.Context(), user.ID, form.SID)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, sess.ID, app)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	redirect, err := app.GetCallbackURL(token.Code, token.Scope, "")
-	if err != nil {
-		return err
-	}
-
-	if redirect == "" {
-		return errorx.ErrInvalidRedirectURL
-	}
-	return ctx.Redirect(redirect, http.StatusTemporaryRedirect)
+	return &dto.ExchangeTokenByCodeForm{
+		Code:  token.Code,
+		Scope: token.Scope,
+	}, nil
 }
 
 // Logout

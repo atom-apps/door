@@ -4,6 +4,7 @@ import "github.com/atom-apps/door/providers/oauth"
 
 type SignUpForm struct {
 	AppName string `json:"app_name"`
+	SID     string `form:"sid"`
 
 	Username *string `json:"username,omitempty"`
 
@@ -20,13 +21,14 @@ type SignUpForm struct {
 }
 
 type SignInForm struct {
-	AppName   string             `json:"app_name,omitempty"`
-	Method    oauth.SignInMethod `json:"method"`
-	Username  string             `json:"username,omitempty"`
-	Code      *string            `json:"code,omitempty"`
-	Password  *string            `json:"password,omitempty"`
-	Captcha   *string            `json:"captcha,omitempty"`
-	CaptchaID *string            `json:"captcha_id,omitempty"`
+	AppName   string             `form:"app_name" json:"app_name,omitempty"`
+	SID       string             `form:"sid" json:"sid,omitempty"`
+	Method    oauth.SignInMethod `form:"method" json:"method,omitempty"`
+	Username  string             `form:"username" json:"username,omitempty"`
+	Code      *string            `form:"code" json:"code,omitempty"`
+	Password  *string            `form:"password" json:"password,omitempty"`
+	Captcha   *string            `form:"captcha" json:"captcha,omitempty"`
+	CaptchaID *string            `form:"captcha_id" json:"captcha_id,omitempty"`
 }
 
 type LogoutForm struct {

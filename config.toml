@@ -12,7 +12,7 @@ BasePath = "/v1"
 Version = "1.0.0"
 
 [Redis]
-Address = ["10.58.144.6:6379"]
+Addresses = ["10.58.144.6:36379"]
 Password = "xixi@0202"
 DB = 0
 

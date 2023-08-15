@@ -8,7 +8,7 @@ import (
 
 	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-providers/log"
-	"github.com/redis/go-redis/v9"
+	redis "github.com/redis/go-redis/v9"
 )
 
 // @provider

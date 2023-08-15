@@ -5,6 +5,10 @@
         </div>
 
         <form class="flex flex-col w-full my-5" method="post" action="http://localhost:9800/auth/signup">
+            <template v-if="authSignup.hasError()">
+                <Alert type="error" :msg="authSignup.error" class="my-5" />
+            </template>
+
             <div class="form-control w-full">
                 <label class="label">用户名</label>
                 <input type="text" name="username" v-model="authSignup.body.username"
@@ -61,6 +65,7 @@
 </template>
 
 <script lang="ts" setup>
+import Alert from '@components/Alert.vue';
 import { PostAuthSignup } from '@sdk/door/auth/signup';
 import { reactive, ref } from 'vue';
 

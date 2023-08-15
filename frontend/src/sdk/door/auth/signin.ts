@@ -1,5 +1,6 @@
 import { Http } from "@/sdk/axios";
 import { AuthScopeResponse, BaseRequest, GlobalVar } from "@/sdk/common";
+import { AxiosError } from "axios";
 import { v4 as uuidv4 } from 'uuid';
 import { useRoute } from 'vue-router';
 
@@ -21,6 +22,8 @@ export interface AuthSigninForm {
 
 export class PostAuthSignin extends BaseRequest {
     private uri: string = '/auth/signin';
+
+    force:number = 0;
 
     constructor() {
         super()
@@ -48,14 +51,15 @@ export class PostAuthSignin extends BaseRequest {
     }
 
     async send() {
-
         return Http.post<AuthScopeResponse>(this.uri, this.body, {
             params: {
                 ...this.pageFilter,
                 ...this.sortFilter,
             },
-        }).catch((err) => {
-            console.log(err)
+        }).catch(err=>{
+            if (err instanceof AxiosError) {
+                this.error = err.message
+            }
         })
     }
 

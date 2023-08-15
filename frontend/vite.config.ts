@@ -13,6 +13,7 @@ export default defineConfig({
     alias: [
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
       { find: '@views', replacement: fileURLToPath(new URL('./src/views', import.meta.url)) },
+      { find: '@components', replacement: fileURLToPath(new URL('./src/components', import.meta.url)) },
       { find: '@sdk', replacement: fileURLToPath(new URL('./src/sdk', import.meta.url)) },
     ],
   },

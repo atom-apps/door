@@ -1,4 +1,5 @@
-import { Loader } from "./axios"
+import { AxiosError } from 'axios';
+import { Loader } from "./axios";
 
 export interface QueryFilter {
     name?: string
@@ -110,6 +111,15 @@ export abstract class BaseRequest {
     public set sortFilter(value: SortFilterInterface | undefined) {
         this._sortFilter = value
     }
+
+
+    error: string = "";
+    hasError(): boolean {
+        return this.error.length > 0
+    }
+    clearError() {
+        this.error = ""
+    }
 }
 
 export interface GlobalVar {
@@ -118,4 +128,22 @@ export interface GlobalVar {
 export interface AuthScopeResponse {
     code: string;
     scope: string;
+}
+
+export class Error {
+    error: string = ""
+
+    clear() {
+        this.error = ""
+    }
+
+    has() :boolean{
+        return this.error.length>0
+    }
+
+    callback(error: any) {
+        if (error instanceof AxiosError) {
+            this.error = error.message
+        }
+    }
 }

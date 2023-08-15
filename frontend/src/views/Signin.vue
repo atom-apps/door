@@ -12,6 +12,11 @@
         </div>
 
         <form class="flex flex-col w-full my-5">
+
+            <template v-if="authSignin.hasError()">
+                <Alert type="error" :msg="authSignin.error" class="my-5" />
+            </template>
+
             <div class="form-control w-full">
                 <label class="label">用户名/手机/邮箱</label>
                 <input type="text" name="username" v-model="authSignin.body.username"
@@ -37,8 +42,8 @@
             </div>
 
             <div class="flex justify-between items-center">
-                <router-link :to="{ name: 'reset-password'}">忘记密码</router-link>
-                <router-link :to="{ name: 'signup', params: { app: authSignin.body.app_name}}">注册新账号</router-link>
+                <router-link :to="{ name: 'reset-password' }">忘记密码</router-link>
+                <router-link :to="{ name: 'signup', params: { app: authSignin.body.app_name } }">注册新账号</router-link>
             </div>
 
             <button @click.prevent="authSignin.send" class="my-5 btn btn-lg lg:btn-xl btn-primary my-10"
@@ -63,8 +68,9 @@
 </template>
 
 <script lang="ts" setup>
+import Alert from '@components/Alert.vue';
 import { PostAuthSignin } from '@sdk/door/auth/signin';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 
 const codeInput = ref();
@@ -77,4 +83,7 @@ const sendCode = () => {
     codeInput.value.focus()
 }
 
+watch(() => authSignin.body.method, () => {
+    authSignin.clearError()
+})
 </script>

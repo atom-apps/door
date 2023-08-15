@@ -1,5 +1,6 @@
 import { Http } from "@/sdk/axios";
 import { AuthScopeResponse, BaseRequest, GlobalVar } from "@/sdk/common";
+import { AxiosError } from "axios";
 import { v4 as uuidv4 } from 'uuid';
 import { useRoute } from "vue-router";
 
@@ -29,6 +30,7 @@ export interface AuthSignupForm {
 
 export class PostAuthSignup extends BaseRequest {
     private uri: string = '/auth/signup';
+
     constructor() {
         super()
         const router = useRoute();
@@ -47,12 +49,19 @@ export class PostAuthSignup extends BaseRequest {
         username: "",
     };
 
+
     async send() {
         return Http.post<AuthScopeResponse>(this.uri, this.body, {
             params: {
                 ...this.pageFilter,
                 ...this.sortFilter,
             },
-        });
+        }).catch(err=>{
+            if (err instanceof AxiosError) {
+                this.error = err.message
+            }
+        })
     }
+
+
 }

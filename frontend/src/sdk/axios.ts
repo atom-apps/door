@@ -26,8 +26,8 @@ class LoadingInspector {
     stop() {
         this.loading = false
     }
-
 }
+
 const Loader = new LoadingInspector()
 const Http = axios.create(defaults)
 
@@ -49,3 +49,4 @@ Http.interceptors.response.use(
 Http.defaults.headers.common['Cookie'] = "sessionid=d88a1db96a3470b1945fbd527d244479";
 
 export { Http, Loader }
+

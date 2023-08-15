@@ -1,8 +1,9 @@
 package dto
 
 type SendSmsVerifyCodeForm struct {
-	Code  string `json:"code" validate:"required"`
-	Phone string `json:"phone" validate:"required"`
+	CaptchaID string `json:"captcha_id,omitempty"`
+	Code      string `json:"code,omitempty" validate:"required"`
+	Phone     string `json:"phone,omitempty" validate:"required"`
 }
 
 type SendEmailVerifyCodeForm struct {

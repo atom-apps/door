@@ -40,12 +40,13 @@
             </div>
 
             <div class="flex justify-between items-center mt-10">
-                <router-link :to="{ name: 'reset-password'}">忘记密码</router-link>
-                <router-link :to="{ name: 'signin', params: { app: authSignup.body.app_name}}">已经账号？前往登录</router-link>
+                <router-link :to="{ name: 'reset-password' }">忘记密码</router-link>
+                <router-link :to="{ name: 'signin', params: { app: authSignup.body.app_name } }">已经账号？前往登录</router-link>
             </div>
 
-            <button @click.prevent="authSignup.send" class="my-5 btn btn-lg lg:btn-xl btn-primary my-10" :disabled="authSignup.loading">
-                <span class="loading loading-spinner" v-if="authSignup.loading"></span>
+            <button @click.prevent="authSignup.send" class="my-5 btn btn-lg lg:btn-xl btn-primary my-10"
+                :disabled="authSignup.loader.loading">
+                <span class="loading loading-spinner" v-if="authSignup.loader.loading"></span>
                 <span v-else>注册新用户</span>
             </button>
 

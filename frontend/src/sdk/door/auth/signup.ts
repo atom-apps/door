@@ -1,4 +1,4 @@
-import { Http } from "@/sdk/axios";
+import Http from "@/sdk/axios";
 import { AuthScopeResponse, BaseRequest, GlobalVar } from "@/sdk/common";
 import { AxiosError } from "axios";
 import { v4 as uuidv4 } from 'uuid';
@@ -51,15 +51,19 @@ export class PostAuthSignup extends BaseRequest {
 
 
     async send() {
+        this.loader.start()
         return Http.post<AuthScopeResponse>(this.uri, this.body, {
             params: {
                 ...this.pageFilter,
                 ...this.sortFilter,
             },
-        }).catch(err=>{
+        }).catch((err) => {
+            this.loader.stop()
             if (err instanceof AxiosError) {
                 this.error = err.message
             }
+        }).finally(() => {
+            this.loader.stop()
         })
     }
 

@@ -14,11 +14,12 @@ func Provide(opts ...opt.Option) error {
 	return container.Container.Provide(newRoute, atom.GroupRoutes)
 }
 
-func newRoute(svc contracts.HttpService, sendController *controller.SendController) contracts.HttpRoute {
+func newRoute(svc contracts.HttpService, captchaController *controller.CaptchaController, sendController *controller.SendController) contracts.HttpRoute {
 	engine := svc.GetEngine().(*fiber.App)
 	group := engine.Group("services")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
 
 	routeSendController(group, sendController)
+	routeCaptchaController(group, captchaController)
 	return nil
 }

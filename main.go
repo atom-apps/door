@@ -20,6 +20,7 @@ import (
 	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
+	"github.com/atom-providers/captcha"
 	databasePostgres "github.com/atom-providers/database-postgres"
 	redis "github.com/atom-providers/database-redis"
 	service "github.com/atom-providers/service-httpgrpc"
@@ -35,6 +36,7 @@ func main() {
 		Default(
 			redis.DefaultProvider(),
 			md5.DefaultProvider(),
+			captcha.DefaultProvider(),
 			bcrypt.DefaultProvider(),
 			uuid.DefaultProvider(),
 			oauth.DefaultProvider(),

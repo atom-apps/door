@@ -23,7 +23,7 @@ type SendController struct {
 //	@Accept		json
 //	@Produce	json
 //	@Param		body	body	dto.SendSmsVerifyCodeForm	true	"SendSmsVerifyCodeForm"
-//	@Router		/send/sms [post]
+//	@Router		/services/send/sms [post]
 func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) error {
 	if !c.userSvc.IsPhoneValid(ctx.Context(), body.Phone) {
 		return oauth.ErrPhoneInvalid
@@ -39,7 +39,7 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) er
 //	@Accept		json
 //	@Produce	json
 //	@Param		body	body	dto.SendEmailVerifyCodeForm	true	"SendEmailVerifyCodeForm"
-//	@Router		/send/email [post]
+//	@Router		/services/send/email [post]
 func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendEmailVerifyCodeForm) error {
 	if !c.userSvc.IsEmailValid(ctx.Context(), body.Address) {
 		return oauth.ErrEmailInvalid

@@ -1,4 +1,4 @@
-import { Http } from "@/sdk/axios";
+import Http from "@/sdk/axios";
 import { AuthScopeResponse, BaseRequest, GlobalVar } from "@/sdk/common";
 import { AxiosError } from "axios";
 import { v4 as uuidv4 } from 'uuid';
@@ -22,8 +22,6 @@ export interface AuthSigninForm {
 
 export class PostAuthSignin extends BaseRequest {
     private uri: string = '/auth/signin';
-
-    force:number = 0;
 
     constructor() {
         super()
@@ -56,10 +54,13 @@ export class PostAuthSignin extends BaseRequest {
                 ...this.pageFilter,
                 ...this.sortFilter,
             },
-        }).catch(err=>{
+        }).catch(err => {
+            this.loader.stop()
             if (err instanceof AxiosError) {
                 this.error = err.message
             }
+        }).finally(() => {
+            this.loader.stop()
         })
     }
 

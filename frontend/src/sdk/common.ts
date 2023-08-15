@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { Loader } from "./axios";
 
 export interface QueryFilter {
     name?: string
@@ -88,10 +87,20 @@ export interface OAuth2Token {
 }
 
 
-export abstract class BaseRequest {
-    public get loading(): boolean {
-        return Loader.loading
+class LoadingInspector {
+    public loading: boolean = false
+
+    start() {
+        this.loading = true
     }
+
+    stop() {
+        this.loading = false
+    }
+}
+
+export abstract class BaseRequest {
+    loader: LoadingInspector = new LoadingInspector()
 
     // pageFilter
     private _pageFilter?: PageFilterInterface | undefined
@@ -137,8 +146,8 @@ export class Error {
         this.error = ""
     }
 
-    has() :boolean{
-        return this.error.length>0
+    has(): boolean {
+        return this.error.length > 0
     }
 
     callback(error: any) {

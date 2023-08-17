@@ -14,6 +14,6 @@ import (
 
 func routeSendController(engine fiber.Router, controller *controller.SendController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Post(strings.TrimPrefix("/services/send/sms", basePath), Func1(controller.Sms, Body[dto.SendSmsVerifyCodeForm](BodyParamError)))
-	engine.Post(strings.TrimPrefix("/services/send/email", basePath), Func1(controller.Email, Body[dto.SendEmailVerifyCodeForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/services/send/sms", basePath), Func1(controller.Sms, Body[dto.SendVerifyCodeForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/services/send/email", basePath), Func1(controller.Email, Body[dto.SendVerifyCodeForm](BodyParamError)))
 }

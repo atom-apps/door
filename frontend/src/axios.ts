@@ -1,18 +1,33 @@
-import axios from 'axios'
-import type { App } from 'vue'
+import axios, { AxiosRequestConfig } from 'axios'
 
-interface AxiosOptions {
-    baseURL?: string,
-    token?: string
+const defaults: AxiosRequestConfig = {
+    method: 'GET',
+    baseURL: 'http://localhost:9800/',
+    headers: {
+    },
+    timeout: 10 * 1000,
 }
 
-export default {
-    install: (app: App, options: AxiosOptions) => {
-        app.config.globalProperties.$axios = axios.create({
-            baseURL: options.baseURL,
-            headers: {
-                Authorization: options.token ? `Bearer ${options.token}` : ''
-            },
-        })
-    }
-}
+
+
+const http = axios.create(defaults)
+
+// Http.interceptors.request.use((config) => {
+//     Loader.start()
+//     return config
+// })
+// Http.interceptors.response.use(
+//     response => {
+//         Loader.stop()
+//         return response
+//     },
+//     error => {
+//         console.log("ERR: ", error)
+//         Loader.stop()
+//         return Promise.reject(error)
+//     }
+// )
+// Http.defaults.headers.common['Cookie'] = "sessionid=d88a1db96a3470b1945fbd527d244479";
+
+export default http
+

@@ -42,6 +42,7 @@ type RefreshTokenForm struct {
 }
 
 type ExchangeTokenByCodeForm struct {
-	Code  string `json:"code,omitempty"`
-	Scope string `json:"scope,omitempty"`
+	Code     string `json:"code,omitempty"`
+	Scope    string `json:"scope,omitempty"`
+	Redirect string `json:"redirect,omitempty"`
 }

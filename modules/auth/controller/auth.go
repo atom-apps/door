@@ -149,9 +149,15 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 		return nil, err
 	}
 
+	redirect, err := app.GetCallbackURL(token.Code, token.Scope, ctx.Query("redirect", ""))
+	if err != nil {
+		return nil, err
+	}
+
 	return &dto.ExchangeTokenByCodeForm{
-		Code:  token.Code,
-		Scope: token.Scope,
+		Code:     token.Code,
+		Scope:    token.Scope,
+		Redirect: redirect,
 	}, nil
 }
 

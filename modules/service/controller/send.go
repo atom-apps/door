@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"time"
+
 	authSvc "github.com/atom-apps/door/modules/auth/service"
 	"github.com/atom-apps/door/modules/service/dto"
 	"github.com/atom-apps/door/modules/service/service"
@@ -24,12 +26,13 @@ type SendController struct {
 //	@Produce	json
 //	@Param		body	body	dto.SendSmsVerifyCodeForm	true	"SendSmsVerifyCodeForm"
 //	@Router		/services/send/sms [post]
-func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) error {
-	if !c.userSvc.IsPhoneValid(ctx.Context(), body.Phone) {
+func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error {
+	if !c.userSvc.IsPhoneValid(ctx.Context(), body.To) {
 		return oauth.ErrPhoneInvalid
 	}
 
-	return c.svc.SendSmsCode(ctx.Context(), body.Phone)
+	time.Sleep(time.Second * 2)
+	return c.svc.SendSmsCode(ctx.Context(), body.To)
 }
 
 // Email send email code
@@ -40,10 +43,10 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendSmsVerifyCodeForm) er
 //	@Produce	json
 //	@Param		body	body	dto.SendEmailVerifyCodeForm	true	"SendEmailVerifyCodeForm"
 //	@Router		/services/send/email [post]
-func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendEmailVerifyCodeForm) error {
-	if !c.userSvc.IsEmailValid(ctx.Context(), body.Address) {
+func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error {
+	if !c.userSvc.IsEmailValid(ctx.Context(), body.To) {
 		return oauth.ErrEmailInvalid
 	}
 
-	return c.svc.SendEmailCode(ctx.Context(), body.Address)
+	return c.svc.SendEmailCode(ctx.Context(), body.To)
 }

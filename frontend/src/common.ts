@@ -6,16 +6,31 @@ export enum SigninMethod {
 }
 
 
+interface errMsg {
+    code: number
+    message: string
+    data?: errMsgData
+}
+
+interface errMsgData {
+    status?: string
+    details?: errMsgDataDetails[]
+}
+interface errMsgDataDetails {
+    description: string
+    field?: string
+}
+
 export const checkError = function (err: AxiosError): string[] {
     let errors: string[] = []
     if (err.response) {
-        const msg = err.response?.data?.message
-        switch (msg) {
+        const msg: errMsg = err.response?.data as errMsg
+        switch (msg.message) {
             case 'record not found':
                 errors.push("找不到记录")
                 break
             default:
-                errors.push(msg)
+                errors.push(msg.message)
         }
         return errors
     }

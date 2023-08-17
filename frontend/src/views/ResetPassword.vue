@@ -107,7 +107,7 @@ const formStep2 = reactive<step2Form>({
     password: "",
 })
 
-const step = ref<number>(2)
+const step = ref<number>(1)
 const loading = ref<boolean>(false)
 const success = ref<boolean>(false)
 const errors = ref<string[]>([])

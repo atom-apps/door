@@ -35,7 +35,7 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error
 		return oauth.ErrVerifyCodeInvalid
 	}
 
-	return c.svc.SendSmsCode(ctx.Context(), body.To)
+	return c.svc.SendSmsCode(ctx.Context(), body.Channel, body.To)
 }
 
 // Email send email code
@@ -55,5 +55,5 @@ func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) err
 		return oauth.ErrVerifyCodeInvalid
 	}
 
-	return c.svc.SendEmailCode(ctx.Context(), body.To)
+	return c.svc.SendEmailCode(ctx.Context(), body.Channel, body.To)
 }

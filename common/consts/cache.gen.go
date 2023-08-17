@@ -14,14 +14,14 @@ import (
 )
 
 const (
-	// CacheKeyRegisterCode is a CacheKey of type RegisterCode.
-	CacheKeyRegisterCode CacheKey = "code:register:%s"
+	// CacheKeyVerifyCode is a CacheKey of type VerifyCode.
+	CacheKeyVerifyCode CacheKey = "code:__CHANNEL__:%s"
 )
 
 var ErrInvalidCacheKey = fmt.Errorf("not a valid CacheKey, try [%s]", strings.Join(_CacheKeyNames, ", "))
 
 var _CacheKeyNames = []string{
-	string(CacheKeyRegisterCode),
+	string(CacheKeyVerifyCode),
 }
 
 // CacheKeyNames returns a list of possible string values of CacheKey.
@@ -34,7 +34,7 @@ func CacheKeyNames() []string {
 // CacheKeyValues returns a list of the values for CacheKey
 func CacheKeyValues() []CacheKey {
 	return []CacheKey{
-		CacheKeyRegisterCode,
+		CacheKeyVerifyCode,
 	}
 }
 
@@ -51,7 +51,7 @@ func (x CacheKey) IsValid() bool {
 }
 
 var _CacheKeyValue = map[string]CacheKey{
-	"code:register:%s": CacheKeyRegisterCode,
+	"code:__CHANNEL__:%s": CacheKeyVerifyCode,
 }
 
 // ParseCacheKey attempts to convert a string to a CacheKey.
@@ -166,4 +166,169 @@ func (x NullCacheKeyStr) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return x.CacheKey.String(), nil
+}
+
+const (
+	// VerifyCodeChannelSignin is a VerifyCodeChannel of type signin.
+	VerifyCodeChannelSignin VerifyCodeChannel = "signin"
+	// VerifyCodeChannelSignup is a VerifyCodeChannel of type signup.
+	VerifyCodeChannelSignup VerifyCodeChannel = "signup"
+	// VerifyCodeChannelResetPassword is a VerifyCodeChannel of type reset-password.
+	VerifyCodeChannelResetPassword VerifyCodeChannel = "reset-password"
+)
+
+var ErrInvalidVerifyCodeChannel = fmt.Errorf("not a valid VerifyCodeChannel, try [%s]", strings.Join(_VerifyCodeChannelNames, ", "))
+
+var _VerifyCodeChannelNames = []string{
+	string(VerifyCodeChannelSignin),
+	string(VerifyCodeChannelSignup),
+	string(VerifyCodeChannelResetPassword),
+}
+
+// VerifyCodeChannelNames returns a list of possible string values of VerifyCodeChannel.
+func VerifyCodeChannelNames() []string {
+	tmp := make([]string, len(_VerifyCodeChannelNames))
+	copy(tmp, _VerifyCodeChannelNames)
+	return tmp
+}
+
+// VerifyCodeChannelValues returns a list of the values for VerifyCodeChannel
+func VerifyCodeChannelValues() []VerifyCodeChannel {
+	return []VerifyCodeChannel{
+		VerifyCodeChannelSignin,
+		VerifyCodeChannelSignup,
+		VerifyCodeChannelResetPassword,
+	}
+}
+
+// String implements the Stringer interface.
+func (x VerifyCodeChannel) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x VerifyCodeChannel) IsValid() bool {
+	_, err := ParseVerifyCodeChannel(string(x))
+	return err == nil
+}
+
+var _VerifyCodeChannelValue = map[string]VerifyCodeChannel{
+	"signin":         VerifyCodeChannelSignin,
+	"signup":         VerifyCodeChannelSignup,
+	"reset-password": VerifyCodeChannelResetPassword,
+}
+
+// ParseVerifyCodeChannel attempts to convert a string to a VerifyCodeChannel.
+func ParseVerifyCodeChannel(name string) (VerifyCodeChannel, error) {
+	if x, ok := _VerifyCodeChannelValue[name]; ok {
+		return x, nil
+	}
+	return VerifyCodeChannel(""), fmt.Errorf("%s is %w", name, ErrInvalidVerifyCodeChannel)
+}
+
+var errVerifyCodeChannelNilPtr = errors.New("value pointer is nil") // one per type for package clashes
+
+// Scan implements the Scanner interface.
+func (x *VerifyCodeChannel) Scan(value interface{}) (err error) {
+	if value == nil {
+		*x = VerifyCodeChannel("")
+		return
+	}
+
+	// A wider range of scannable types.
+	// driver.Value values at the top of the list for expediency
+	switch v := value.(type) {
+	case string:
+		*x, err = ParseVerifyCodeChannel(v)
+	case []byte:
+		*x, err = ParseVerifyCodeChannel(string(v))
+	case VerifyCodeChannel:
+		*x = v
+	case *VerifyCodeChannel:
+		if v == nil {
+			return errVerifyCodeChannelNilPtr
+		}
+		*x = *v
+	case *string:
+		if v == nil {
+			return errVerifyCodeChannelNilPtr
+		}
+		*x, err = ParseVerifyCodeChannel(*v)
+	default:
+		return errors.New("invalid type for VerifyCodeChannel")
+	}
+
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x VerifyCodeChannel) Value() (driver.Value, error) {
+	return x.String(), nil
+}
+
+// Set implements the Golang flag.Value interface func.
+func (x *VerifyCodeChannel) Set(val string) error {
+	v, err := ParseVerifyCodeChannel(val)
+	*x = v
+	return err
+}
+
+// Get implements the Golang flag.Getter interface func.
+func (x *VerifyCodeChannel) Get() interface{} {
+	return *x
+}
+
+// Type implements the github.com/spf13/pFlag Value interface.
+func (x *VerifyCodeChannel) Type() string {
+	return "VerifyCodeChannel"
+}
+
+type NullVerifyCodeChannel struct {
+	VerifyCodeChannel VerifyCodeChannel
+	Valid             bool
+}
+
+func NewNullVerifyCodeChannel(val interface{}) (x NullVerifyCodeChannel) {
+	err := x.Scan(val) // yes, we ignore this error, it will just be an invalid value.
+	_ = err            // make any errcheck linters happy
+	return
+}
+
+// Scan implements the Scanner interface.
+func (x *NullVerifyCodeChannel) Scan(value interface{}) (err error) {
+	if value == nil {
+		x.VerifyCodeChannel, x.Valid = VerifyCodeChannel(""), false
+		return
+	}
+
+	err = x.VerifyCodeChannel.Scan(value)
+	x.Valid = (err == nil)
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x NullVerifyCodeChannel) Value() (driver.Value, error) {
+	if !x.Valid {
+		return nil, nil
+	}
+	// driver.Value accepts int64 for int values.
+	return string(x.VerifyCodeChannel), nil
+}
+
+type NullVerifyCodeChannelStr struct {
+	NullVerifyCodeChannel
+}
+
+func NewNullVerifyCodeChannelStr(val interface{}) (x NullVerifyCodeChannelStr) {
+	x.Scan(val) // yes, we ignore this error, it will just be an invalid value.
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x NullVerifyCodeChannelStr) Value() (driver.Value, error) {
+	if !x.Valid {
+		return nil, nil
+	}
+	return x.VerifyCodeChannel.String(), nil
 }

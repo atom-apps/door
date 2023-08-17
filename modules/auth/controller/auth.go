@@ -5,8 +5,11 @@ import (
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/consts"
+	"github.com/atom-apps/door/common/errorx"
+	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/auth/dto"
 	"github.com/atom-apps/door/modules/auth/service"
+	serviceSvc "github.com/atom-apps/door/modules/service/service"
 	userSvc "github.com/atom-apps/door/modules/user/service"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/gofiber/fiber/v2"
@@ -21,6 +24,7 @@ type AuthController struct {
 	userSvc    *userSvc.UserService
 	sessionSvc *userSvc.SessionService
 	tokenSvc   *userSvc.TokenService
+	sendSvc    *serviceSvc.SendService
 }
 
 func (c *AuthController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, bool) {
@@ -227,4 +231,69 @@ func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm
 //	@Router			/auth/exchange-token-by-code [post]
 func (c *AuthController) ExchangeTokenByCode(ctx *fiber.Ctx, form *dto.ExchangeTokenByCodeForm) (*oauth2.Token, error) {
 	return c.tokenSvc.GetOAuthTokenByCode(ctx.Context(), form.Code, form.Scope)
+}
+
+// CheckResetPasswordCoe
+//
+//	@Summary		CheckResetPasswordCoe
+//	@Description	CheckResetPasswordCoe
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	dto.CheckPasswordResetCodeForm	true	"CheckPasswordResetCode"
+//	@Success		200	{object}	oauth2.Token
+//	@Router			/auth/check-reset-password-code [post]
+func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPasswordResetCodeForm) (*dto.CheckPasswordResetToken, error) {
+	if !c.sendSvc.VerifyCode(ctx.Context(), consts.VerifyCodeChannelResetPassword, form.Username, form.Code) {
+		return nil, errorx.ErrInvalidVerifyCode
+	}
+
+	var user *models.User
+	var err error
+
+	if c.userSvc.IsEmailValid(ctx.Context(), form.Username) {
+		user, err = c.userSvc.GetByEmail(ctx.Context(), form.Username)
+		if err != nil {
+			return nil, err
+		}
+	} else if c.userSvc.IsPhoneValid(ctx.Context(), form.Username) {
+		user, err = c.userSvc.GetByPhone(ctx.Context(), form.Username)
+		if err != nil {
+			return nil, err
+		}
+	}
+	token, err := c.userSvc.GetUserIDHashToken(ctx.Context(), user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.CheckPasswordResetToken{Token: token}, nil
+}
+
+// ResetPassword
+//
+//	@Summary		ResetPassword
+//	@Description	ResetPassword
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	dto.ResetPassword	true	"ResetPassword"
+//	@Success		200	{object}	oauth2.Token
+//	@Router			/auth/reset-password-by-token [post]
+func (c *AuthController) ResetPassword(ctx *fiber.Ctx, form *dto.ResetPasswordForm) error {
+	app, err := c.oauth.GetAppByName(form.AppName)
+	if err != nil {
+		return err
+	}
+
+	user, err := c.userSvc.GetUserFromHashToken(ctx.Context(), form.Token)
+	if err != nil {
+		return err
+	}
+
+	if err := c.authSvc.CheckPasswordComplex(ctx.Context(), form.Password, app.PasswordComplexRules()); err != nil {
+		return err
+	}
+
+	return c.userSvc.ResetPassword(ctx.Context(), user, form.Password)
 }

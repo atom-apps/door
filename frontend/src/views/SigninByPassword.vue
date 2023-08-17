@@ -18,11 +18,11 @@
 
 
         <div class="flex justify-between items-center">
-            <router-link :to="{ name: 'reset-password' }">忘记密码</router-link>
+            <router-link :to="{ name: 'reset-password', params: { app: form.app_name } }">忘记密码</router-link>
             <router-link :to="{ name: 'signup', params: { app: form.app_name } }">注册新账号</router-link>
         </div>
 
-        <button @click.prevent="submit" class="my-5 btn btn-lg lg:btn-xl btn-primary my-10" :disabled="loading">
+        <button @click.prevent="submit" class="my-5 btn btn-lg lg:btn-xl btn-primary" :disabled="loading">
             <span class="loading loading-spinner" v-if="loading"></span>
             <span v-else>登录</span>
         </button>

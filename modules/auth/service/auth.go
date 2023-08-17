@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/auth/dto"
@@ -38,7 +39,7 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 				return oauth.ErrEmailExists
 			}
 
-			if !svc.sendSvc.VerifyCode(ctx, *form.Email, *form.EmailCode) {
+			if !svc.sendSvc.VerifyCode(ctx, consts.VerifyCodeChannelSignup, *form.Email, *form.EmailCode) {
 				return oauth.ErrVerifyCodeInvalid
 			}
 
@@ -55,7 +56,7 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 				return oauth.ErrPhoneExists
 			}
 
-			if !svc.sendSvc.VerifyCode(ctx, *form.Phone, *form.PhoneCode) {
+			if !svc.sendSvc.VerifyCode(ctx, consts.VerifyCodeChannelSignup, *form.Phone, *form.PhoneCode) {
 				return oauth.ErrVerifyCodeInvalid
 			}
 		case oauth.RegisterFieldUsername:
@@ -80,8 +81,8 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 
 func (svc *AuthService) CheckPasswordComplex(ctx context.Context, password string, method []oauth.PasswordRuleFunc) error {
 	for _, m := range method {
-		if ok := m(password); !ok {
-			return oauth.ErrPasswordInvalid
+		if err := m(password); err != nil {
+			return err
 		}
 	}
 	return nil
@@ -122,7 +123,7 @@ func (svc *AuthService) ComparePassword(ctx context.Context, user *models.User, 
 // VerifySignInPasswordOrCode
 func (svc *AuthService) VerifySignInPasswordOrCode(ctx context.Context, form *dto.SignInForm, user *models.User) error {
 	if form.Method == oauth.SignInMethodCode {
-		if !svc.sendSvc.VerifyCode(ctx, form.Username, *form.Code) {
+		if !svc.sendSvc.VerifyCode(ctx, consts.VerifyCodeChannelSignin, form.Username, *form.Code) {
 			return oauth.ErrVerifyCodeInvalid
 		}
 	}

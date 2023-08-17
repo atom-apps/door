@@ -14,6 +14,8 @@ export const checkError = function (err: AxiosError): string[] {
             case 'record not found':
                 errors.push("找不到记录")
                 break
+            default:
+                errors.push(msg)
         }
         return errors
     }

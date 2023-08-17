@@ -16,12 +16,12 @@
                 <input type="text" minlength="6" maxlength="6" name="password" v-model="form.code"
                     class="input lg:input-lg input-bordered w-1/3" ref="codeInput" autocomplete="off" />
                 <div class="w-1"></div>
-                <SendVerifyCode :duration=10 :to="form.username" />
+                <SendVerifyCode :channel='channel' :duration=10 :to="form.username" />
             </div>
         </div>
 
         <div class="flex justify-between items-center">
-            <router-link :to="{ name: 'reset-password' }">忘记密码</router-link>
+            <router-link :to="{ name: 'reset-password', params: { app: form.app_name } }">忘记密码</router-link>
             <router-link :to="{ name: 'signup', params: { app: form.app_name } }">注册新账号</router-link>
         </div>
 
@@ -38,6 +38,7 @@
 </template>
 
 <script lang="ts" setup>
+const channel = 'signin'
 
 import http from '@/axios';
 import { SigninMethod } from '@/common';

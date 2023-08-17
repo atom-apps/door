@@ -3,10 +3,12 @@ module github.com/atom-apps/door
 go 1.19
 
 require (
+	github.com/atom-providers/app v0.0.0-20230811023801-3f6c46f8f414
 	github.com/atom-providers/captcha v0.0.0-20230801062818-95beaace4c91
 	github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58
 	github.com/atom-providers/database-redis v0.0.0-20230801062840-bf2f650c3e67
-	github.com/atom-providers/log v0.0.0-20230801062917-0782ea50f3c5
+	github.com/atom-providers/hashids v0.0.0-20230817091755-925e3a5977cb
+	github.com/atom-providers/log v0.0.0-20230805054420-343ad809890e
 	github.com/atom-providers/service-httpgrpc v0.0.0-20230801062936-e5c2344a7495
 	github.com/atom-providers/swagger v0.0.0-20230801062947-5ad4735e505b
 	github.com/atom-providers/uuid v0.0.0-20230801062951-5331ee1b8af6
@@ -19,8 +21,8 @@ require (
 	github.com/rogeecn/fen v1.0.7
 	github.com/samber/lo v1.38.1
 	github.com/spf13/cobra v1.7.0
-	golang.org/x/crypto v0.11.0
-	golang.org/x/oauth2 v0.7.0
+	golang.org/x/crypto v0.12.0
+	golang.org/x/oauth2 v0.8.0
 	golang.org/x/sync v0.3.0
 	gorm.io/gen v0.3.23
 	gorm.io/gorm v1.25.2
@@ -33,9 +35,9 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 // indirect
-	github.com/atom-providers/grpc-server v0.0.0-20230731090718-2eb0ee6d0413 // indirect
+	github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114 // indirect
 	github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb // indirect
-	github.com/brianvoe/gofakeit/v6 v6.23.0 // indirect
+	github.com/brianvoe/gofakeit/v6 v6.23.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/evanphx/json-patch v0.5.2 // indirect
@@ -72,8 +74,8 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.9 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/rogeecn/atom-addons/providers/log v0.0.0-20230619103917-2f2bd26c1555 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/speps/go-hashids/v2 v2.0.1 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -86,20 +88,19 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.48.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/dig v1.17.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.24.0 // indirect
+	go.uber.org/zap v1.25.0 // indirect
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691 // indirect
 	golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
 	golang.org/x/mod v0.11.0 // indirect
-	golang.org/x/net v0.13.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/net v0.14.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/text v0.12.0 // indirect
+	golang.org/x/tools v0.9.1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230807174057-1744710a1577 // indirect
-	google.golang.org/grpc v1.56.0 // indirect
+	google.golang.org/grpc v1.57.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

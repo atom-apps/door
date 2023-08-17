@@ -46,3 +46,18 @@ type ExchangeTokenByCodeForm struct {
 	Scope    string `json:"scope,omitempty"`
 	Redirect string `json:"redirect,omitempty"`
 }
+
+type CheckPasswordResetCodeForm struct {
+	Code     string `json:"code,omitempty"`
+	Username string `json:"username,omitempty"`
+}
+
+type CheckPasswordResetToken struct {
+	Token string `json:"token,omitempty"`
+}
+
+type ResetPasswordForm struct {
+	AppName  string `json:"app_name,omitempty"`
+	Token    string `json:"token,omitempty"`
+	Password string `json:"password,omitempty"`
+}

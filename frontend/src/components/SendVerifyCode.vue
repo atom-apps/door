@@ -6,9 +6,13 @@ import Alert from './Alert.vue';
 
 const props = defineProps({
   to: String,
+  channel: { type: String, required: true },
   duration: { type: Number, required: false, default: 120 },
   theme: { type: String, required: false, default: "btn lg:btn-lg grow" },
 })
+
+
+console.log("channel: ",props.channel)
 
 interface CaptchaResponse {
   id: string
@@ -16,6 +20,7 @@ interface CaptchaResponse {
 }
 
 interface Form {
+  channel: string,
   to: string
   code: string
   captcha_id: string
@@ -23,6 +28,7 @@ interface Form {
 
 
 const form = reactive<Form>({
+  channel: '',
   to: '',
   code: '',
   captcha_id: '',
@@ -75,7 +81,15 @@ const startCountDown = () => {
 
 // send verify code
 const send = () => {
+  errors.value = []
+
   form.to = props.to ?? ''
+  form.channel = props.channel
+
+  if (form.channel == "") {
+    errors.value.push("请求错误")
+    return
+  }
 
   let actionPath = ''
   if (rules.phone.test(form.to)) {
@@ -127,7 +141,7 @@ const send = () => {
 </script>
 
 <template>
-  <label v-if="countDown > 0" :class="props.theme">{{ countDown }}秒后重新发送</label>
+  <label v-if="countDown > 0" :class="props.theme" class="btn-disabled">{{ countDown }}秒后重新发送</label>
   <label v-else :to="props.to" for="captcha_modal" @click="refreshCaptcha" :class="props.theme">发送验证码</label>
 
   <input type="checkbox" id="captcha_modal" class="modal-toggle" v-model="modal" />

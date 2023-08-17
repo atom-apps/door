@@ -2,8 +2,10 @@ package service
 
 import (
 	"github.com/atom-apps/door/modules/user/dao"
+	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-apps/door/providers/md5"
+	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/uuid"
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"
@@ -78,9 +80,13 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		hash *bcrypt.Hash,
+		hashID *hashids.HashID,
 		userDao *dao.UserDao,
 	) (*UserService, error) {
 		obj := &UserService{
+			hash:    hash,
+			hashID:  hashID,
 			userDao: userDao,
 		}
 		return obj, nil

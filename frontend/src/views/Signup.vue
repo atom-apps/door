@@ -32,7 +32,7 @@
                     <input type="text" minlength="6" maxlength="6" name="password" v-model="form.phone_code"
                         class="input lg:input-lg input-bordered w-1/3" ref="codeInput" autocomplete="off" />
                     <div class="w-1"></div>
-                    <SendVerifyCode :duration=120 :to="form.phone" />
+                    <SendVerifyCode :channel="channel" :duration=120 :to="form.phone" />
                 </div>
             </div>
 
@@ -59,6 +59,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+const channel = 'signup'
 
 const router = useRoute();
 const codeInput = ref();

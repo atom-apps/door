@@ -23,6 +23,7 @@ import (
 	"github.com/atom-providers/captcha"
 	databasePostgres "github.com/atom-providers/database-postgres"
 	redis "github.com/atom-providers/database-redis"
+	"github.com/atom-providers/hashids"
 	service "github.com/atom-providers/service-httpgrpc"
 	"github.com/atom-providers/swagger"
 	"github.com/atom-providers/uuid"
@@ -34,6 +35,7 @@ import (
 func main() {
 	providers := service.
 		Default(
+			hashids.DefaultProvider(),
 			redis.DefaultProvider(),
 			md5.DefaultProvider(),
 			captcha.DefaultProvider(),

@@ -2,14 +2,17 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/user/dao"
 	"github.com/atom-apps/door/modules/user/dto"
-	"github.com/atom-apps/door/providers/oauth"
+	"github.com/atom-apps/door/providers/bcrypt"
+	"github.com/atom-providers/hashids"
 
 	"github.com/jinzhu/copier"
 )
@@ -17,6 +20,8 @@ import (
 // @provider
 type UserService struct {
 	userDao *dao.UserDao
+	hashID  *hashids.HashID
+	hash    *bcrypt.Hash
 }
 
 func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
@@ -117,16 +122,6 @@ func (svc *UserService) IsUsernameValid(ctx context.Context, username string) bo
 	return match
 }
 
-// IsPasswordValid
-func (svc *UserService) IsPasswordValid(ctx context.Context, password string, rules []oauth.PasswordRuleFunc) bool {
-	for _, ruleFunc := range rules {
-		if !ruleFunc(password) {
-			return false
-		}
-	}
-	return true
-}
-
 // GetByUsernameOrEmailOrPhone
 func (svc *UserService) GetByUsernameOrEmailOrPhone(ctx context.Context, input string) (*models.User, error) {
 	if input == "" {
@@ -152,4 +147,33 @@ func (svc *UserService) GetByEmail(ctx context.Context, input string) (*models.U
 	}
 
 	return svc.userDao.GetByEmail(ctx, input)
+}
+
+// GetUserIDHashToken
+func (svc *UserService) GetUserIDHashToken(ctx context.Context, user *models.User) (string, error) {
+	salt := common.RandomString(10)
+	hashid, err := svc.hashID.EncodeWithSalt(salt, user.ID)
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%s/%s", hashid, salt), nil
+}
+
+// GetUserFromHashToken
+func (svc *UserService) GetUserFromHashToken(ctx context.Context, token string) (*models.User, error) {
+	sections := strings.Split(token, "/")
+	hashid, salt := sections[0], sections[1]
+
+	ids, err := svc.hashID.DecodeWithSalt(salt, hashid)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.userDao.GetByID(ctx, ids[0])
+}
+
+func (svc *UserService) ResetPassword(ctx context.Context, user *models.User, password string) error {
+	user.Password = svc.hash.Hash(password)
+	return svc.UpdateFromModel(ctx, user)
 }

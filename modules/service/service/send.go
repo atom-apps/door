@@ -6,7 +6,11 @@ import (
 	"math/rand"
 	"time"
 
+	userSvc "github.com/atom-apps/door/modules/user/service"
+	"github.com/samber/lo"
+
 	"github.com/atom-apps/door/common/consts"
+	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-providers/app"
 	"github.com/atom-providers/log"
 	redis "github.com/redis/go-redis/v9"
@@ -14,8 +18,9 @@ import (
 
 // @provider
 type SendService struct {
-	cache redis.Cmdable
-	app   *app.Config
+	cache   redis.Cmdable
+	app     *app.Config
+	userSvc *userSvc.UserService
 }
 
 func (svc *SendService) GenerateRandomCode(ctx context.Context) string {
@@ -34,24 +39,36 @@ func (svc *SendService) GenerateRandomCode(ctx context.Context) string {
 	return fmt.Sprintf("%d", randomNum)
 }
 
-func (svc *SendService) SendEmailCode(ctx context.Context, target string) error {
+func (svc *SendService) SendEmailCode(ctx context.Context, channel consts.VerifyCodeChannel, target string) error {
+	if lo.Contains(consts.AuthChannels, channel) {
+		if m, _ := svc.userSvc.GetByPhone(ctx, target); m == nil {
+			return errorx.ErrUserNotExists
+		}
+	}
+
 	code := svc.GenerateRandomCode(ctx)
-	svc.cache.Set(ctx, consts.CacheKeyRegisterCode.With(target), code, time.Minute*10)
+	svc.cache.Set(ctx, consts.CacheKeyVerifyCode.VerifyCode(channel, target), code, time.Minute*10)
 
 	log.Debugf("send email verify code(%s) to %s", code, target)
 	return nil
 }
 
-func (svc *SendService) SendSmsCode(ctx context.Context, target string) error {
+func (svc *SendService) SendSmsCode(ctx context.Context, channel consts.VerifyCodeChannel, target string) error {
+	if lo.Contains(consts.AuthChannels, channel) {
+		if m, _ := svc.userSvc.GetByPhone(ctx, target); m == nil {
+			return errorx.ErrUserNotExists
+		}
+	}
+
 	code := svc.GenerateRandomCode(ctx)
-	svc.cache.Set(ctx, consts.CacheKeyRegisterCode.With(target), code, time.Minute*10)
+	svc.cache.Set(ctx, consts.CacheKeyVerifyCode.VerifyCode(channel, target), code, time.Minute*10)
 
 	log.Debugf("send sms verify code(%s) to %s", code, target)
 	return nil
 }
 
-func (svc *SendService) VerifyCode(ctx context.Context, target, code string) bool {
-	cacheCode, err := svc.cache.Get(ctx, consts.CacheKeyRegisterCode.With(target)).Result()
+func (svc *SendService) VerifyCode(ctx context.Context, channel consts.VerifyCodeChannel, target, code string) bool {
+	cacheCode, err := svc.cache.Get(ctx, consts.CacheKeyVerifyCode.VerifyCode(channel, target)).Result()
 	if err != nil {
 		log.Error(err)
 		return false

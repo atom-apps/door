@@ -29,7 +29,7 @@ Name="app"
 ClientID = "asdfasdfasdf"
 ClientSecret = "asdfasdfasfdasfdasdf"
 CallbackUrl = "http://www.baidu.com/auth/callback"
-Register = ["email"]
+RegisterFields = ["username", "phone", "password"]
 PasswordComplexRule = { MinLength = 6, MaxLength = 10, UpperCase = 2, SpecialChars = 3 }
 
 [[OAuth.App]]

@@ -34,6 +34,10 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 				return oauth.ErrEmailInvalid
 			}
 
+			if user, _ := svc.userSvc.GetByEmail(ctx, *form.Email); user != nil {
+				return oauth.ErrEmailExists
+			}
+
 			if !svc.sendSvc.VerifyCode(ctx, *form.Email, *form.EmailCode) {
 				return oauth.ErrVerifyCodeInvalid
 			}
@@ -45,6 +49,10 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 
 			if ok := svc.userSvc.IsPhoneValid(ctx, *form.Phone); !ok {
 				return oauth.ErrPhoneInvalid
+			}
+
+			if user, _ := svc.userSvc.GetByPhone(ctx, *form.Phone); user != nil {
+				return oauth.ErrPhoneExists
 			}
 
 			if !svc.sendSvc.VerifyCode(ctx, *form.Phone, *form.PhoneCode) {

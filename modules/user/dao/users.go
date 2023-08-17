@@ -187,3 +187,21 @@ func (dao *UserDao) GetByUsernameOrEmailOrPhone(ctx context.Context, input strin
 		query.Where(user.Username.Eq(input)).Or(user.Email.Eq(input)).Or(user.Phone.Eq(input)),
 	).First()
 }
+
+// GetByPhone
+func (dao *UserDao) GetByPhone(ctx context.Context, phone string) (*models.User, error) {
+	user, query := dao.query.User, dao.Context(ctx)
+	return query.Where(
+		user.Status.Neq(consts.UserStatusBlocked),
+		user.Phone.Eq(phone),
+	).First()
+}
+
+// GetByEmail
+func (dao *UserDao) GetByEmail(ctx context.Context, email string) (*models.User, error) {
+	user, query := dao.query.User, dao.Context(ctx)
+	return query.Where(
+		user.Status.Neq(consts.UserStatusBlocked),
+		user.Email.Eq(email),
+	).First()
+}

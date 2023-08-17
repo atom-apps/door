@@ -45,6 +45,7 @@ import Alert from '@components/Alert.vue';
 import SendVerifyCode from '@components/SendVerifyCode.vue';
 import { UrlBuilder } from '@innova2/url-builder';
 import { AxiosError } from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -107,6 +108,14 @@ const submit = ()=>{
     loading.value = true
 
 
+    if (form.sid == '') {
+        let storageSID = uuidv4();
+        localStorage.setItem('sid', storageSID);
+        form.sid = storageSID;
+        return
+    }
+
+
     const url = UrlBuilder.createFromUrl(location.href)
     const query = url.getQueryParams()
     const redirect = query.get('redirect')?.toString()
@@ -116,7 +125,7 @@ const submit = ()=>{
         formAction += `?redirect=${redirect}`
     }
     
-    http.post<ScopeResponse>(formAction, form)
+    http.post(formAction, form)
         .then(res => {
             const resp: ScopeResponse = res.data
             console.log("RESP: ", resp)

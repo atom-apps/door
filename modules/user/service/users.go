@@ -135,3 +135,21 @@ func (svc *UserService) GetByUsernameOrEmailOrPhone(ctx context.Context, input s
 
 	return svc.userDao.GetByUsernameOrEmailOrPhone(ctx, input)
 }
+
+// GetByPhone
+func (svc *UserService) GetByPhone(ctx context.Context, input string) (*models.User, error) {
+	if input == "" {
+		return nil, errorx.ErrorUsernameOrPasswordInvalid
+	}
+
+	return svc.userDao.GetByPhone(ctx, input)
+}
+
+// GetByEmail
+func (svc *UserService) GetByEmail(ctx context.Context, input string) (*models.User, error) {
+	if input == "" {
+		return nil, errorx.ErrorUsernameOrPasswordInvalid
+	}
+
+	return svc.userDao.GetByEmail(ctx, input)
+}

@@ -18,4 +18,7 @@ var (
 	ErrPasswordInvalid  = errors.New("密码不合法")
 
 	ErrVerifyCodeInvalid = errors.New("验证码不正确")
+
+	ErrPhoneExists = errors.New("手机号已存在")
+	ErrEmailExists = errors.New("邮箱已存在")
 )

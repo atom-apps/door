@@ -22,8 +22,6 @@ import { ref } from 'vue';
 import SignInByCode from './SigninByCode.vue';
 import SignInByPassword from './SigninByPassword.vue';
 
-components: { SignInByPassword, SignInByCode }
-
 const mode = ref<SigninMethod>(SigninMethod.Code)
 
 </script>@/common

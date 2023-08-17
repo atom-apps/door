@@ -44,6 +44,7 @@ onMounted(() => {
 const refreshCaptcha = () => {
   errors.value = []
   sendSuccess.value = false
+  form.code = ''
 
   http.get('/services/captcha/generate')
     .then(res => {
@@ -74,12 +75,15 @@ const startCountDown = () => {
 
 // send verify code
 const send = () => {
+  form.to = props.to ?? ''
+
   let actionPath = ''
   if (rules.phone.test(form.to)) {
     actionPath = '/services/send/sms'
   } else if (rules.email.test(form.to)) {
     actionPath = '/services/send/email'
   } else {
+    console.log(form.to)
     errors.value.push('请输入正确的手机号或邮箱')
     setTimeout(() => {
       modal.value = false
@@ -95,7 +99,6 @@ const send = () => {
 
   sendSuccess.value = false
   loading.value = true
-  form.to = props.to ?? ''
 
 
   http.post(actionPath, form)

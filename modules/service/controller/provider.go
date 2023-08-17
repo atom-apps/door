@@ -23,11 +23,13 @@ func Provide(opts ...opt.Option) error {
 
 	if err := container.Container.Provide(func(
 		authSvc *authSvc.AuthService,
+		captcha *captcha.Captcha,
 		svc *service.SendService,
 		userSvc *userSvc.UserService,
 	) (*SendController, error) {
 		obj := &SendController{
 			authSvc: authSvc,
+			captcha: captcha,
 			svc:     svc,
 			userSvc: userSvc,
 		}

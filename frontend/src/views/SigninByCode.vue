@@ -116,7 +116,7 @@ const submit = ()=>{
         formAction += `?redirect=${redirect}`
     }
     
-    http.post<ScopeResponse>('', form)
+    http.post<ScopeResponse>(formAction, form)
         .then(res => {
             const resp: ScopeResponse = res.data
             console.log("RESP: ", resp)

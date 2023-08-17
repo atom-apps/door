@@ -1,13 +1,12 @@
 package controller
 
 import (
-	"time"
-
 	authSvc "github.com/atom-apps/door/modules/auth/service"
 	"github.com/atom-apps/door/modules/service/dto"
 	"github.com/atom-apps/door/modules/service/service"
 	userSvc "github.com/atom-apps/door/modules/user/service"
 	"github.com/atom-apps/door/providers/oauth"
+	"github.com/atom-providers/captcha"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,6 +15,7 @@ type SendController struct {
 	userSvc *userSvc.UserService
 	authSvc *authSvc.AuthService
 	svc     *service.SendService
+	captcha *captcha.Captcha
 }
 
 // Sms send sms code
@@ -31,7 +31,10 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error
 		return oauth.ErrPhoneInvalid
 	}
 
-	time.Sleep(time.Second * 2)
+	if !c.captcha.Verify(body.CaptchaID, body.Code) {
+		return oauth.ErrVerifyCodeInvalid
+	}
+
 	return c.svc.SendSmsCode(ctx.Context(), body.To)
 }
 
@@ -46,6 +49,10 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error
 func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error {
 	if !c.userSvc.IsEmailValid(ctx.Context(), body.To) {
 		return oauth.ErrEmailInvalid
+	}
+
+	if !c.captcha.Verify(body.CaptchaID, body.Code) {
+		return oauth.ErrVerifyCodeInvalid
 	}
 
 	return c.svc.SendEmailCode(ctx.Context(), body.To)

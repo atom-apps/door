@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @provider
+//	@provider
 type CaptchaController struct {
 	captcha *captcha.Captcha
 }

@@ -52,7 +52,7 @@ const refreshCaptcha = () => {
   sendSuccess.value = false
   form.code = ''
 
-  http.get('/services/captcha/generate')
+  http.get('/v1/services/captcha/generate')
     .then(res => {
       const resp: CaptchaResponse = res.data
       captcha.value = resp.image
@@ -93,9 +93,9 @@ const send = () => {
 
   let actionPath = ''
   if (rules.phone.test(form.to)) {
-    actionPath = '/services/send/sms'
+    actionPath = '/v1/services/send/sms'
   } else if (rules.email.test(form.to)) {
-    actionPath = '/services/send/email'
+    actionPath = '/v1/services/send/email'
   } else {
     console.log(form.to)
     errors.value.push('请输入正确的手机号或邮箱')

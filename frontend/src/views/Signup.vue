@@ -55,7 +55,6 @@ import { checkError } from '@/common';
 import Alert from '@components/Alert.vue';
 import SendVerifyCode from '@components/SendVerifyCode.vue';
 import { UrlBuilder } from '@innova2/url-builder';
-import { v4 as uuidv4 } from 'uuid';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -74,7 +73,6 @@ onMounted(() => {
 
 interface Form {
     app_name: string,
-    sid: string,
     username: string,
 
     phone: string,
@@ -91,7 +89,6 @@ interface Form {
 }
 const form = reactive<Form>({
     app_name: router.params['app'].toString(),
-    sid: localStorage.getItem('sid') || '',
     username: '',
     password: '',
     phone: '',
@@ -139,19 +136,11 @@ const submit = () => {
 
     loading.value = true
 
-
-    if (form.sid == '') {
-        let storageSID = uuidv4();
-        localStorage.setItem('sid', storageSID);
-        form.sid = storageSID;
-        return
-    }
-
     const url = UrlBuilder.createFromUrl(location.href)
     const query = url.getQueryParams()
     const redirect = query.get('redirect')?.toString()
 
-    let formAction = `/auth/signup`
+    let formAction = `/v1/auth/signup`
     if (redirect && redirect.length > 0) {
         formAction += `?redirect=${redirect}`
     }

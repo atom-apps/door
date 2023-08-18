@@ -12,7 +12,7 @@ import (
 	"gorm.io/gen/field"
 )
 
-// @provider
+//	@provider
 type UserDao struct {
 	query *query.Query
 }

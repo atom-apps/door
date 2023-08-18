@@ -14,8 +14,6 @@ import (
 
 func routeAuthController(engine fiber.Router, controller *controller.AuthController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/auth/signin/:appName", basePath), Func1(controller.SigninPage, String("appName", PathParamError)))
-	engine.Get(strings.TrimPrefix("/auth/signup/:appName", basePath), Func1(controller.SignupPage, String("appName", PathParamError)))
 	engine.Post(strings.TrimPrefix("/auth/signup", basePath), DataFunc1(controller.SignUp, Body[dto.SignUpForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/auth/signin", basePath), DataFunc1(controller.SignIn, Body[dto.SignInForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/auth/logout", basePath), Func1(controller.Logout, Body[dto.LogoutForm](BodyParamError)))

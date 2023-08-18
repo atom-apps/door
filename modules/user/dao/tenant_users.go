@@ -11,7 +11,7 @@ import (
 	"gorm.io/gen/field"
 )
 
-// @provider
+//	@provider
 type TenantUserDao struct {
 	query *query.Query
 }

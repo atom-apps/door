@@ -3,6 +3,8 @@ package errorx
 import "errors"
 
 var (
+	ErrInvalidRequest = errors.New("无效请求")
+
 	ErrInvalidVerifyCode = errors.New("验证码错误")
 
 	ErrUserNotExists = errors.New("用户不存在")

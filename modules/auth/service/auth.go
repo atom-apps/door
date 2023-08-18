@@ -15,7 +15,7 @@ import (
 	"github.com/atom-providers/uuid"
 )
 
-// @provider
+//	@provider
 type AuthService struct {
 	uuid    *uuid.Generator
 	hash    *bcrypt.Hash

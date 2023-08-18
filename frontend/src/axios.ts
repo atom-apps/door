@@ -2,13 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 const defaults: AxiosRequestConfig = {
     method: 'GET',
-    baseURL: 'http://localhost:9800/',
+    // baseURL: 'http://localhost:9800/',
     headers: {
     },
     timeout: 10 * 1000,
+    withCredentials: true,
 }
-
-
 
 const http = axios.create(defaults)
 

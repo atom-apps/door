@@ -27,63 +27,6 @@ type AuthController struct {
 	sendSvc    *serviceSvc.SendService
 }
 
-func (c *AuthController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, bool) {
-	app, err := c.oauth.GetAppByName(appName)
-	if err != nil {
-		return "", false
-	}
-
-	session := ctx.Cookies(consts.SessionName, "")
-	if session == "" {
-		return "", false
-	}
-	sess, err := c.sessionSvc.GetBySessionID(ctx.Context(), session)
-	if err != nil {
-		return "", false
-	}
-
-	user, err := c.userSvc.GetByID(ctx.Context(), sess.UserID)
-	if err != nil {
-		return "", false
-	}
-
-	token, err := c.tokenSvc.GetByUserID(ctx.Context(), user.ID, app.Name)
-	if err != nil {
-		return "", false
-	}
-
-	redirect, err := app.GetCallbackURL(token.Code, token.Scope, ctx.Query("redirect", ""))
-	if err != nil {
-		return "", false
-	}
-
-	return redirect, true
-}
-
-// Login Login Page
-//
-//	@Summary		Login Page
-//	@Description	Login Page
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Router			/auth/signin/{app_name} [get]
-func (c *AuthController) SigninPage(ctx *fiber.Ctx, appName string) error {
-	return ctx.Render("./frontend/dist/index.html", fiber.Map{})
-}
-
-// Signup page
-//
-//	@Summary		Signup page
-//	@Description	Signup Page
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Router			/auth/signup/{app_name} [get]
-func (c *AuthController) SignupPage(ctx *fiber.Ctx, appName string) error {
-	return ctx.Render("./frontend/dist/index.html", fiber.Map{})
-}
-
 // Signup
 //
 //	@Summary		Signup
@@ -91,8 +34,8 @@ func (c *AuthController) SignupPage(ctx *fiber.Ctx, appName string) error {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	dto.SignUpForm	true	"SignUpForm"
-//	@Success			200	{object}	dto.ExchangeTokenByCodeForm
+//	@Param			body	body		dto.SignUpForm	true	"SignUpForm"
+//	@Success		200		{object}	dto.ExchangeTokenByCodeForm
 //	@Router			/auth/signup [post]
 func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.ExchangeTokenByCodeForm, error) {
 	app, err := c.oauth.GetAppByName(form.AppName)
@@ -110,7 +53,6 @@ func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.Exch
 
 	return c.SignIn(ctx, &dto.SignInForm{
 		AppName:  form.AppName,
-		SID:      form.SID,
 		Username: *common.OneOf(form.Username, form.Email, form.Phone),
 		Password: form.Password,
 		Method:   oauth.SignInMethodPassword,
@@ -124,10 +66,15 @@ func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.Exch
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	dto.SignInForm	true	"SignInForm"
-//	@Success			200	{object}	dto.ExchangeTokenByCodeForm
+//	@Param			body	body		dto.SignInForm	true	"SignInForm"
+//	@Success		200		{object}	dto.ExchangeTokenByCodeForm
 //	@Router			/auth/signin [post]
 func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.ExchangeTokenByCodeForm, error) {
+	sessID := ctx.Cookies(consts.SessionName, "")
+	if sessID == "" {
+		return nil, errorx.ErrInvalidRequest
+	}
+
 	app, err := c.oauth.GetAppByName(form.AppName)
 	if err != nil {
 		return nil, err
@@ -143,7 +90,7 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 	}
 
 	// write user session id
-	sess, err := c.sessionSvc.CreateForUser(ctx.Context(), user.ID, form.SID)
+	sess, err := c.sessionSvc.CreateForUser(ctx.Context(), user.ID, sessID)
 	if err != nil {
 		return nil, err
 	}
@@ -172,7 +119,7 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{string}	TODO:AddData
+//	@Param			body	body		dto.LogoutForm	true	"LogoutForm"
 //	@Router			/auth/logout [post]
 func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 	_, err := c.oauth.GetAppByName(form.AppName)
@@ -195,7 +142,8 @@ func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{string}	TODO:AddData
+//	@Param			body	body		dto.RefreshTokenForm	true	"RefreshTokenForm"
+//	@Success		200		{string}	oauth2.Token
 //	@Router			/auth/refresh-token [post]
 func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm) (*oauth2.Token, error) {
 	app, err := c.oauth.GetAppByName(form.AppName)
@@ -227,7 +175,8 @@ func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	oauth2.Token
+//	@Param			body	body		dto.ExchangeTokenByCodeForm	true	"ExchangeTokenByCodeForm"
+//	@Success		200		{object}	oauth2.Token
 //	@Router			/auth/exchange-token-by-code [post]
 func (c *AuthController) ExchangeTokenByCode(ctx *fiber.Ctx, form *dto.ExchangeTokenByCodeForm) (*oauth2.Token, error) {
 	return c.tokenSvc.GetOAuthTokenByCode(ctx.Context(), form.Code, form.Scope)
@@ -240,8 +189,8 @@ func (c *AuthController) ExchangeTokenByCode(ctx *fiber.Ctx, form *dto.ExchangeT
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	dto.CheckPasswordResetCodeForm	true	"CheckPasswordResetCode"
-//	@Success		200	{object}	oauth2.Token
+//	@Param			body	body		dto.CheckPasswordResetCodeForm	true	"CheckPasswordResetCode"
+//	@Success		200		{object}	oauth2.Token
 //	@Router			/auth/check-reset-password-code [post]
 func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPasswordResetCodeForm) (*dto.CheckPasswordResetToken, error) {
 	if !c.sendSvc.VerifyCode(ctx.Context(), consts.VerifyCodeChannelResetPassword, form.Username, form.Code) {
@@ -277,8 +226,8 @@ func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPa
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	dto.ResetPassword	true	"ResetPassword"
-//	@Success		200	{object}	oauth2.Token
+//	@Param			body	body		dto.ResetPassword	true	"ResetPassword"
+//	@Success		200		{object}	oauth2.Token
 //	@Router			/auth/reset-password-by-token [post]
 func (c *AuthController) ResetPassword(ctx *fiber.Ctx, form *dto.ResetPasswordForm) error {
 	app, err := c.oauth.GetAppByName(form.AppName)

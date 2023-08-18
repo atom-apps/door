@@ -4,6 +4,14 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      "^/v1/.*":  {
+        target: 'http://127.0.0.1:9800',
+        changeOrigin: true,
+      }
+    },
+  },
   plugins: [
     vue({
       reactivityTransform: true,

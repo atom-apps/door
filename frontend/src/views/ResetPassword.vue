@@ -116,7 +116,7 @@ const checkStep1 = () => {
     errors.value = []
 
     loading.value = true
-    const action = "/auth/check-reset-password-code"
+    const action = "/v1/auth/check-reset-password-code"
     http.post(action, formStep1).then(res => {
         const resp: step1Response = res.data
         console.log(resp)
@@ -137,7 +137,7 @@ const checkStep2 = () => {
     errors.value = []
 
     loading.value = true
-    const action = "/auth/reset-password-by-token"
+    const action = "/v1/auth/reset-password-by-token"
     http.post(action, formStep2).then(() => {
         success.value = true
     }).catch(err => {

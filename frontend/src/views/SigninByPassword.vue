@@ -35,7 +35,6 @@ import { SigninMethod } from '@/common';
 import Alert from '@components/Alert.vue';
 import { UrlBuilder } from '@innova2/url-builder';
 import { AxiosError } from "axios";
-import { v4 as uuidv4 } from 'uuid';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -46,7 +45,6 @@ components: {
 interface Form {
     method: SigninMethod,
     app_name: string,
-    sid?: string,
     username: string,
     password?: string,
 }
@@ -83,7 +81,6 @@ const loading = ref<boolean>(false)
 const form = reactive<Form>({
     method: SigninMethod.Password,
     app_name: router.params['app'].toString(),
-    sid: localStorage.getItem('sid') || '',
     username: '',
     password: '',
 })
@@ -117,19 +114,11 @@ const submit = () => {
         return
     }
 
-    if (form.sid == '') {
-        let storageSID = uuidv4();
-        localStorage.setItem('sid', storageSID);
-        form.sid = storageSID;
-        return
-    }
-
-
     const url = UrlBuilder.createFromUrl(location.href)
     const query = url.getQueryParams()
     const redirect = query.get('redirect')?.toString()
 
-    let formAction = `/auth/signin`
+    let formAction = `/v1/auth/signin`
     if (redirect && redirect.length > 0) {
         formAction += `?redirect=${redirect}`
     }

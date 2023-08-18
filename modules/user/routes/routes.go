@@ -16,7 +16,7 @@ func Provide(opts ...opt.Option) error {
 
 func newRoute(svc contracts.HttpService, userController *controller.UserController, tokenController *controller.TokenController, tenantController *controller.TenantController, sessionController *controller.SessionController) contracts.HttpRoute {
 	engine := svc.GetEngine().(*fiber.App)
-	group := engine.Group("users")
+	group := engine.Group("v1")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
 
 	routeSessionController(group, sessionController)

@@ -119,7 +119,7 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		dto.LogoutForm	true	"LogoutForm"
+//	@Param			body	body	dto.LogoutForm	true	"LogoutForm"
 //	@Router			/auth/logout [post]
 func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 	_, err := c.oauth.GetAppByName(form.AppName)
@@ -226,7 +226,7 @@ func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPa
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		dto.ResetPassword	true	"ResetPassword"
+//	@Param			body	body		dto.ResetPasswordForm	true	"ResetPassword"
 //	@Success		200		{object}	oauth2.Token
 //	@Router			/auth/reset-password-by-token [post]
 func (c *AuthController) ResetPassword(ctx *fiber.Ctx, form *dto.ResetPasswordForm) error {

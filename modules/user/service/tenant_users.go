@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-//	@provider
+// @provider
 type TenantUserService struct {
 	tenantUserDao *dao.TenantUserDao
 }

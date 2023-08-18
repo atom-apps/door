@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/service/controller"
 
@@ -12,6 +12,6 @@ import (
 )
 
 func routeCaptchaController(engine fiber.Router, controller *controller.CaptchaController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
+	basePath := "/" + engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/services/captcha/generate", basePath), DataFunc(controller.Generate))
 }

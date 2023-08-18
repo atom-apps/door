@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/atom-providers/app v0.0.0-20230811023801-3f6c46f8f414
 	github.com/atom-providers/captcha v0.0.0-20230801062818-95beaace4c91
+	github.com/atom-providers/casbin v0.0.0-20230818094343-46a9f56845a0
 	github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58
 	github.com/atom-providers/database-redis v0.0.0-20230801062840-bf2f650c3e67
 	github.com/atom-providers/hashids v0.0.0-20230817091755-925e3a5977cb

@@ -19,7 +19,7 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-//	@provider
+// @provider
 type TokenService struct {
 	hash     *md5.Hash
 	uuid     *uuid.Generator

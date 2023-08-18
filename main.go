@@ -21,6 +21,7 @@ import (
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/captcha"
+	"github.com/atom-providers/casbin"
 	databasePostgres "github.com/atom-providers/database-postgres"
 	redis "github.com/atom-providers/database-redis"
 	"github.com/atom-providers/hashids"
@@ -37,6 +38,7 @@ func main() {
 		Default(
 			hashids.DefaultProvider(),
 			redis.DefaultProvider(),
+			casbin.DefaultProvider(),
 			md5.DefaultProvider(),
 			captcha.DefaultProvider(),
 			bcrypt.DefaultProvider(),

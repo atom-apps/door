@@ -14,7 +14,7 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-//	@provider
+// @provider
 type SessionService struct {
 	uuid       *uuid.Generator
 	hash       *md5.Hash

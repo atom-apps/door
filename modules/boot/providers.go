@@ -1,6 +1,9 @@
 package boot
 
 import (
+	"strings"
+
+	"github.com/atom-apps/door/providers/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/rogeecn/atom"
@@ -43,13 +46,42 @@ func Providers() container.Providers {
 
 func provideHttpMiddleware(opts ...opt.Option) error {
 	return container.Container.Provide(
-		func(httpsvc contracts.HttpService) contracts.Initial {
+		func(httpsvc contracts.HttpService, jwt *jwt.JWT) contracts.Initial {
 			engine := httpsvc.GetEngine().(*fiber.App)
 			// Initialize default config
 			engine.Use(cors.New())
 			engine.Static("", "./frontend/dist", fiber.Static{
 				Compress: true,
 			})
+			engine.Use(httpMiddlewareJWT(jwt))
 			return nil
 		}, atom.GroupInitial)
+}
+
+func httpMiddlewareJWT(j *jwt.JWT) func(ctx *fiber.Ctx) error {
+	return func(ctx *fiber.Ctx) error {
+		skipAuth := []string{"/auth", "/v1/auth", "/v1/services"}
+		for _, path := range skipAuth {
+			if strings.HasPrefix(ctx.Path(), path) {
+				return ctx.Next()
+			}
+		}
+
+		token, ok := ctx.GetReqHeaders()[jwt.HttpHeader]
+		if !ok {
+			return ctx.SendStatus(fiber.StatusUnauthorized)
+		}
+
+		if !strings.HasPrefix(token, jwt.TokenPrefix) {
+			return ctx.SendStatus(fiber.StatusUnauthorized)
+		}
+		token = token[len(jwt.TokenPrefix):]
+		claims, err := j.ParseToken(token)
+		if err != nil {
+			return ctx.SendStatus(fiber.StatusUnauthorized)
+		}
+		ctx.Locals(jwt.CtxKey, claims)
+
+		return ctx.Next()
+	}
 }

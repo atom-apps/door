@@ -16,7 +16,7 @@ import (
 	redis "github.com/redis/go-redis/v9"
 )
 
-//	@provider
+// @provider
 type SendService struct {
 	cache   redis.Cmdable
 	app     *app.Config

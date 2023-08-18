@@ -4,6 +4,40 @@
         "contact": {}
     },
     "paths": {
+        "/auth/check-reset-password-code": {
+            "post": {
+                "description": "CheckResetPasswordCoe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "CheckResetPasswordCoe",
+                "parameters": [
+                    {
+                        "description": "CheckPasswordResetCode",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CheckPasswordResetCodeForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/oauth2.Token"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/exchange-token-by-code": {
             "post": {
                 "description": "GetTokenByCode",
@@ -17,6 +51,17 @@
                     "Auth"
                 ],
                 "summary": "GetTokenByCode",
+                "parameters": [
+                    {
+                        "description": "ExchangeTokenByCodeForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ExchangeTokenByCodeForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -40,14 +85,18 @@
                     "Auth"
                 ],
                 "summary": "Logout",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                "parameters": [
+                    {
+                        "description": "LogoutForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/dto.LogoutForm"
                         }
                     }
-                }
+                ],
+                "responses": {}
             }
         },
         "/auth/refresh-token": {
@@ -63,6 +112,17 @@
                     "Auth"
                 ],
                 "summary": "RefreshToken",
+                "parameters": [
+                    {
+                        "description": "RefreshTokenForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RefreshTokenForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -71,6 +131,56 @@
                         }
                     }
                 }
+            }
+        },
+        "/auth/reset-password-by-token": {
+            "post": {
+                "description": "ResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "ResetPassword",
+                "parameters": [
+                    {
+                        "description": "ResetPassword",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ResetPasswordForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/oauth2.Token"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/reset-password/{app_name}": {
+            "get": {
+                "description": "ResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "ResetPassword",
+                "responses": {}
             }
         },
         "/auth/signin": {
@@ -97,7 +207,14 @@
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ExchangeTokenByCodeForm"
+                        }
+                    }
+                }
             }
         },
         "/auth/signin/{app_name}": {
@@ -140,7 +257,14 @@
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ExchangeTokenByCodeForm"
+                        }
+                    }
+                }
             }
         },
         "/auth/signup/{app_name}": {
@@ -159,7 +283,29 @@
                 "responses": {}
             }
         },
-        "/send/email": {
+        "/services/captcha/generate": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Service"
+                ],
+                "summary": "captcha",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Captcha"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/send/email": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -178,14 +324,14 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SendEmailVerifyCodeForm"
+                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
                         }
                     }
                 ],
                 "responses": {}
             }
         },
-        "/send/sms": {
+        "/services/send/sms": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -204,14 +350,14 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SendSmsVerifyCodeForm"
+                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
                         }
                     }
                 ],
                 "responses": {}
             }
         },
-        "/sessions": {
+        "/user/sessions": {
             "get": {
                 "description": "list by query filter",
                 "consumes": [
@@ -310,7 +456,7 @@
                 }
             }
         },
-        "/sessions/{id}": {
+        "/user/sessions/{id}": {
             "get": {
                 "description": "get info by id",
                 "consumes": [
@@ -423,7 +569,7 @@
                 }
             }
         },
-        "/tenants": {
+        "/user/tenants": {
             "get": {
                 "description": "list by query filter",
                 "consumes": [
@@ -527,7 +673,7 @@
                 }
             }
         },
-        "/tenants/{id}": {
+        "/user/tenants/{id}": {
             "get": {
                 "description": "get info by id",
                 "consumes": [
@@ -640,7 +786,7 @@
                 }
             }
         },
-        "/tokens": {
+        "/user/tokens": {
             "get": {
                 "description": "list by query filter",
                 "consumes": [
@@ -785,7 +931,7 @@
                 }
             }
         },
-        "/tokens/{id}": {
+        "/user/tokens/{id}": {
             "get": {
                 "description": "get info by id",
                 "consumes": [
@@ -1166,28 +1312,108 @@
                 "TokenTypeBearer"
             ]
         },
-        "dto.SendEmailVerifyCodeForm": {
-            "type": "object",
-            "required": [
-                "phone"
+        "consts.VerifyCodeChannel": {
+            "type": "string",
+            "enum": [
+                "signin",
+                "signup",
+                "reset-password"
             ],
+            "x-enum-varnames": [
+                "VerifyCodeChannelSignin",
+                "VerifyCodeChannelSignup",
+                "VerifyCodeChannelResetPassword"
+            ]
+        },
+        "dto.Captcha": {
+            "type": "object",
             "properties": {
-                "phone": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
                     "type": "string"
                 }
             }
         },
-        "dto.SendSmsVerifyCodeForm": {
+        "dto.CheckPasswordResetCodeForm": {
             "type": "object",
-            "required": [
-                "code",
-                "phone"
-            ],
             "properties": {
                 "code": {
                     "type": "string"
                 },
-                "phone": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ExchangeTokenByCodeForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LogoutForm": {
+            "type": "object",
+            "properties": {
+                "app_name": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RefreshTokenForm": {
+            "type": "object",
+            "properties": {
+                "app_name": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ResetPasswordForm": {
+            "type": "object",
+            "properties": {
+                "app_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SendVerifyCodeForm": {
+            "type": "object",
+            "required": [
+                "code",
+                "to"
+            ],
+            "properties": {
+                "captcha_id": {
+                    "type": "string"
+                },
+                "channel": {
+                    "$ref": "#/definitions/consts.VerifyCodeChannel"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "to": {
                     "type": "string"
                 }
             }

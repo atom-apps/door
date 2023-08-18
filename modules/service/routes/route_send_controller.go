@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/service/controller"
 	"github.com/atom-apps/door/modules/service/dto"
@@ -13,7 +13,7 @@ import (
 )
 
 func routeSendController(engine fiber.Router, controller *controller.SendController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
+	basePath := "/" + engine.(*fiber.Group).Prefix
 	engine.Post(strings.TrimPrefix("/services/send/sms", basePath), Func1(controller.Sms, Body[dto.SendVerifyCodeForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/services/send/email", basePath), Func1(controller.Email, Body[dto.SendVerifyCodeForm](BodyParamError)))
 }

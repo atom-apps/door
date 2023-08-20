@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/atom-apps/door/common/consts"
+	"github.com/atom-apps/door/database/models"
 )
 
 type TokenForm struct {
@@ -44,6 +45,7 @@ type TokenItem struct {
 	Code          string           `json:"code,omitempty"`           //
 	CodeExpireAt  time.Time        `json:"code_expire_at,omitempty"` //
 	SessionID     int64            `json:"session_id"`
+	Session       *models.Session  `json:"session,omitempty"`
 	ExpireAt      time.Time        `json:"expire_at"`
 	Used          bool             `json:"used,omitempty"` //
 }

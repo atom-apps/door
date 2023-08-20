@@ -50,3 +50,7 @@ func (filter *PageQueryFilter) Format() *PageQueryFilter {
 	}
 	return filter
 }
+
+type IDsForm struct {
+	IDs []int64 `json:"ids" form:"ids"`
+}

@@ -51,12 +51,14 @@ func Provide(opts ...opt.Option) error {
 		hash *md5.Hash,
 		sessionDao *dao.SessionDao,
 		tokenDao *dao.TokenDao,
+		userDao *dao.UserDao,
 		uuid *uuid.Generator,
 	) (*SessionService, error) {
 		obj := &SessionService{
 			hash:       hash,
 			sessionDao: sessionDao,
 			tokenDao:   tokenDao,
+			userDao:    userDao,
 			uuid:       uuid,
 		}
 		return obj, nil
@@ -91,16 +93,18 @@ func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		hash *md5.Hash,
 		jwt *jwt.JWT,
+		sessionDao *dao.SessionDao,
 		tokenDao *dao.TokenDao,
 		userDao *dao.UserDao,
 		uuid *uuid.Generator,
 	) (*TokenService, error) {
 		obj := &TokenService{
-			hash:     hash,
-			jwt:      jwt,
-			tokenDao: tokenDao,
-			userDao:  userDao,
-			uuid:     uuid,
+			hash:       hash,
+			jwt:        jwt,
+			sessionDao: sessionDao,
+			tokenDao:   tokenDao,
+			userDao:    userDao,
+			uuid:       uuid,
 		}
 		return obj, nil
 	}); err != nil {

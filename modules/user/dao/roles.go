@@ -134,3 +134,15 @@ func (dao *RoleDao) FirstByQueryFilter(
 	roleQuery = dao.decorateSortQueryFilter(roleQuery, sortFilter)
 	return roleQuery.First()
 }
+
+// SlugExists
+func (dao *RoleDao) SlugExists(ctx context.Context, model *models.Role) bool {
+	count, err := dao.Context(ctx).Where(
+		dao.query.Role.Slug.Eq(model.Slug),
+		dao.query.Role.ID.Neq(model.ID),
+	).Count()
+	if err != nil {
+		return false
+	}
+	return count > 0
+}

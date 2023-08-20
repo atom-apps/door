@@ -77,22 +77,6 @@ func (c *SessionController) Create(ctx *fiber.Ctx, body *dto.SessionForm) error 
 	return c.sessionSvc.Create(ctx.Context(), body)
 }
 
-// Update update by id
-//
-//	@Summary		update by id
-//	@Description	update by id
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Param			id		path		int				true	"SessionID"
-//	@Param			body	body		dto.SessionForm	true	"SessionForm"
-//	@Success		200		{string}	SessionID
-//	@Failure		500		{string}	SessionID
-//	@Router			/users/sessions/{id} [put]
-func (c *SessionController) Update(ctx *fiber.Ctx, id int64, body *dto.SessionForm) error {
-	return c.sessionSvc.Update(ctx.Context(), id, body)
-}
-
 // Delete delete by id
 //
 //	@Summary		delete by id
@@ -101,9 +85,24 @@ func (c *SessionController) Update(ctx *fiber.Ctx, id int64, body *dto.SessionFo
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"SessionID"
-//	@Success		200	{string}	SessionID
-//	@Failure		500	{string}	SessionID
 //	@Router			/users/sessions/{id} [delete]
 func (c *SessionController) Delete(ctx *fiber.Ctx, id int64) error {
-	return c.sessionSvc.Delete(ctx.Context(), id)
+	return c.sessionSvc.DeleteBySessionID(ctx.Context(), id)
+}
+
+// Delete delete by session string uuid
+//
+//	@Summary		delete by session uuid
+//	@Description	delete by session uuid
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			sess_id	path		string	true	"SessionID"
+//	@Router			/users/sessions/{sess_id}/by-session-id [delete]
+func (c *SessionController) DeleteBySessionID(ctx *fiber.Ctx, sessID string) error {
+	m, err := c.sessionSvc.GetBySessionID(ctx.Context(), sessID)
+	if err != nil {
+		return err
+	}
+	return c.sessionSvc.DeleteBySessionID(ctx.Context(), m.ID)
 }

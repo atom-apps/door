@@ -107,3 +107,33 @@ func (c *RoleController) Update(ctx *fiber.Ctx, id int64, body *dto.RoleForm) er
 func (c *RoleController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.roleSvc.Delete(ctx.Context(), id)
 }
+
+// Attach users
+//
+//	@Summary		attach users
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"RoleID"
+//	@Param			body	body	common.IDsForm	true	"IDsForm"
+//	@Success		200	{string}	RoleID
+//	@Failure		500	{string}	RoleID
+//	@Router			/v1/users/roles/{id}/attach [put]
+func (c *RoleController) AttachUsers(ctx *fiber.Ctx, id int64, users *common.IDsForm) error {
+	return c.roleSvc.AttachUsers(ctx.Context(), id, users.IDs)
+}
+
+// Detach users
+//
+//	@Summary		detach users
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"RoleID"
+//	@Param			body	body	common.IDsForm	true	"IDsForm"
+//	@Success		200	{string}	RoleID
+//	@Failure		500	{string}	RoleID
+//	@Router			/v1/users/roles/{id}/detach [put]
+func (c *RoleController) DetachUsers(ctx *fiber.Ctx, id int64, users *common.IDsForm) error {
+	return c.roleSvc.DetachUsers(ctx.Context(), id, users.IDs)
+}

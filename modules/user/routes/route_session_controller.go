@@ -18,6 +18,6 @@ func routeSessionController(engine fiber.Router, controller *controller.SessionC
 	engine.Get(strings.TrimPrefix("/users/sessions/:id<int>", basePath), DataFunc1(controller.Show, Integer[int64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/users/sessions", basePath), DataFunc3(controller.List, Query[dto.SessionListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Post(strings.TrimPrefix("/users/sessions", basePath), Func1(controller.Create, Body[dto.SessionForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/users/sessions/:id<int>", basePath), Func2(controller.Update, Integer[int64]("id", PathParamError), Body[dto.SessionForm](BodyParamError)))
 	engine.Delete(strings.TrimPrefix("/users/sessions/:id<int>", basePath), Func1(controller.Delete, Integer[int64]("id", PathParamError)))
+	engine.Delete(strings.TrimPrefix("/users/sessions/:sessId<int>/by-session-id", basePath), Func1(controller.DeleteBySessionID, String("sessID", PathParamError)))
 }

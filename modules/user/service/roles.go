@@ -4,11 +4,13 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/user/dao"
 	"github.com/atom-apps/door/modules/user/dto"
 
 	"github.com/jinzhu/copier"
+	"github.com/samber/lo"
 )
 
 // @provider
@@ -73,6 +75,9 @@ func (svc *RoleService) PageByQueryFilter(
 
 // CreateFromModel
 func (svc *RoleService) CreateFromModel(ctx context.Context, model *models.Role) error {
+	if _, err := svc.GetBySlug(ctx, model.Slug); err != nil {
+		return err
+	}
 	return svc.roleDao.Create(ctx, model)
 }
 
@@ -80,7 +85,7 @@ func (svc *RoleService) CreateFromModel(ctx context.Context, model *models.Role)
 func (svc *RoleService) Create(ctx context.Context, body *dto.RoleForm) error {
 	model := &models.Role{}
 	_ = copier.Copy(model, body)
-	return svc.roleDao.Create(ctx, model)
+	return svc.CreateFromModel(ctx, model)
 }
 
 // Update
@@ -92,15 +97,58 @@ func (svc *RoleService) Update(ctx context.Context, id int64, body *dto.RoleForm
 
 	_ = copier.Copy(model, body)
 	model.ID = id
-	return svc.roleDao.Update(ctx, model)
+	return svc.UpdateFromModel(ctx, model)
 }
 
 // UpdateFromModel
 func (svc *RoleService) UpdateFromModel(ctx context.Context, model *models.Role) error {
+	if svc.roleDao.SlugExists(ctx, model) {
+		return errorx.ErrRecordExists
+	}
 	return svc.roleDao.Update(ctx, model)
 }
 
 // Delete
 func (svc *RoleService) Delete(ctx context.Context, id int64) error {
 	return svc.roleDao.Delete(ctx, id)
+}
+
+// SetUsers
+func (svc *RoleService) SetUsers(ctx context.Context, roleID int64, userIDs []int64) error {
+	ms, err := svc.roleUserDao.GetByRoleID(ctx, roleID)
+	if err != nil {
+		return err
+	}
+
+	currentUserIDs := lo.Map(ms, func(m *models.RoleUser, _ int) int64 {
+		return m.UserID
+	})
+
+	addUsers := lo.FilterMap(userIDs, func(id int64, _ int) (int64, bool) {
+		return id, !lo.Contains(currentUserIDs, id)
+	})
+
+	delUsers := lo.FilterMap(currentUserIDs, func(id int64, _ int) (int64, bool) {
+		return id, !lo.Contains(userIDs, id)
+	})
+
+	return svc.roleUserDao.Transaction(func() error {
+		if err := svc.roleUserDao.AttachUsers(ctx, roleID, addUsers); err != nil {
+			return err
+		}
+		if err := svc.roleUserDao.DetachUsers(ctx, roleID, delUsers); err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+// AttachUsers
+func (svc *RoleService) AttachUsers(ctx context.Context, roleID int64, userIDs []int64) error {
+	return svc.roleUserDao.AttachUsers(ctx, roleID, userIDs)
+}
+
+// DetachUsers
+func (svc *RoleService) DetachUsers(ctx context.Context, roleID int64, userIDs []int64) error {
+	return svc.roleUserDao.DetachUsers(ctx, roleID, userIDs)
 }

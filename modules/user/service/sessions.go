@@ -20,11 +20,28 @@ type SessionService struct {
 	hash       *md5.Hash
 	sessionDao *dao.SessionDao
 	tokenDao   *dao.TokenDao
+	userDao    *dao.UserDao
 }
 
 func (svc *SessionService) DecorateItem(model *models.Session, id int) *dto.SessionItem {
-	var dtoItem *dto.SessionItem
-	_ = copier.Copy(dtoItem, model)
+	dtoItem := &dto.SessionItem{
+		CreatedAt: model.CreatedAt,
+		UpdatedAt: model.UpdatedAt,
+		UserID:    model.UserID,
+		SessionID: model.SessionID,
+		User:      nil,
+		Tokens:    nil,
+	}
+
+	user, err := svc.userDao.GetByID(context.Background(), model.UserID)
+	if err == nil {
+		dtoItem.User = user
+	}
+
+	tokens, err := svc.tokenDao.GetBySessionIDWithoutScope(context.Background(), model.ID)
+	if err == nil {
+		dtoItem.Tokens = tokens
+	}
 
 	return dtoItem
 }
@@ -60,28 +77,6 @@ func (svc *SessionService) Create(ctx context.Context, body *dto.SessionForm) er
 	model := &models.Session{}
 	_ = copier.Copy(model, body)
 	return svc.sessionDao.Create(ctx, model)
-}
-
-// Update
-func (svc *SessionService) Update(ctx context.Context, id int64, body *dto.SessionForm) error {
-	model, err := svc.GetByID(ctx, id)
-	if err != nil {
-		return err
-	}
-
-	_ = copier.Copy(model, body)
-	model.ID = id
-	return svc.sessionDao.Update(ctx, model)
-}
-
-// UpdateFromModel
-func (svc *SessionService) UpdateFromModel(ctx context.Context, model *models.Session) error {
-	return svc.sessionDao.Update(ctx, model)
-}
-
-// Delete
-func (svc *SessionService) Delete(ctx context.Context, id int64) error {
-	return svc.sessionDao.Delete(ctx, id)
 }
 
 // CreateForUser

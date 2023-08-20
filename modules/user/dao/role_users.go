@@ -7,6 +7,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/user/dto"
+	"github.com/samber/lo"
 
 	"gorm.io/gen/field"
 )
@@ -136,4 +137,30 @@ func (dao *RoleUserDao) FirstByQueryFilter(
 	roleUserQuery = dao.decorateQueryFilter(roleUserQuery, queryFilter)
 	roleUserQuery = dao.decorateSortQueryFilter(roleUserQuery, sortFilter)
 	return roleUserQuery.First()
+}
+
+// GetByRoleID
+func (dao *RoleUserDao) GetByRoleID(ctx context.Context, roleID int64) ([]*models.RoleUser, error) {
+	return dao.Context(ctx).Where(dao.query.RoleUser.RoleID.Eq(roleID)).Find()
+}
+
+// AttachUsers
+func (dao *RoleUserDao) AttachUsers(ctx context.Context, roleID int64, users []int64) error {
+	models := lo.Map(users, func(id int64, _ int) *models.RoleUser {
+		return &models.RoleUser{
+			RoleID: roleID,
+			UserID: id,
+		}
+	})
+
+	return dao.Context(ctx).CreateInBatches(models, 10)
+}
+
+// DetachUsers
+func (dao *RoleUserDao) DetachUsers(ctx context.Context, roleID int64, users []int64) error {
+	_, err := dao.Context(ctx).Where(
+		dao.query.RoleUser.RoleID.Eq(roleID),
+		dao.query.RoleUser.UserID.In(users...),
+	).Delete()
+	return err
 }

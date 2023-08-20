@@ -198,3 +198,9 @@ func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID int64, scope 
 		table.Scope.Eq(scope),
 	).First()
 }
+
+// GetBySessionIDWithoutScope
+func (dao *TokenDao) GetBySessionIDWithoutScope(ctx context.Context, sessionID int64) ([]*models.Token, error) {
+	table, query := dao.query.Token, dao.Context(ctx)
+	return query.Where(table.SessionID.Eq(sessionID)).Find()
+}

@@ -21,15 +21,16 @@ import (
 
 // @provider
 type TokenService struct {
-	hash     *md5.Hash
-	uuid     *uuid.Generator
-	jwt      *jwt.JWT
-	tokenDao *dao.TokenDao
-	userDao  *dao.UserDao
+	hash       *md5.Hash
+	uuid       *uuid.Generator
+	jwt        *jwt.JWT
+	tokenDao   *dao.TokenDao
+	userDao    *dao.UserDao
+	sessionDao *dao.SessionDao
 }
 
 func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenItem {
-	return &dto.TokenItem{
+	item := &dto.TokenItem{
 		CreatedAt:     model.CreatedAt,
 		UserID:        model.UserID,
 		AccessToken:   model.AccessToken,
@@ -42,7 +43,15 @@ func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenIte
 		SessionID:     model.SessionID,
 		ExpireAt:      model.ExpireAt,
 		Used:          model.Used,
+		Session:       nil,
 	}
+
+	sess, err := svc.sessionDao.GetByID(context.Background(), model.SessionID)
+	if err == nil {
+		item.Session = sess
+	}
+
+	return item
 }
 
 func (svc *TokenService) GetByID(ctx context.Context, id int64) (*models.Token, error) {

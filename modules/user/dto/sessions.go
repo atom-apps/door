@@ -2,6 +2,8 @@ package dto
 
 import (
 	"time"
+
+	"github.com/atom-apps/door/database/models"
 )
 
 type SessionForm struct {
@@ -15,9 +17,11 @@ type SessionListQueryFilter struct {
 }
 
 type SessionItem struct {
-	ID        int64     `json:"id,omitempty"`         //
-	CreatedAt time.Time `json:"created_at,omitempty"` //
-	UpdatedAt time.Time `json:"updated_at,omitempty"` //
-	UserID    int64     `json:"user_id,omitempty"`    //
-	SessionID string    `json:"session_id,omitempty"` //
+	ID        int64           `json:"id,omitempty"`         //
+	CreatedAt time.Time       `json:"created_at,omitempty"` //
+	UpdatedAt time.Time       `json:"updated_at,omitempty"` //
+	UserID    int64           `json:"user_id,omitempty"`    //
+	User      *models.User    `json:"user,omitempty"`       //
+	SessionID string          `json:"session_id,omitempty"` //
+	Tokens    []*models.Token `json:"tokens,omitempty"`     //
 }

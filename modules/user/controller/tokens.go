@@ -23,7 +23,7 @@ type TokenController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"TokenID"
 //	@Success		200	{object}	dto.TokenItem
-//	@Router			/user/tokens/{id} [get]
+//	@Router			/users/tokens/{id} [get]
 func (c *TokenController) Show(ctx *fiber.Ctx, id int64) (*dto.TokenItem, error) {
 	item, err := c.tokenSvc.GetByID(ctx.Context(), id)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *TokenController) Show(ctx *fiber.Ctx, id int64) (*dto.TokenItem, error)
 //	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.TokenItem}
-//	@Router			/user/tokens [get]
+//	@Router			/users/tokens [get]
 func (c *TokenController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.TokenListQueryFilter,
@@ -72,7 +72,7 @@ func (c *TokenController) List(
 //	@Produce		json
 //	@Param			body	body		dto.TokenForm	true	"TokenForm"
 //	@Success		200		{string}	TokenID
-//	@Router			/user/tokens [post]
+//	@Router			/users/tokens [post]
 func (c *TokenController) Create(ctx *fiber.Ctx, body *dto.TokenForm) error {
 	return c.tokenSvc.Create(ctx.Context(), body)
 }
@@ -88,7 +88,7 @@ func (c *TokenController) Create(ctx *fiber.Ctx, body *dto.TokenForm) error {
 //	@Param			body	body		dto.TokenForm	true	"TokenForm"
 //	@Success		200		{string}	TokenID
 //	@Failure		500		{string}	TokenID
-//	@Router			/user/tokens/{id} [put]
+//	@Router			/users/tokens/{id} [put]
 func (c *TokenController) Update(ctx *fiber.Ctx, id int64, body *dto.TokenForm) error {
 	return c.tokenSvc.Update(ctx.Context(), id, body)
 }
@@ -103,7 +103,7 @@ func (c *TokenController) Update(ctx *fiber.Ctx, id int64, body *dto.TokenForm) 
 //	@Param			id	path		int	true	"TokenID"
 //	@Success		200	{string}	TokenID
 //	@Failure		500	{string}	TokenID
-//	@Router			/user/tokens/{id} [delete]
+//	@Router			/users/tokens/{id} [delete]
 func (c *TokenController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.tokenSvc.Delete(ctx.Context(), id)
 }

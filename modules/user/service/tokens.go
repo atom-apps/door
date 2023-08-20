@@ -25,6 +25,7 @@ type TokenService struct {
 	uuid     *uuid.Generator
 	jwt      *jwt.JWT
 	tokenDao *dao.TokenDao
+	userDao  *dao.UserDao
 }
 
 func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenItem {
@@ -90,14 +91,15 @@ func (svc *TokenService) Delete(ctx context.Context, id int64) error {
 }
 
 // getClaims
-// TODO fill claim
 func (svc *TokenService) getClaims(ctx context.Context, userID int64) *jwt.Claims {
-	return svc.jwt.CreateClaims(jwt.BaseClaims{})
+	return svc.jwt.CreateClaims(jwt.BaseClaims{
+		UserID: userID,
+	})
 }
 
 // CreateForUser
 func (svc *TokenService) CreateForUser(ctx context.Context, userID, sessID int64, app *oauth.App) (*models.Token, error) {
-	m, err := svc.tokenDao.GetBySessionID(ctx, sessID, app.Name)
+	m, _ := svc.tokenDao.GetBySessionID(ctx, sessID, app.Name)
 	if m != nil {
 		return m, nil
 	}

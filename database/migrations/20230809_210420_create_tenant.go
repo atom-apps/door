@@ -7,7 +7,7 @@ import (
 
 func (m *Migration20230809_210420CreateTenant) table() interface{} {
 	type Tenant struct {
-		gorm.Model
+		ID          uint   `gorm:"primarykey"`
 		Name        string `gorm:"size:64"`
 		Description string `gorm:"size:256"`
 		Meta        string

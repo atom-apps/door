@@ -82,11 +82,6 @@ func (dao *TenantUserDao) DeletePermanently(ctx context.Context, id int64) error
 	return err
 }
 
-func (dao *TenantUserDao) Restore(ctx context.Context, id int64) error {
-	_, err := dao.Context(ctx).Unscoped().Where(dao.query.TenantUser.ID.Eq(id)).UpdateSimple(dao.query.TenantUser.DeletedAt.Null())
-	return err
-}
-
 func (dao *TenantUserDao) Create(ctx context.Context, model *models.TenantUser) error {
 	return dao.Context(ctx).Create(model)
 }

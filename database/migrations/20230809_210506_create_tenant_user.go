@@ -7,10 +7,9 @@ import (
 
 func (m *Migration20230809_210506CreateTenantUser) table() interface{} {
 	type TenantUser struct {
-		gorm.Model
-		TenantID int
-		UserID   int
-		IsAdmin  bool
+		ID       uint `gorm:"primarykey"`
+		TenantID uint
+		UserID   uint
 	}
 
 	return &TenantUser{}

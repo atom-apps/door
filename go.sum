@@ -60,6 +60,8 @@ github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58 h
 github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58/go.mod h1:AYZjXEJKdj78t1neNGzbVl6G5x+9a2/d3WgWRHkWDPE=
 github.com/atom-providers/database-redis v0.0.0-20230801062840-bf2f650c3e67 h1:W4KPKCmDUafP6x453sn7dlRCYDPeWPn4UDDf4fPLpmA=
 github.com/atom-providers/database-redis v0.0.0-20230801062840-bf2f650c3e67/go.mod h1:2opTufCUYCX7dhVYeDPrx/StQGVKPHC4k6L/xGbGqEo=
+github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 h1:Bp515BdvUp8sgOoKoueULGFJyIc9jzrK3/gEfx5/Gh8=
+github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34/go.mod h1:e7hDQRsPZlQLt6fm3cRVl+amii/TwoqmESKqzxLQ9/Q=
 github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114 h1:qgEO9/wsuyprkChpyUE5Y7SwkNWoldPNGjvr0bBPA7Y=
 github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114/go.mod h1:mppIoXu3FbIJjjypsOjPr4uTk7k6wohoJHz+WGYqNE4=
 github.com/atom-providers/hashids v0.0.0-20230817091755-925e3a5977cb h1:kMMoEZGxbxPQ7XufhyJOweC8p/RKcgCLI+HHKav+ckw=

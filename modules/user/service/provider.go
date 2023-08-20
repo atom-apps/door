@@ -13,6 +13,41 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
+		dao *dao.PermissionRuleDao,
+	) (*PermissionRuleService, error) {
+		obj := &PermissionRuleService{
+			dao: dao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		roleUserDao *dao.RoleUserDao,
+	) (*RoleUserService, error) {
+		obj := &RoleUserService{
+			roleUserDao: roleUserDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		roleDao *dao.RoleDao,
+		roleUserDao *dao.RoleUserDao,
+	) (*RoleService, error) {
+		obj := &RoleService{
+			roleDao:     roleDao,
+			roleUserDao: roleUserDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		hash *md5.Hash,
 		sessionDao *dao.SessionDao,
 		tokenDao *dao.TokenDao,
@@ -55,12 +90,14 @@ func Provide(opts ...opt.Option) error {
 		hash *md5.Hash,
 		jwt *jwt.JWT,
 		tokenDao *dao.TokenDao,
+		userDao *dao.UserDao,
 		uuid *uuid.Generator,
 	) (*TokenService, error) {
 		obj := &TokenService{
 			hash:     hash,
 			jwt:      jwt,
 			tokenDao: tokenDao,
+			userDao:  userDao,
 			uuid:     uuid,
 		}
 		return obj, nil

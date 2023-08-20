@@ -28,9 +28,6 @@ func newTenantUser(db *gorm.DB, opts ...gen.DOOption) tenantUser {
 	tableName := _tenantUser.tenantUserDo.TableName()
 	_tenantUser.ALL = field.NewAsterisk(tableName)
 	_tenantUser.ID = field.NewInt64(tableName, "id")
-	_tenantUser.CreatedAt = field.NewTime(tableName, "created_at")
-	_tenantUser.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_tenantUser.DeletedAt = field.NewField(tableName, "deleted_at")
 	_tenantUser.TenantID = field.NewInt64(tableName, "tenant_id")
 	_tenantUser.UserID = field.NewInt64(tableName, "user_id")
 	_tenantUser.IsAdmin = field.NewBool(tableName, "is_admin")
@@ -43,14 +40,11 @@ func newTenantUser(db *gorm.DB, opts ...gen.DOOption) tenantUser {
 type tenantUser struct {
 	tenantUserDo tenantUserDo
 
-	ALL       field.Asterisk
-	ID        field.Int64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	TenantID  field.Int64
-	UserID    field.Int64
-	IsAdmin   field.Bool
+	ALL      field.Asterisk
+	ID       field.Int64
+	TenantID field.Int64
+	UserID   field.Int64
+	IsAdmin  field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -68,9 +62,6 @@ func (t tenantUser) As(alias string) *tenantUser {
 func (t *tenantUser) updateTableName(table string) *tenantUser {
 	t.ALL = field.NewAsterisk(table)
 	t.ID = field.NewInt64(table, "id")
-	t.CreatedAt = field.NewTime(table, "created_at")
-	t.UpdatedAt = field.NewTime(table, "updated_at")
-	t.DeletedAt = field.NewField(table, "deleted_at")
 	t.TenantID = field.NewInt64(table, "tenant_id")
 	t.UserID = field.NewInt64(table, "user_id")
 	t.IsAdmin = field.NewBool(table, "is_admin")
@@ -100,11 +91,8 @@ func (t *tenantUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *tenantUser) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 7)
+	t.fieldMap = make(map[string]field.Expr, 4)
 	t.fieldMap["id"] = t.ID
-	t.fieldMap["created_at"] = t.CreatedAt
-	t.fieldMap["updated_at"] = t.UpdatedAt
-	t.fieldMap["deleted_at"] = t.DeletedAt
 	t.fieldMap["tenant_id"] = t.TenantID
 	t.fieldMap["user_id"] = t.UserID
 	t.fieldMap["is_admin"] = t.IsAdmin

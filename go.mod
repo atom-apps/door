@@ -36,6 +36,7 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 // indirect
+	github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 // indirect
 	github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114 // indirect
 	github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb // indirect
 	github.com/brianvoe/gofakeit/v6 v6.23.1 // indirect

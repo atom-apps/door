@@ -9,7 +9,6 @@ import (
 	"github.com/rogeecn/atom/utils/opt"
 
 	jwt "github.com/golang-jwt/jwt/v4"
-	"github.com/samber/lo"
 	"golang.org/x/sync/singleflight"
 )
 
@@ -21,24 +20,6 @@ const (
 type BaseClaims struct {
 	UserID   int64 `json:"user_id,omitempty"`
 	TenantID int64 `json:"tenant_id,omitempty"`
-	Role     Role  `json:"role,omitempty"`
-}
-
-func (c BaseClaims) IsSuperAdmin() bool {
-	return c.Role == RoleSuperAdmin
-}
-
-func (c BaseClaims) IsAdmin() bool {
-	adminRoles := []Role{RoleSuperAdmin, RoleAdmin, RoleTenantAdmin}
-	return lo.Contains(adminRoles, c.Role)
-}
-
-func (c BaseClaims) IsTenantAdmin() bool {
-	return c.Role == RoleTenantAdmin
-}
-
-func (c BaseClaims) IsUser() bool {
-	return c.Role == RoleUser
 }
 
 // Custom claims structure

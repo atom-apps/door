@@ -8,6 +8,28 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
+		permissionRuleSvc *service.PermissionRuleService,
+	) (*PermissionRuleController, error) {
+		obj := &PermissionRuleController{
+			permissionRuleSvc: permissionRuleSvc,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		roleSvc *service.RoleService,
+	) (*RoleController, error) {
+		obj := &RoleController{
+			roleSvc: roleSvc,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		sessionSvc *service.SessionService,
 	) (*SessionController, error) {
 		obj := &SessionController{

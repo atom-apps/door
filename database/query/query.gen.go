@@ -19,6 +19,8 @@ var (
 	Q              = new(Query)
 	Migration      *migration
 	PermissionRule *permissionRule
+	Role           *role
+	RoleUser       *roleUser
 	Session        *session
 	Tenant         *tenant
 	TenantUser     *tenantUser
@@ -31,6 +33,8 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Migration = &Q.Migration
 	PermissionRule = &Q.PermissionRule
+	Role = &Q.Role
+	RoleUser = &Q.RoleUser
 	Session = &Q.Session
 	Tenant = &Q.Tenant
 	TenantUser = &Q.TenantUser
@@ -44,6 +48,8 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		db:             db,
 		Migration:      newMigration(db, opts...),
 		PermissionRule: newPermissionRule(db, opts...),
+		Role:           newRole(db, opts...),
+		RoleUser:       newRoleUser(db, opts...),
 		Session:        newSession(db, opts...),
 		Tenant:         newTenant(db, opts...),
 		TenantUser:     newTenantUser(db, opts...),
@@ -58,6 +64,8 @@ type Query struct {
 
 	Migration      migration
 	PermissionRule permissionRule
+	Role           role
+	RoleUser       roleUser
 	Session        session
 	Tenant         tenant
 	TenantUser     tenantUser
@@ -73,6 +81,8 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		db:             db,
 		Migration:      q.Migration.clone(db),
 		PermissionRule: q.PermissionRule.clone(db),
+		Role:           q.Role.clone(db),
+		RoleUser:       q.RoleUser.clone(db),
 		Session:        q.Session.clone(db),
 		Tenant:         q.Tenant.clone(db),
 		TenantUser:     q.TenantUser.clone(db),
@@ -95,6 +105,8 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		db:             db,
 		Migration:      q.Migration.replaceDB(db),
 		PermissionRule: q.PermissionRule.replaceDB(db),
+		Role:           q.Role.replaceDB(db),
+		RoleUser:       q.RoleUser.replaceDB(db),
 		Session:        q.Session.replaceDB(db),
 		Tenant:         q.Tenant.replaceDB(db),
 		TenantUser:     q.TenantUser.replaceDB(db),
@@ -107,6 +119,8 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 type queryCtx struct {
 	Migration      IMigrationDo
 	PermissionRule IPermissionRuleDo
+	Role           IRoleDo
+	RoleUser       IRoleUserDo
 	Session        ISessionDo
 	Tenant         ITenantDo
 	TenantUser     ITenantUserDo
@@ -119,6 +133,8 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		Migration:      q.Migration.WithContext(ctx),
 		PermissionRule: q.PermissionRule.WithContext(ctx),
+		Role:           q.Role.WithContext(ctx),
+		RoleUser:       q.RoleUser.WithContext(ctx),
 		Session:        q.Session.WithContext(ctx),
 		Tenant:         q.Tenant.WithContext(ctx),
 		TenantUser:     q.TenantUser.WithContext(ctx),

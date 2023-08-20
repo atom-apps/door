@@ -28,9 +28,6 @@ func newTenant(db *gorm.DB, opts ...gen.DOOption) tenant {
 	tableName := _tenant.tenantDo.TableName()
 	_tenant.ALL = field.NewAsterisk(tableName)
 	_tenant.ID = field.NewInt64(tableName, "id")
-	_tenant.CreatedAt = field.NewTime(tableName, "created_at")
-	_tenant.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_tenant.DeletedAt = field.NewField(tableName, "deleted_at")
 	_tenant.Name = field.NewString(tableName, "name")
 	_tenant.Description = field.NewString(tableName, "description")
 	_tenant.Meta = field.NewString(tableName, "meta")
@@ -45,9 +42,6 @@ type tenant struct {
 
 	ALL         field.Asterisk
 	ID          field.Int64
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
 	Name        field.String
 	Description field.String
 	Meta        field.String
@@ -68,9 +62,6 @@ func (t tenant) As(alias string) *tenant {
 func (t *tenant) updateTableName(table string) *tenant {
 	t.ALL = field.NewAsterisk(table)
 	t.ID = field.NewInt64(table, "id")
-	t.CreatedAt = field.NewTime(table, "created_at")
-	t.UpdatedAt = field.NewTime(table, "updated_at")
-	t.DeletedAt = field.NewField(table, "deleted_at")
 	t.Name = field.NewString(table, "name")
 	t.Description = field.NewString(table, "description")
 	t.Meta = field.NewString(table, "meta")
@@ -98,11 +89,8 @@ func (t *tenant) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *tenant) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 7)
+	t.fieldMap = make(map[string]field.Expr, 4)
 	t.fieldMap["id"] = t.ID
-	t.fieldMap["created_at"] = t.CreatedAt
-	t.fieldMap["updated_at"] = t.UpdatedAt
-	t.fieldMap["deleted_at"] = t.DeletedAt
 	t.fieldMap["name"] = t.Name
 	t.fieldMap["description"] = t.Description
 	t.fieldMap["meta"] = t.Meta

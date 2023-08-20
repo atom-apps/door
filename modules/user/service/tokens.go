@@ -29,10 +29,20 @@ type TokenService struct {
 }
 
 func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenItem {
-	var dtoItem *dto.TokenItem
-	_ = copier.Copy(dtoItem, model)
-
-	return dtoItem
+	return &dto.TokenItem{
+		CreatedAt:     model.CreatedAt,
+		UserID:        model.UserID,
+		AccessToken:   model.AccessToken,
+		RefreshToken:  model.RefreshToken,
+		Scope:         model.Scope,
+		TokenType:     model.TokenType,
+		CodeChallenge: model.CodeChallenge,
+		Code:          model.Code,
+		CodeExpireAt:  model.CodeExpireAt,
+		SessionID:     model.SessionID,
+		ExpireAt:      model.ExpireAt,
+		Used:          model.Used,
+	}
 }
 
 func (svc *TokenService) GetByID(ctx context.Context, id int64) (*models.Token, error) {
@@ -91,20 +101,21 @@ func (svc *TokenService) Delete(ctx context.Context, id int64) error {
 }
 
 // getClaims
-func (svc *TokenService) getClaims(ctx context.Context, userID int64) *jwt.Claims {
+func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64) *jwt.Claims {
 	return svc.jwt.CreateClaims(jwt.BaseClaims{
-		UserID: userID,
+		UserID:   userID,
+		TenantID: tenantID,
 	})
 }
 
 // CreateForUser
-func (svc *TokenService) CreateForUser(ctx context.Context, userID, sessID int64, app *oauth.App) (*models.Token, error) {
+func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, sessID int64, app *oauth.App) (*models.Token, error) {
 	m, _ := svc.tokenDao.GetBySessionID(ctx, sessID, app.Name)
 	if m != nil {
 		return m, nil
 	}
 
-	claim := svc.getClaims(ctx, userID)
+	claim := svc.getClaims(ctx, userID, tenantID)
 	token, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
@@ -116,6 +127,7 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, sessID int64
 	}
 
 	model := &models.Token{
+		TenantID:      tenantID,
 		UserID:        userID,
 		SessionID:     sessID,
 		AccessToken:   token,
@@ -152,7 +164,7 @@ func (svc *TokenService) GetByRefreshToken(ctx context.Context, refreshToken, ap
 
 // RefreshToken
 func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token, app *oauth.App) (*models.Token, error) {
-	claim := svc.getClaims(ctx, token.UserID)
+	claim := svc.getClaims(ctx, token.UserID, token.TenantID)
 	accessToken, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err

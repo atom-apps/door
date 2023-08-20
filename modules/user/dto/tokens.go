@@ -33,16 +33,17 @@ type TokenListQueryFilter struct {
 }
 
 type TokenItem struct {
-	ID            int64     `json:"id,omitempty"`              //
-	CreatedAt     time.Time `json:"created_at,omitempty"`      //
-	UserID        int64     `json:"user_id,omitempty"`         //
-	TokenExpireAt time.Time `json:"token_expire_at,omitempty"` //
-	AccessToken   string    `json:"access_token,omitempty"`    //
-	RefreshToken  string    `json:"refresh_token,omitempty"`   //
-	Scope         string    `json:"scope,omitempty"`           //
-	TokenType     string    `json:"token_type,omitempty"`      //
-	CodeChallenge string    `json:"code_challenge,omitempty"`  //
-	Code          string    `json:"code,omitempty"`            //
-	CodeExpireAt  time.Time `json:"code_expire_at,omitempty"`  //
-	Used          bool      `json:"used,omitempty"`            //
+	ID            int64            `json:"id,omitempty"`             //
+	CreatedAt     time.Time        `json:"created_at,omitempty"`     //
+	UserID        int64            `json:"user_id,omitempty"`        //
+	AccessToken   string           `json:"access_token,omitempty"`   //
+	RefreshToken  string           `json:"refresh_token,omitempty"`  //
+	Scope         string           `json:"scope,omitempty"`          //
+	TokenType     consts.TokenType `json:"token_type,omitempty"`     //
+	CodeChallenge string           `json:"code_challenge,omitempty"` //
+	Code          string           `json:"code,omitempty"`           //
+	CodeExpireAt  time.Time        `json:"code_expire_at,omitempty"` //
+	SessionID     int64            `json:"session_id"`
+	ExpireAt      time.Time        `json:"expire_at"`
+	Used          bool             `json:"used,omitempty"` //
 }

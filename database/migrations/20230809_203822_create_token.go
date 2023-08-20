@@ -11,6 +11,7 @@ func (m *Migration20230809_203822CreateToken) table() interface{} {
 	type Token struct {
 		gorm.Model
 
+		TenantID      uint
 		UserID        uint
 		SessionID     uint
 		AccessToken   string

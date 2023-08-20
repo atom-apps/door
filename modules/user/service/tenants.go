@@ -13,18 +13,30 @@ import (
 
 // @provider
 type TenantService struct {
-	tenantDao *dao.TenantDao
+	tenantDao     *dao.TenantDao
+	tenantUserDao *dao.TenantUserDao
 }
 
 func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.TenantItem {
-	var dtoItem *dto.TenantItem
-	_ = copier.Copy(dtoItem, model)
-
-	return dtoItem
+	return &dto.TenantItem{
+		Name:        model.Name,
+		Description: model.Description,
+		Meta:        model.Meta,
+	}
 }
 
 func (svc *TenantService) GetByID(ctx context.Context, id int64) (*models.Tenant, error) {
 	return svc.tenantDao.GetByID(ctx, id)
+}
+
+// GetByUserID
+func (svc *TenantService) GetByUserID(ctx context.Context, userID int64) (*models.Tenant, error) {
+	m, err := svc.tenantUserDao.FirstByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.GetByID(ctx, m.TenantID)
 }
 
 func (svc *TenantService) FindByQueryFilter(

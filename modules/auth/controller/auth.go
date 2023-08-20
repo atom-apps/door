@@ -23,6 +23,7 @@ type AuthController struct {
 	authSvc    *service.AuthService
 	userSvc    *userSvc.UserService
 	sessionSvc *userSvc.SessionService
+	tenantSvc  *userSvc.TenantService
 	tokenSvc   *userSvc.TokenService
 	sendSvc    *serviceSvc.SendService
 }
@@ -95,7 +96,12 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 		return nil, err
 	}
 
-	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, sess.ID, app)
+	tenant, err := c.tenantSvc.GetByUserID(ctx.Context(), user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, tenant.ID, sess.ID, app)
 	if err != nil {
 		return nil, err
 	}

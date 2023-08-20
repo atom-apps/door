@@ -31,6 +31,7 @@ func newToken(db *gorm.DB, opts ...gen.DOOption) token {
 	_token.CreatedAt = field.NewTime(tableName, "created_at")
 	_token.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_token.DeletedAt = field.NewField(tableName, "deleted_at")
+	_token.TenantID = field.NewInt64(tableName, "tenant_id")
 	_token.UserID = field.NewInt64(tableName, "user_id")
 	_token.SessionID = field.NewInt64(tableName, "session_id")
 	_token.AccessToken = field.NewString(tableName, "access_token")
@@ -56,6 +57,7 @@ type token struct {
 	CreatedAt     field.Time
 	UpdatedAt     field.Time
 	DeletedAt     field.Field
+	TenantID      field.Int64
 	UserID        field.Int64
 	SessionID     field.Int64
 	AccessToken   field.String
@@ -87,6 +89,7 @@ func (t *token) updateTableName(table string) *token {
 	t.CreatedAt = field.NewTime(table, "created_at")
 	t.UpdatedAt = field.NewTime(table, "updated_at")
 	t.DeletedAt = field.NewField(table, "deleted_at")
+	t.TenantID = field.NewInt64(table, "tenant_id")
 	t.UserID = field.NewInt64(table, "user_id")
 	t.SessionID = field.NewInt64(table, "session_id")
 	t.AccessToken = field.NewString(table, "access_token")
@@ -122,11 +125,12 @@ func (t *token) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *token) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 15)
+	t.fieldMap = make(map[string]field.Expr, 16)
 	t.fieldMap["id"] = t.ID
 	t.fieldMap["created_at"] = t.CreatedAt
 	t.fieldMap["updated_at"] = t.UpdatedAt
 	t.fieldMap["deleted_at"] = t.DeletedAt
+	t.fieldMap["tenant_id"] = t.TenantID
 	t.fieldMap["user_id"] = t.UserID
 	t.fieldMap["session_id"] = t.SessionID
 	t.fieldMap["access_token"] = t.AccessToken

@@ -55,9 +55,6 @@ func (dao *TenantUserDao) decorateQueryFilter(query query.ITenantUserDo, queryFi
 	if queryFilter.UserID != nil {
 		query = query.Where(dao.query.TenantUser.UserID.Eq(*queryFilter.UserID))
 	}
-	if queryFilter.IsAdmin != nil {
-		query = query.Where(dao.query.TenantUser.IsAdmin.Is(*queryFilter.IsAdmin))
-	}
 
 	return query
 }
@@ -129,4 +126,14 @@ func (dao *TenantUserDao) FirstByQueryFilter(
 	tenantUserQuery = dao.decorateQueryFilter(tenantUserQuery, queryFilter)
 	tenantUserQuery = dao.decorateSortQueryFilter(tenantUserQuery, sortFilter)
 	return tenantUserQuery.First()
+}
+
+// FirstByUserID
+func (dao *TenantUserDao) FirstByUserID(ctx context.Context, userID int64) (*models.TenantUser, error) {
+	return dao.Context(ctx).Where(dao.query.TenantUser.UserID.Eq(userID)).First()
+}
+
+// GetByUserID
+func (dao *TenantUserDao) GetByUserID(ctx context.Context, userID int64) ([]*models.TenantUser, error) {
+	return dao.Context(ctx).Where(dao.query.TenantUser.UserID.Eq(userID)).Find()
 }

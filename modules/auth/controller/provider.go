@@ -17,6 +17,7 @@ func Provide(opts ...opt.Option) error {
 		oauth *oauth.Auth,
 		sendSvc *serviceSvc.SendService,
 		sessionSvc *userSvc.SessionService,
+		tenantSvc *userSvc.TenantService,
 		tokenSvc *userSvc.TokenService,
 		userSvc *userSvc.UserService,
 	) (*AuthController, error) {
@@ -25,6 +26,7 @@ func Provide(opts ...opt.Option) error {
 			oauth:      oauth,
 			sendSvc:    sendSvc,
 			sessionSvc: sessionSvc,
+			tenantSvc:  tenantSvc,
 			tokenSvc:   tokenSvc,
 			userSvc:    userSvc,
 		}

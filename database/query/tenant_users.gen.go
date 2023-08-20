@@ -30,7 +30,6 @@ func newTenantUser(db *gorm.DB, opts ...gen.DOOption) tenantUser {
 	_tenantUser.ID = field.NewInt64(tableName, "id")
 	_tenantUser.TenantID = field.NewInt64(tableName, "tenant_id")
 	_tenantUser.UserID = field.NewInt64(tableName, "user_id")
-	_tenantUser.IsAdmin = field.NewBool(tableName, "is_admin")
 
 	_tenantUser.fillFieldMap()
 
@@ -44,7 +43,6 @@ type tenantUser struct {
 	ID       field.Int64
 	TenantID field.Int64
 	UserID   field.Int64
-	IsAdmin  field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -64,7 +62,6 @@ func (t *tenantUser) updateTableName(table string) *tenantUser {
 	t.ID = field.NewInt64(table, "id")
 	t.TenantID = field.NewInt64(table, "tenant_id")
 	t.UserID = field.NewInt64(table, "user_id")
-	t.IsAdmin = field.NewBool(table, "is_admin")
 
 	t.fillFieldMap()
 
@@ -91,11 +88,10 @@ func (t *tenantUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *tenantUser) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 4)
+	t.fieldMap = make(map[string]field.Expr, 3)
 	t.fieldMap["id"] = t.ID
 	t.fieldMap["tenant_id"] = t.TenantID
 	t.fieldMap["user_id"] = t.UserID
-	t.fieldMap["is_admin"] = t.IsAdmin
 }
 
 func (t tenantUser) clone(db *gorm.DB) tenantUser {

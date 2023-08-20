@@ -15,7 +15,6 @@ type TenantUser struct {
 	ID       int64 `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	TenantID int64 `gorm:"column:tenant_id;type:bigint" json:"tenant_id"`
 	UserID   int64 `gorm:"column:user_id;type:bigint" json:"user_id"`
-	IsAdmin  bool  `gorm:"column:is_admin;type:boolean" json:"is_admin"`
 }
 
 func (*TenantUser) TableName(namer schema.Namer) string {

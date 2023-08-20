@@ -99,11 +99,6 @@ const submit = () => {
         return
     }
 
-    if (form.password && form.password?.length < 6) {
-        errors.value.push('密码长度不能小于6位')
-        return
-    }
-
     if (form.method != SigninMethod.Password) {
         errors.value.push('登录方式错误')
         return

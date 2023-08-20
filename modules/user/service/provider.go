@@ -77,9 +77,11 @@ func Provide(opts ...opt.Option) error {
 
 	if err := container.Container.Provide(func(
 		tenantDao *dao.TenantDao,
+		tenantUserDao *dao.TenantUserDao,
 	) (*TenantService, error) {
 		obj := &TenantService{
-			tenantDao: tenantDao,
+			tenantDao:     tenantDao,
+			tenantUserDao: tenantUserDao,
 		}
 		return obj, nil
 	}); err != nil {

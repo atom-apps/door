@@ -140,16 +140,20 @@ func (dao *RoleUserDao) FirstByQueryFilter(
 }
 
 // GetByRoleID
-func (dao *RoleUserDao) GetByRoleID(ctx context.Context, roleID int64) ([]*models.RoleUser, error) {
-	return dao.Context(ctx).Where(dao.query.RoleUser.RoleID.Eq(roleID)).Find()
+func (dao *RoleUserDao) GetByRoleID(ctx context.Context, tenantID, roleID int64) ([]*models.RoleUser, error) {
+	return dao.Context(ctx).Where(
+		dao.query.RoleUser.TenantID.Eq(tenantID),
+		dao.query.RoleUser.RoleID.Eq(roleID),
+	).Find()
 }
 
 // AttachUsers
-func (dao *RoleUserDao) AttachUsers(ctx context.Context, roleID int64, users []int64) error {
+func (dao *RoleUserDao) AttachUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
 	models := lo.Map(users, func(id int64, _ int) *models.RoleUser {
 		return &models.RoleUser{
-			RoleID: roleID,
-			UserID: id,
+			TenantID: tenantID,
+			RoleID:   roleID,
+			UserID:   id,
 		}
 	})
 
@@ -157,8 +161,9 @@ func (dao *RoleUserDao) AttachUsers(ctx context.Context, roleID int64, users []i
 }
 
 // DetachUsers
-func (dao *RoleUserDao) DetachUsers(ctx context.Context, roleID int64, users []int64) error {
+func (dao *RoleUserDao) DetachUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
 	_, err := dao.Context(ctx).Where(
+		dao.query.RoleUser.TenantID.Eq(tenantID),
 		dao.query.RoleUser.RoleID.Eq(roleID),
 		dao.query.RoleUser.UserID.In(users...),
 	).Delete()

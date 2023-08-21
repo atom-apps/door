@@ -13,10 +13,12 @@ require (
 	github.com/atom-providers/service-httpgrpc v0.0.0-20230801062936-e5c2344a7495
 	github.com/atom-providers/swagger v0.0.0-20230801062947-5ad4735e505b
 	github.com/atom-providers/uuid v0.0.0-20230801062951-5331ee1b8af6
+	github.com/brianvoe/gofakeit/v6 v6.23.1
 	github.com/go-gormigrate/gormigrate/v2 v2.1.0
 	github.com/gofiber/fiber/v2 v2.48.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jinzhu/copier v0.3.5
+	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.0.5
 	github.com/rogeecn/atom v1.0.8
 	github.com/rogeecn/fen v1.0.7
@@ -36,10 +38,8 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 // indirect
-	github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 // indirect
 	github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114 // indirect
 	github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb // indirect
-	github.com/brianvoe/gofakeit/v6 v6.23.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/evanphx/json-patch v0.5.2 // indirect
@@ -74,7 +74,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mojocn/base64Captcha v1.3.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.9 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/speps/go-hashids/v2 v2.0.1 // indirect

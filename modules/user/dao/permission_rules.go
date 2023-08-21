@@ -2,9 +2,11 @@ package dao
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
+	"github.com/samber/lo"
 )
 
 // @provider
@@ -46,4 +48,19 @@ func (dao *PermissionRuleDao) Create(ctx context.Context, model *models.Permissi
 
 func (dao *PermissionRuleDao) GetByID(ctx context.Context, id int64) (*models.PermissionRule, error) {
 	return dao.Context(ctx).Where(dao.query.PermissionRule.ID.Eq(id)).First()
+}
+
+// DeleteRoleUsers
+func (dao *PermissionRuleDao) DeleteRoleUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
+	userStringIDs := lo.Map(users, func(user int64, _ int) string {
+		return strconv.Itoa(int(user))
+	})
+
+	_, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V0.In(userStringIDs...),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(roleID))),
+		dao.query.PermissionRule.V2.Eq(strconv.Itoa(int(tenantID))),
+	).Delete()
+	return err
 }

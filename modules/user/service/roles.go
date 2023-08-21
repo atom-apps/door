@@ -15,8 +15,9 @@ import (
 
 // @provider
 type RoleService struct {
-	roleDao     *dao.RoleDao
-	roleUserDao *dao.RoleUserDao
+	roleDao           *dao.RoleDao
+	roleUserDao       *dao.RoleUserDao
+	permissionRuleSvc *PermissionRuleService
 }
 
 func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
@@ -114,8 +115,8 @@ func (svc *RoleService) Delete(ctx context.Context, id int64) error {
 }
 
 // SetUsers
-func (svc *RoleService) SetUsers(ctx context.Context, roleID int64, userIDs []int64) error {
-	ms, err := svc.roleUserDao.GetByRoleID(ctx, roleID)
+func (svc *RoleService) SetUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
+	ms, err := svc.roleUserDao.GetByRoleID(ctx, tenantID, roleID)
 	if err != nil {
 		return err
 	}
@@ -133,10 +134,10 @@ func (svc *RoleService) SetUsers(ctx context.Context, roleID int64, userIDs []in
 	})
 
 	return svc.roleUserDao.Transaction(func() error {
-		if err := svc.roleUserDao.AttachUsers(ctx, roleID, addUsers); err != nil {
+		if err := svc.roleUserDao.AttachUsers(ctx, tenantID, roleID, addUsers); err != nil {
 			return err
 		}
-		if err := svc.roleUserDao.DetachUsers(ctx, roleID, delUsers); err != nil {
+		if err := svc.roleUserDao.DetachUsers(ctx, tenantID, roleID, delUsers); err != nil {
 			return err
 		}
 		return nil
@@ -144,11 +145,25 @@ func (svc *RoleService) SetUsers(ctx context.Context, roleID int64, userIDs []in
 }
 
 // AttachUsers
-func (svc *RoleService) AttachUsers(ctx context.Context, roleID int64, userIDs []int64) error {
-	return svc.roleUserDao.AttachUsers(ctx, roleID, userIDs)
+func (svc *RoleService) AttachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
+	return svc.roleUserDao.Transaction(func() error {
+		if err := svc.roleUserDao.AttachUsers(ctx, tenantID, roleID, userIDs); err != nil {
+			return err
+		}
+
+		// add role permission rules
+		return svc.permissionRuleSvc.AddRoleUsers(ctx, tenantID, roleID, userIDs)
+	})
 }
 
 // DetachUsers
-func (svc *RoleService) DetachUsers(ctx context.Context, roleID int64, userIDs []int64) error {
-	return svc.roleUserDao.DetachUsers(ctx, roleID, userIDs)
+func (svc *RoleService) DetachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
+	return svc.roleUserDao.Transaction(func() error {
+		if err := svc.roleUserDao.DetachUsers(ctx, tenantID, roleID, userIDs); err != nil {
+			return err
+		}
+
+		// delete permission rules
+		return svc.permissionRuleSvc.DeleteRoleUsers(ctx, tenantID, roleID, userIDs)
+	})
 }

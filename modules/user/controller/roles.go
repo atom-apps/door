@@ -115,12 +115,13 @@ func (c *RoleController) Delete(ctx *fiber.Ctx, id int64) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"RoleID"
+//	@Param			tenant_id	path		int	true	"TenantID"
 //	@Param			body	body	common.IDsForm	true	"IDsForm"
 //	@Success		200	{string}	RoleID
 //	@Failure		500	{string}	RoleID
-//	@Router			/v1/users/roles/{id}/attach [put]
-func (c *RoleController) AttachUsers(ctx *fiber.Ctx, id int64, users *common.IDsForm) error {
-	return c.roleSvc.AttachUsers(ctx.Context(), id, users.IDs)
+//	@Router			/v1/users/roles/{id}/tenants/{tenant_id}/attach [put]
+func (c *RoleController) AttachUsers(ctx *fiber.Ctx, id, tenantID int64, users *common.IDsForm) error {
+	return c.roleSvc.AttachUsers(ctx.Context(), tenantID, id, users.IDs)
 }
 
 // Detach users
@@ -130,10 +131,11 @@ func (c *RoleController) AttachUsers(ctx *fiber.Ctx, id int64, users *common.IDs
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"RoleID"
+//	@Param			tenant_id	path		int	true	"TenantID"
 //	@Param			body	body	common.IDsForm	true	"IDsForm"
 //	@Success		200	{string}	RoleID
 //	@Failure		500	{string}	RoleID
-//	@Router			/v1/users/roles/{id}/detach [put]
-func (c *RoleController) DetachUsers(ctx *fiber.Ctx, id int64, users *common.IDsForm) error {
-	return c.roleSvc.DetachUsers(ctx.Context(), id, users.IDs)
+//	@Router			/v1/users/roles/{id}/tenants/{tenant_id}/detach [put]
+func (c *RoleController) DetachUsers(ctx *fiber.Ctx, id, tenantID int64, users *common.IDsForm) error {
+	return c.roleSvc.DetachUsers(ctx.Context(), tenantID, id, users.IDs)
 }

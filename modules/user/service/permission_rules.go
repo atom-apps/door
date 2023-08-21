@@ -6,6 +6,7 @@ import (
 
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/user/dao"
+	"github.com/samber/lo"
 )
 
 // @provider
@@ -45,4 +46,25 @@ func (svc *PermissionRuleService) CreateRole(ctx context.Context, userID, tenant
 func (svc *PermissionRuleService) DeleteRole(ctx context.Context, userID, tenantID, roleID int64) error {
 	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(roleID)), strconv.Itoa(int(tenantID))}
 	return svc.dao.DeleteByModel(ctx, svc.genRoleModel(ctx, args...))
+}
+
+func (svc *PermissionRuleService) DeleteRoleUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
+	errs := lo.FilterMap(users, func(userID int64, _ int) (error, bool) {
+		if err := svc.DeleteRole(ctx, userID, tenantID, roleID); err != nil {
+			return err, true
+		}
+		return nil, false
+	})
+
+	return lo.Validate(len(errs) == 0, "delete group failed")
+}
+
+func (svc *PermissionRuleService) AddRoleUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
+	errs := lo.FilterMap(users, func(userID int64, _ int) (error, bool) {
+		if err := svc.CreateRole(ctx, userID, tenantID, roleID); err != nil {
+			return err, true
+		}
+		return nil, false
+	})
+	return lo.Validate(len(errs) == 0, "add group failed")
 }

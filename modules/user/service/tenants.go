@@ -13,8 +13,8 @@ import (
 
 // @provider
 type TenantService struct {
-	tenantDao     *dao.TenantDao
-	tenantUserDao *dao.TenantUserDao
+	tenantDao         *dao.TenantDao
+	permissionRuleSvc *PermissionRuleService
 }
 
 func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.TenantItem {
@@ -27,16 +27,6 @@ func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.Tenant
 
 func (svc *TenantService) GetByID(ctx context.Context, id int64) (*models.Tenant, error) {
 	return svc.tenantDao.GetByID(ctx, id)
-}
-
-// GetByUserID
-func (svc *TenantService) GetByUserID(ctx context.Context, userID int64) (*models.Tenant, error) {
-	m, err := svc.tenantUserDao.FirstByUserID(ctx, userID)
-	if err != nil {
-		return nil, err
-	}
-
-	return svc.GetByID(ctx, m.TenantID)
 }
 
 func (svc *TenantService) FindByQueryFilter(
@@ -87,5 +77,11 @@ func (svc *TenantService) UpdateFromModel(ctx context.Context, model *models.Ten
 
 // Delete
 func (svc *TenantService) Delete(ctx context.Context, id int64) error {
-	return svc.tenantDao.Delete(ctx, id)
+	return svc.tenantDao.Transaction(func() error {
+		if err := svc.tenantDao.Delete(ctx, id); err != nil {
+			return err
+		}
+
+		return svc.permissionRuleSvc.DeleteByTenantID(ctx, id)
+	})
 }

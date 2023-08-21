@@ -20,17 +20,6 @@ func Provide(opts ...opt.Option) error {
 
 	if err := container.Container.Provide(func(
 		query *query.Query,
-	) (*RoleUserDao, error) {
-		obj := &RoleUserDao{
-			query: query,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
-		query *query.Query,
 	) (*RoleDao, error) {
 		obj := &RoleDao{
 			query: query,
@@ -44,17 +33,6 @@ func Provide(opts ...opt.Option) error {
 		query *query.Query,
 	) (*SessionDao, error) {
 		obj := &SessionDao{
-			query: query,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
-		query *query.Query,
-	) (*TenantUserDao, error) {
-		obj := &TenantUserDao{
 			query: query,
 		}
 		return obj, nil

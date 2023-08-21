@@ -14,9 +14,13 @@ import (
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		dao *dao.PermissionRuleDao,
+		roleDao *dao.RoleDao,
+		tenantDao *dao.TenantDao,
 	) (*PermissionRuleService, error) {
 		obj := &PermissionRuleService{
-			dao: dao,
+			dao:       dao,
+			roleDao:   roleDao,
+			tenantDao: tenantDao,
 		}
 		return obj, nil
 	}); err != nil {
@@ -24,23 +28,12 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		roleUserDao *dao.RoleUserDao,
-	) (*RoleUserService, error) {
-		obj := &RoleUserService{
-			roleUserDao: roleUserDao,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
+		permissionRuleSvc *PermissionRuleService,
 		roleDao *dao.RoleDao,
-		roleUserDao *dao.RoleUserDao,
 	) (*RoleService, error) {
 		obj := &RoleService{
-			roleDao:     roleDao,
-			roleUserDao: roleUserDao,
+			permissionRuleSvc: permissionRuleSvc,
+			roleDao:           roleDao,
 		}
 		return obj, nil
 	}); err != nil {
@@ -67,23 +60,12 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		tenantUserDao *dao.TenantUserDao,
-	) (*TenantUserService, error) {
-		obj := &TenantUserService{
-			tenantUserDao: tenantUserDao,
-		}
-		return obj, nil
-	}); err != nil {
-		return err
-	}
-
-	if err := container.Container.Provide(func(
+		permissionRuleSvc *PermissionRuleService,
 		tenantDao *dao.TenantDao,
-		tenantUserDao *dao.TenantUserDao,
 	) (*TenantService, error) {
 		obj := &TenantService{
-			tenantDao:     tenantDao,
-			tenantUserDao: tenantUserDao,
+			permissionRuleSvc: permissionRuleSvc,
+			tenantDao:         tenantDao,
 		}
 		return obj, nil
 	}); err != nil {

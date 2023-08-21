@@ -20,10 +20,8 @@ var (
 	Migration      *migration
 	PermissionRule *permissionRule
 	Role           *role
-	RoleUser       *roleUser
 	Session        *session
 	Tenant         *tenant
-	TenantUser     *tenantUser
 	Token          *token
 	User           *user
 	UserInfo       *userInfo
@@ -34,10 +32,8 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Migration = &Q.Migration
 	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
-	RoleUser = &Q.RoleUser
 	Session = &Q.Session
 	Tenant = &Q.Tenant
-	TenantUser = &Q.TenantUser
 	Token = &Q.Token
 	User = &Q.User
 	UserInfo = &Q.UserInfo
@@ -49,10 +45,8 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Migration:      newMigration(db, opts...),
 		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
-		RoleUser:       newRoleUser(db, opts...),
 		Session:        newSession(db, opts...),
 		Tenant:         newTenant(db, opts...),
-		TenantUser:     newTenantUser(db, opts...),
 		Token:          newToken(db, opts...),
 		User:           newUser(db, opts...),
 		UserInfo:       newUserInfo(db, opts...),
@@ -65,10 +59,8 @@ type Query struct {
 	Migration      migration
 	PermissionRule permissionRule
 	Role           role
-	RoleUser       roleUser
 	Session        session
 	Tenant         tenant
-	TenantUser     tenantUser
 	Token          token
 	User           user
 	UserInfo       userInfo
@@ -82,10 +74,8 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Migration:      q.Migration.clone(db),
 		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
-		RoleUser:       q.RoleUser.clone(db),
 		Session:        q.Session.clone(db),
 		Tenant:         q.Tenant.clone(db),
-		TenantUser:     q.TenantUser.clone(db),
 		Token:          q.Token.clone(db),
 		User:           q.User.clone(db),
 		UserInfo:       q.UserInfo.clone(db),
@@ -106,10 +96,8 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Migration:      q.Migration.replaceDB(db),
 		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
-		RoleUser:       q.RoleUser.replaceDB(db),
 		Session:        q.Session.replaceDB(db),
 		Tenant:         q.Tenant.replaceDB(db),
-		TenantUser:     q.TenantUser.replaceDB(db),
 		Token:          q.Token.replaceDB(db),
 		User:           q.User.replaceDB(db),
 		UserInfo:       q.UserInfo.replaceDB(db),
@@ -120,10 +108,8 @@ type queryCtx struct {
 	Migration      IMigrationDo
 	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
-	RoleUser       IRoleUserDo
 	Session        ISessionDo
 	Tenant         ITenantDo
-	TenantUser     ITenantUserDo
 	Token          ITokenDo
 	User           IUserDo
 	UserInfo       IUserInfoDo
@@ -134,10 +120,8 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Migration:      q.Migration.WithContext(ctx),
 		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),
-		RoleUser:       q.RoleUser.WithContext(ctx),
 		Session:        q.Session.WithContext(ctx),
 		Tenant:         q.Tenant.WithContext(ctx),
-		TenantUser:     q.TenantUser.WithContext(ctx),
 		Token:          q.Token.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 		UserInfo:       q.UserInfo.WithContext(ctx),

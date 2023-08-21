@@ -64,3 +64,101 @@ func (dao *PermissionRuleDao) DeleteRoleUsers(ctx context.Context, tenantID, rol
 	).Delete()
 	return err
 }
+
+// DeleteRoleUsers
+func (dao *PermissionRuleDao) DeletePolicyByRoleID(ctx context.Context, roleID int64) error {
+	_, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("p"),
+		dao.query.PermissionRule.V0.Eq(strconv.Itoa(int(roleID))),
+	).Delete()
+	return err
+}
+
+// DeleteGroupByRoleID
+func (dao *PermissionRuleDao) DeleteGroupByRoleID(ctx context.Context, roleID int64) error {
+	_, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(roleID))),
+	).Delete()
+	return err
+}
+
+// DeleteRoleUsers
+func (dao *PermissionRuleDao) DeletePolicyByTenantID(ctx context.Context, tenantID int64) error {
+	_, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("p"),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(tenantID))),
+	).Delete()
+	return err
+}
+
+// DeleteGroupByTenantID
+func (dao *PermissionRuleDao) DeleteGroupByTenantID(ctx context.Context, tenantID int64) error {
+	_, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V2.Eq(strconv.Itoa(int(tenantID))),
+	).Delete()
+	return err
+}
+
+// GetTenantsByUserID
+func (dao *PermissionRuleDao) GetTenantsByUserID(ctx context.Context, userID int64) ([]int64, error) {
+	ms, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V0.Eq(strconv.Itoa(int(userID))),
+	).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	return lo.Map(ms, func(m *models.PermissionRule, _ int) int64 {
+		tenantID, _ := strconv.Atoi(m.V1)
+		return int64(tenantID)
+	}), nil
+}
+
+// GetTenantsByRoleID
+func (dao *PermissionRuleDao) GetTenantsByRoleID(ctx context.Context, roleID int64) ([]int64, error) {
+	ms, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V2.Eq(strconv.Itoa(int(roleID))),
+	).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	return lo.Map(ms, func(m *models.PermissionRule, _ int) int64 {
+		tenantID, _ := strconv.Atoi(m.V1)
+		return int64(tenantID)
+	}), nil
+}
+
+// GetRolesByTenantID
+func (dao *PermissionRuleDao) GetRolesByTenantID(ctx context.Context, tenantID int64) ([]int64, error) {
+	ms, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(tenantID))),
+	).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	return lo.Map(ms, func(m *models.PermissionRule, _ int) int64 {
+		tenantID, _ := strconv.Atoi(m.V2)
+		return int64(tenantID)
+	}), nil
+}
+
+// GetRoleOfTenantUser
+func (dao *PermissionRuleDao) GetRoleOfTenantUser(ctx context.Context, tenantID, userID int64) (int64, error) {
+	m, err := dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V0.Eq(strconv.Itoa(int(userID))),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(tenantID))),
+	).First()
+	if err != nil {
+		return 0, err
+	}
+	tid, err := strconv.Atoi(m.V2)
+	return int64(tid), err
+}

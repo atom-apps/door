@@ -19,13 +19,14 @@ import (
 
 // @provider
 type AuthController struct {
-	oauth      *oauth.Auth
-	authSvc    *service.AuthService
-	userSvc    *userSvc.UserService
-	sessionSvc *userSvc.SessionService
-	tenantSvc  *userSvc.TenantService
-	tokenSvc   *userSvc.TokenService
-	sendSvc    *serviceSvc.SendService
+	oauth         *oauth.Auth
+	authSvc       *service.AuthService
+	userSvc       *userSvc.UserService
+	sessionSvc    *userSvc.SessionService
+	tenantSvc     *userSvc.TenantService
+	tokenSvc      *userSvc.TokenService
+	permissionSvc *userSvc.PermissionRuleService
+	sendSvc       *serviceSvc.SendService
 }
 
 // Signup
@@ -96,12 +97,17 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 		return nil, err
 	}
 
-	tenant, err := c.tenantSvc.GetByUserID(ctx.Context(), user.ID)
+	tenants, err := c.permissionSvc.GetTenantsByUserID(ctx.Context(), user.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, tenant.ID, sess.ID, app)
+	tenantID := int64(0)
+	if len(tenants) > 0 {
+		tenantID = tenants[0].ID
+	}
+
+	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, tenantID, sess.ID, app)
 	if err != nil {
 		return nil, err
 	}

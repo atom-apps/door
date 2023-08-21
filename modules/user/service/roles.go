@@ -10,13 +10,11 @@ import (
 	"github.com/atom-apps/door/modules/user/dto"
 
 	"github.com/jinzhu/copier"
-	"github.com/samber/lo"
 )
 
 // @provider
 type RoleService struct {
 	roleDao           *dao.RoleDao
-	roleUserDao       *dao.RoleUserDao
 	permissionRuleSvc *PermissionRuleService
 }
 
@@ -49,12 +47,7 @@ func (svc *RoleService) GetBySlug(ctx context.Context, slug string) (*models.Rol
 }
 
 func (svc *RoleService) GetByUserID(ctx context.Context, tenantID, userID int64) (*models.Role, error) {
-	userRole, err := svc.roleUserDao.GetByUserID(ctx, tenantID, userID)
-	if err != nil {
-		return nil, err
-	}
-
-	return svc.roleDao.GetByID(ctx, userRole.RoleID)
+	return svc.permissionRuleSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
 }
 
 func (svc *RoleService) FindByQueryFilter(
@@ -111,59 +104,22 @@ func (svc *RoleService) UpdateFromModel(ctx context.Context, model *models.Role)
 
 // Delete
 func (svc *RoleService) Delete(ctx context.Context, id int64) error {
-	return svc.roleDao.Delete(ctx, id)
-}
-
-// SetUsers
-func (svc *RoleService) SetUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
-	ms, err := svc.roleUserDao.GetByRoleID(ctx, tenantID, roleID)
-	if err != nil {
-		return err
-	}
-
-	currentUserIDs := lo.Map(ms, func(m *models.RoleUser, _ int) int64 {
-		return m.UserID
-	})
-
-	addUsers := lo.FilterMap(userIDs, func(id int64, _ int) (int64, bool) {
-		return id, !lo.Contains(currentUserIDs, id)
-	})
-
-	delUsers := lo.FilterMap(currentUserIDs, func(id int64, _ int) (int64, bool) {
-		return id, !lo.Contains(userIDs, id)
-	})
-
-	return svc.roleUserDao.Transaction(func() error {
-		if err := svc.roleUserDao.AttachUsers(ctx, tenantID, roleID, addUsers); err != nil {
+	return svc.roleDao.Transaction(func() error {
+		if err := svc.roleDao.Delete(ctx, id); err != nil {
 			return err
 		}
-		if err := svc.roleUserDao.DetachUsers(ctx, tenantID, roleID, delUsers); err != nil {
-			return err
-		}
-		return nil
+
+		// delete permission rules roles
+		return svc.permissionRuleSvc.DeleteByRoleID(ctx, id)
 	})
 }
 
 // AttachUsers
 func (svc *RoleService) AttachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
-	return svc.roleUserDao.Transaction(func() error {
-		if err := svc.roleUserDao.AttachUsers(ctx, tenantID, roleID, userIDs); err != nil {
-			return err
-		}
-
-		// add role permission rules
-		return svc.permissionRuleSvc.AddRoleUsers(ctx, tenantID, roleID, userIDs)
-	})
+	return svc.permissionRuleSvc.AddRoleUsers(ctx, tenantID, roleID, userIDs)
 }
 
 // DetachUsers
 func (svc *RoleService) DetachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
-	return svc.roleUserDao.Transaction(func() error {
-		if err := svc.roleUserDao.DetachUsers(ctx, tenantID, roleID, userIDs); err != nil {
-			return err
-		}
-
-		// delete permission rules
-		return svc.permissionRuleSvc.DeleteRoleUsers(ctx, tenantID, roleID, userIDs)
-	})
+	return svc.permissionRuleSvc.DeleteRoleUsers(ctx, tenantID, roleID, userIDs)
 }

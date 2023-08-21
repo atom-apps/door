@@ -15,6 +15,7 @@ func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		authSvc *service.AuthService,
 		oauth *oauth.Auth,
+		permissionSvc *userSvc.PermissionRuleService,
 		sendSvc *serviceSvc.SendService,
 		sessionSvc *userSvc.SessionService,
 		tenantSvc *userSvc.TenantService,
@@ -22,13 +23,14 @@ func Provide(opts ...opt.Option) error {
 		userSvc *userSvc.UserService,
 	) (*AuthController, error) {
 		obj := &AuthController{
-			authSvc:    authSvc,
-			oauth:      oauth,
-			sendSvc:    sendSvc,
-			sessionSvc: sessionSvc,
-			tenantSvc:  tenantSvc,
-			tokenSvc:   tokenSvc,
-			userSvc:    userSvc,
+			authSvc:       authSvc,
+			oauth:         oauth,
+			permissionSvc: permissionSvc,
+			sendSvc:       sendSvc,
+			sessionSvc:    sessionSvc,
+			tenantSvc:     tenantSvc,
+			tokenSvc:      tokenSvc,
+			userSvc:       userSvc,
 		}
 		return obj, nil
 	}); err != nil {

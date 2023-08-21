@@ -105,6 +105,7 @@ func (svc *AuthService) CreateUser(ctx context.Context, form *dto.SignUpForm) (*
 		DisplayName:   "",
 		Avatar:        "",
 	}
+
 	if err := svc.userSvc.CreateFromModel(ctx, model); err != nil {
 		return nil, err
 	}

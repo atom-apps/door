@@ -16,6 +16,7 @@ type UserForm struct {
 }
 
 type UserListQueryFilter struct {
+	IDs           []int64 `query:"ids" json:"ids,omitempty"`                       //
 	UUID          *string `query:"uuid" json:"uuid,omitempty"`                     //
 	Username      *string `query:"username" json:"username,omitempty"`             //
 	Password      *string `query:"password" json:"password,omitempty"`             //

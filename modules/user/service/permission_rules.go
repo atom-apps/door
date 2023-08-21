@@ -52,6 +52,10 @@ func (svc *PermissionRuleService) DeleteGroup(ctx context.Context, userID, tenan
 	return svc.dao.DeleteByModel(ctx, svc.genGroupModel(ctx, args...))
 }
 
+func (svc *PermissionRuleService) DeleteUser(ctx context.Context, userID int64) error {
+	return svc.dao.DeleteGroupByUser(ctx, userID)
+}
+
 func (svc *PermissionRuleService) DeleteRoleUsers(ctx context.Context, tenantID, roleID int64, users []int64) error {
 	errs := lo.FilterMap(users, func(userID int64, _ int) (error, bool) {
 		if err := svc.DeleteGroup(ctx, userID, tenantID, roleID); err != nil {
@@ -125,4 +129,14 @@ func (svc *PermissionRuleService) GetRoleOfTenantUser(ctx context.Context, tenan
 	}
 
 	return svc.roleDao.GetByID(ctx, roleID)
+}
+
+// GetUserIDsOfTenant
+func (svc *PermissionRuleService) GetUserIDsOfTenant(ctx context.Context, tenantID int64) ([]int64, error) {
+	return svc.dao.GetUserIDsOfTenant(ctx, tenantID)
+}
+
+// GetUserIDsOfRole
+func (svc *PermissionRuleService) GetUserIDsOfRole(ctx context.Context, roleID int64) ([]int64, error) {
+	return svc.dao.GetUserIDsOfRole(ctx, roleID)
 }

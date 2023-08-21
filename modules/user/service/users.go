@@ -19,9 +19,10 @@ import (
 
 // @provider
 type UserService struct {
-	userDao *dao.UserDao
-	hashID  *hashids.HashID
-	hash    *bcrypt.Hash
+	userDao           *dao.UserDao
+	hashID            *hashids.HashID
+	hash              *bcrypt.Hash
+	permissionRuleSvc *PermissionRuleService
 }
 
 func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
@@ -83,7 +84,13 @@ func (svc *UserService) UpdateFromModel(ctx context.Context, model *models.User)
 
 // Delete
 func (svc *UserService) Delete(ctx context.Context, id int64) error {
-	return svc.userDao.Delete(ctx, id)
+	return svc.userDao.Transaction(func() error {
+		if err := svc.userDao.Delete(ctx, id); err != nil {
+			return err
+		}
+
+		return svc.permissionRuleSvc.DeleteUser(ctx, id)
+	})
 }
 
 // FindByEmail

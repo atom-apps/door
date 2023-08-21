@@ -24,5 +24,6 @@ func newRoute(svc contracts.HttpService, roleController *controller.RoleControll
 	routeTokenController(group, tokenController)
 	routeUserController(group, userController)
 	routeRoleController(group, roleController)
+	routePermissionRuleController(group, permissionRuleController)
 	return nil
 }

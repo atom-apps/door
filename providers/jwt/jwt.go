@@ -117,8 +117,6 @@ func (j *JWT) ParseToken(tokenString string) (*Claims, error) {
 		if claims, ok := token.Claims.(*Claims); ok && token.Valid {
 			return claims, nil
 		}
-		return nil, TokenInvalid
-	} else {
-		return nil, TokenInvalid
 	}
+	return nil, TokenInvalid
 }

@@ -51,9 +51,9 @@ p = sub, dom, obj, act
 g = _, _, _
 
 [matchers]
-m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "superadmin"
+# m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && keyMatch3(r.obj, p.obj) && r.act == p.act
 
 [policy_effect]
 e = some(where (p.eft == allow))
 """
-# m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && keyMatch2(r.obj, p.obj) && r.act == p.act || r.sub == "superadmin"
+# m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act

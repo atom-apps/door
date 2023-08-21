@@ -21,12 +21,13 @@ import (
 
 // @provider
 type TokenService struct {
-	hash       *md5.Hash
-	uuid       *uuid.Generator
-	jwt        *jwt.JWT
-	tokenDao   *dao.TokenDao
-	userDao    *dao.UserDao
-	sessionDao *dao.SessionDao
+	hash          *md5.Hash
+	uuid          *uuid.Generator
+	jwt           *jwt.JWT
+	tokenDao      *dao.TokenDao
+	userDao       *dao.UserDao
+	sessionDao    *dao.SessionDao
+	permissionSvc *PermissionRuleService
 }
 
 func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenItem {
@@ -110,10 +111,11 @@ func (svc *TokenService) Delete(ctx context.Context, id int64) error {
 }
 
 // getClaims
-func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64) *jwt.Claims {
+func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64, role string) *jwt.Claims {
 	return svc.jwt.CreateClaims(jwt.BaseClaims{
 		UserID:   userID,
 		TenantID: tenantID,
+		Role:     role,
 	})
 }
 
@@ -124,7 +126,12 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 		return m, nil
 	}
 
-	claim := svc.getClaims(ctx, userID, tenantID)
+	role, err := svc.permissionSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	claim := svc.getClaims(ctx, userID, tenantID, role.Name)
 	token, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err

@@ -12,6 +12,11 @@ import (
 	"github.com/rogeecn/atom/utils/opt"
 )
 
+var (
+	skipJwt  = []string{"/auth", "/v1/auth", "/v1/services"}
+	skipAuth = []string{"/v1/permission/check"}
+)
+
 func Providers() container.Providers {
 	return container.Providers{
 		{Provider: provideHttpMiddleware},

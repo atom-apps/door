@@ -14,7 +14,7 @@ func Provide(opts ...opt.Option) error {
 	return container.Container.Provide(newRoute, atom.GroupRoutes)
 }
 
-func newRoute(svc contracts.HttpService, routesController *controller.RoutesController, pageController *controller.PageController, authController *controller.AuthController) contracts.HttpRoute {
+func newRoute(svc contracts.HttpService, permissionController *controller.PermissionController, routesController *controller.RoutesController, pageController *controller.PageController, authController *controller.AuthController) contracts.HttpRoute {
 	engine := svc.GetEngine().(*fiber.App)
 	group := engine.Group("v1")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
@@ -23,5 +23,6 @@ func newRoute(svc contracts.HttpService, routesController *controller.RoutesCont
 	routePageController(engine.Group("auth"), pageController)
 	routePageController(group, pageController)
 	routeRoutesController(group, routesController)
+	routePermissionController(group, permissionController)
 	return nil
 }

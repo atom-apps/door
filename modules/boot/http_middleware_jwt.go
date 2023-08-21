@@ -7,11 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-var skipAuth = []string{"/auth", "/v1/auth", "/v1/services"}
-
 func httpMiddlewareJWT(j *jwt.JWT) func(ctx *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
-		for _, path := range skipAuth {
+		for _, path := range skipJwt {
 			if strings.HasPrefix(ctx.Path(), path) {
 				return ctx.Next()
 			}

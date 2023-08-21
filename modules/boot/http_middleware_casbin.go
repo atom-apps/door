@@ -17,8 +17,14 @@ func httpMiddlewareCasbin(
 	tenantSvc *userModule.TenantService,
 ) func(ctx *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
-		for _, path := range skipAuth {
+		for _, path := range skipJwt {
 			if strings.HasPrefix(ctx.Path(), path) {
+				return ctx.Next()
+			}
+		}
+
+		for _, path := range skipAuth {
+			if ctx.Path() == path {
 				return ctx.Next()
 			}
 		}

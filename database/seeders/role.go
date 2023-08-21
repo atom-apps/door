@@ -22,7 +22,8 @@ func (s *RoleSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 
 	roles := []models.Role{
 		{Name: "超级管理员", Slug: consts.RoleSuperAdmin.String(), Description: "超级管理员", ParentID: 0},
-		{Name: "租户管理员", Slug: consts.RoleTenantAdmin.String(), Description: "租户管理员", ParentID: 1},
+		{Name: "系统管理员", Slug: consts.RoleSysAdmin.String(), Description: "系统管理员", ParentID: 1},
+		{Name: "租户管理员", Slug: consts.RoleTenantAdmin.String(), Description: "租户管理员", ParentID: 2},
 	}
 	lo.ForEach(roles, func(role models.Role, _ int) {
 		db.Create(&role)

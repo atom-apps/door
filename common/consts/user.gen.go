@@ -16,6 +16,8 @@ import (
 const (
 	// RoleSuperAdmin is a Role of type super_admin.
 	RoleSuperAdmin Role = "super_admin"
+	// RoleSysAdmin is a Role of type sys_admin.
+	RoleSysAdmin Role = "sys_admin"
 	// RoleTenantAdmin is a Role of type tenant_admin.
 	RoleTenantAdmin Role = "tenant_admin"
 	// RoleTenantUser is a Role of type tenant_user.
@@ -26,6 +28,7 @@ var ErrInvalidRole = fmt.Errorf("not a valid Role, try [%s]", strings.Join(_Role
 
 var _RoleNames = []string{
 	string(RoleSuperAdmin),
+	string(RoleSysAdmin),
 	string(RoleTenantAdmin),
 	string(RoleTenantUser),
 }
@@ -41,6 +44,7 @@ func RoleNames() []string {
 func RoleValues() []Role {
 	return []Role{
 		RoleSuperAdmin,
+		RoleSysAdmin,
 		RoleTenantAdmin,
 		RoleTenantUser,
 	}
@@ -60,6 +64,7 @@ func (x Role) IsValid() bool {
 
 var _RoleValue = map[string]Role{
 	"super_admin":  RoleSuperAdmin,
+	"sys_admin":    RoleSysAdmin,
 	"tenant_admin": RoleTenantAdmin,
 	"tenant_user":  RoleTenantUser,
 }

@@ -23,7 +23,7 @@ type SessionController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"SessionID"
 //	@Success		200	{object}	dto.SessionItem
-//	@Router			/users/sessions/{id} [get]
+//	@Router			/v1/users/sessions/{id} [get]
 func (c *SessionController) Show(ctx *fiber.Ctx, id int64) (*dto.SessionItem, error) {
 	item, err := c.sessionSvc.GetByID(ctx.Context(), id)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *SessionController) Show(ctx *fiber.Ctx, id int64) (*dto.SessionItem, er
 //	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.SessionItem}
-//	@Router			/users/sessions [get]
+//	@Router			/v1/users/sessions [get]
 func (c *SessionController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.SessionListQueryFilter,
@@ -72,7 +72,7 @@ func (c *SessionController) List(
 //	@Produce		json
 //	@Param			body	body		dto.SessionForm	true	"SessionForm"
 //	@Success		200		{string}	SessionID
-//	@Router			/users/sessions [post]
+//	@Router			/v1/users/sessions [post]
 func (c *SessionController) Create(ctx *fiber.Ctx, body *dto.SessionForm) error {
 	return c.sessionSvc.Create(ctx.Context(), body)
 }
@@ -84,8 +84,8 @@ func (c *SessionController) Create(ctx *fiber.Ctx, body *dto.SessionForm) error 
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	path		int	true	"SessionID"
-//	@Router			/users/sessions/{id} [delete]
+//	@Param			id	path	int	true	"SessionID"
+//	@Router			/v1/users/sessions/{id} [delete]
 func (c *SessionController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.sessionSvc.DeleteBySessionID(ctx.Context(), id)
 }
@@ -97,8 +97,8 @@ func (c *SessionController) Delete(ctx *fiber.Ctx, id int64) error {
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			sess_id	path		string	true	"SessionID"
-//	@Router			/users/sessions/{sess_id}/by-session-id [delete]
+//	@Param			sess_id	path	string	true	"SessionID"
+//	@Router			/v1/users/sessions/{sess_id}/by-session-id [delete]
 func (c *SessionController) DeleteBySessionID(ctx *fiber.Ctx, sessID string) error {
 	m, err := c.sessionSvc.GetBySessionID(ctx.Context(), sessID)
 	if err != nil {

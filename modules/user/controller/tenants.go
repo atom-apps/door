@@ -23,7 +23,7 @@ type TenantController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"TenantID"
 //	@Success		200	{object}	dto.TenantItem
-//	@Router			/users/tenants/{id} [get]
+//	@Router			/v1/users/tenants/{id} [get]
 func (c *TenantController) Show(ctx *fiber.Ctx, id int64) (*dto.TenantItem, error) {
 	item, err := c.tenantSvc.GetByID(ctx.Context(), id)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *TenantController) Show(ctx *fiber.Ctx, id int64) (*dto.TenantItem, erro
 //	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.TenantItem}
-//	@Router			/users/tenants [get]
+//	@Router			/v1/users/tenants [get]
 func (c *TenantController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.TenantListQueryFilter,
@@ -72,7 +72,7 @@ func (c *TenantController) List(
 //	@Produce		json
 //	@Param			body	body		dto.TenantForm	true	"TenantForm"
 //	@Success		200		{string}	TenantID
-//	@Router			/users/tenants [post]
+//	@Router			/v1/users/tenants [post]
 func (c *TenantController) Create(ctx *fiber.Ctx, body *dto.TenantForm) error {
 	return c.tenantSvc.Create(ctx.Context(), body)
 }
@@ -88,7 +88,7 @@ func (c *TenantController) Create(ctx *fiber.Ctx, body *dto.TenantForm) error {
 //	@Param			body	body		dto.TenantForm	true	"TenantForm"
 //	@Success		200		{string}	TenantID
 //	@Failure		500		{string}	TenantID
-//	@Router			/users/tenants/{id} [put]
+//	@Router			/v1/users/tenants/{id} [put]
 func (c *TenantController) Update(ctx *fiber.Ctx, id int64, body *dto.TenantForm) error {
 	return c.tenantSvc.Update(ctx.Context(), id, body)
 }
@@ -103,7 +103,7 @@ func (c *TenantController) Update(ctx *fiber.Ctx, id int64, body *dto.TenantForm
 //	@Param			id	path		int	true	"TenantID"
 //	@Success		200	{string}	TenantID
 //	@Failure		500	{string}	TenantID
-//	@Router			/users/tenants/{id} [delete]
+//	@Router			/v1/users/tenants/{id} [delete]
 func (c *TenantController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.tenantSvc.Delete(ctx.Context(), id)
 }

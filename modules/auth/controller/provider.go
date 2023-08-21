@@ -58,5 +58,12 @@ func Provide(opts ...opt.Option) error {
 		return err
 	}
 
+	if err := container.Container.Provide(func() (*RoutesController, error) {
+		obj := &RoutesController{}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
 	return nil
 }

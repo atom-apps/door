@@ -18,7 +18,7 @@ type CaptchaController struct {
 //	@Accept		json
 //	@Produce	json
 //	@Success	200	{object}	dto.Captcha
-//	@Router		/services/captcha/generate [get]
+//	@Router		/v1/services/captcha/generate [get]
 func (c *CaptchaController) Generate(ctx *fiber.Ctx) (*dto.Captcha, error) {
 	image, err := c.captcha.Generate()
 	if err != nil {

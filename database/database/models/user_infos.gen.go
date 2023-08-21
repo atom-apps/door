@@ -7,7 +7,6 @@ package models
 import (
 	"time"
 
-	"github.com/atom-apps/door/common/consts"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -28,7 +27,7 @@ type UserInfo struct {
 	Biography   string         `gorm:"column:biography;type:character varying(256);comment:自我介绍" json:"biography"` // 自我介绍
 	Tag         string         `gorm:"column:tag;type:character varying(128)" json:"tag"`
 	Language    string         `gorm:"column:language;type:character varying(128)" json:"language"`
-	Gender      consts.Gender  `gorm:"column:gender;type:text;not null;comment:性别" json:"gender"`                  // 性别
+	Gender      string         `gorm:"column:gender;type:text;not null;comment:性别" json:"gender"`                  // 性别
 	Birthday    time.Time      `gorm:"column:birthday;type:timestamp with time zone;comment:生日" json:"birthday"`   // 生日
 	Education   string         `gorm:"column:education;type:character varying(128);comment:学历" json:"education"`   // 学历
 	RealName    string         `gorm:"column:real_name;type:character varying(128);comment:真实姓名" json:"real_name"` // 真实姓名

@@ -25,7 +25,7 @@ type SendController struct {
 //	@Accept		json
 //	@Produce	json
 //	@Param		body	body	dto.SendVerifyCodeForm	true	"SendSmsVerifyCodeForm"
-//	@Router		/services/send/sms [post]
+//	@Router		/v1/services/send/sms [post]
 func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error {
 	if !c.userSvc.IsPhoneValid(ctx.Context(), body.To) {
 		return oauth.ErrPhoneInvalid
@@ -45,7 +45,7 @@ func (c *SendController) Sms(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error
 //	@Accept		json
 //	@Produce	json
 //	@Param		body	body	dto.SendVerifyCodeForm	true	"SendEmailVerifyCodeForm"
-//	@Router		/services/send/email [post]
+//	@Router		/v1/services/send/email [post]
 func (c *SendController) Email(ctx *fiber.Ctx, body *dto.SendVerifyCodeForm) error {
 	if !c.userSvc.IsEmailValid(ctx.Context(), body.To) {
 		return oauth.ErrEmailInvalid

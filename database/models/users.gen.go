@@ -19,7 +19,7 @@ type User struct {
 	ID            int64             `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt     time.Time         `gorm:"column:created_at;type:timestamp with time zone" json:"created_at"`
 	UpdatedAt     time.Time         `gorm:"column:updated_at;type:timestamp with time zone" json:"updated_at"`
-	DeletedAt     gorm.DeletedAt    `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at"`
+	DeletedAt     gorm.DeletedAt    `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at" swaggertype:"string"`
 	UUID          string            `gorm:"column:uuid;type:character varying(128)" json:"uuid"`
 	Username      string            `gorm:"column:username;type:character varying(128)" json:"username"`
 	Password      string            `gorm:"column:password;type:character varying(128)" json:"password"`

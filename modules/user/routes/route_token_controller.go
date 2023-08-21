@@ -3,18 +3,18 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/user/controller"
 	"github.com/atom-apps/door/modules/user/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeTokenController(engine fiber.Router, controller *controller.TokenController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/users/tokens", basePath), DataFunc3(controller.List, Query[dto.TokenListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Delete(strings.TrimPrefix("/users/tokens/:id<int>", basePath), Func1(controller.Delete, Integer[int64]("id", PathParamError)))
+	basePath := "/" + engine.(*fiber.Group).Prefix
+	engine.Get(strings.TrimPrefix("/v1/users/tokens", basePath), DataFunc3(controller.List, Query[dto.TokenListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/tokens/:id<int>", basePath), Func1(controller.Delete, Integer[int64]("id", PathParamError)))
 }

@@ -2,8 +2,8 @@
 //go:generate atomctl gen enum
 //go:generate atomctl gen provider
 //go:generate swag fmt
-//go:generate swag init -ot json --pd --generatedTime
 //go:generate gofumpt -l -w .
+//go:generate swag init -ot json --parseDependency --generatedTime
 package main
 
 import (

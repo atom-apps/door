@@ -107,12 +107,14 @@ func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		hash *bcrypt.Hash,
 		hashID *hashids.HashID,
+		permissionRuleSvc *PermissionRuleService,
 		userDao *dao.UserDao,
 	) (*UserService, error) {
 		obj := &UserService{
-			hash:    hash,
-			hashID:  hashID,
-			userDao: userDao,
+			hash:              hash,
+			hashID:            hashID,
+			permissionRuleSvc: permissionRuleSvc,
+			userDao:           userDao,
 		}
 		return obj, nil
 	}); err != nil {

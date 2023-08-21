@@ -19,7 +19,7 @@ type Token struct {
 	ID            int64            `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt     time.Time        `gorm:"column:created_at;type:timestamp with time zone" json:"created_at"`
 	UpdatedAt     time.Time        `gorm:"column:updated_at;type:timestamp with time zone" json:"updated_at"`
-	DeletedAt     gorm.DeletedAt   `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at"`
+	DeletedAt     gorm.DeletedAt   `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at" swaggertype:"string"`
 	TenantID      int64            `gorm:"column:tenant_id;type:bigint" json:"tenant_id"`
 	UserID        int64            `gorm:"column:user_id;type:bigint" json:"user_id"`
 	SessionID     int64            `gorm:"column:session_id;type:bigint" json:"session_id"`

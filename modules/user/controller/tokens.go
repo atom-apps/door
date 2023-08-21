@@ -25,7 +25,7 @@ type TokenController struct {
 //	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.TokenItem}
-//	@Router			/users/tokens [get]
+//	@Router			/v1/users/tokens [get]
 func (c *TokenController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.TokenListQueryFilter,
@@ -54,7 +54,7 @@ func (c *TokenController) List(
 //	@Param			id	path		int	true	"TokenID"
 //	@Success		200	{string}	TokenID
 //	@Failure		500	{string}	TokenID
-//	@Router			/users/tokens/{id} [delete]
+//	@Router			/v1/users/tokens/{id} [delete]
 func (c *TokenController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.tokenSvc.Delete(ctx.Context(), id)
 }

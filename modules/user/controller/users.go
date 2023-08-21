@@ -24,7 +24,7 @@ type UserController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{object}	dto.UserItem
-//	@Router			/users/{id} [get]
+//	@Router			/v1/users/{id} [get]
 func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
 	item, err := c.userSvc.GetByID(ctx.Context(), id)
 	if err != nil {
@@ -45,7 +45,7 @@ func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
 //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/users [get]
+//	@Router			/v1/users [get]
 func (c *UserController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.UserListQueryFilter,
@@ -75,7 +75,7 @@ func (c *UserController) List(
 //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/users/roles/{role_id} [get]
+//	@Router			/v1/users/roles/{role_id} [get]
 func (c *UserController) Role(
 	ctx *fiber.Ctx,
 	roleID int64,
@@ -112,7 +112,7 @@ func (c *UserController) Role(
 //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/users/tenants/{tenant_id} [get]
+//	@Router			/v1/users/tenants/{tenant_id} [get]
 func (c *UserController) Tenant(
 	ctx *fiber.Ctx,
 	tenantID int64,
@@ -147,7 +147,7 @@ func (c *UserController) Tenant(
 //	@Produce		json
 //	@Param			body	body		dto.UserForm	true	"UserForm"
 //	@Success		200		{string}	UserID
-//	@Router			/users [post]
+//	@Router			/v1/users [post]
 func (c *UserController) Create(ctx *fiber.Ctx, body *dto.UserForm) error {
 	return c.userSvc.Create(ctx.Context(), body)
 }
@@ -163,7 +163,7 @@ func (c *UserController) Create(ctx *fiber.Ctx, body *dto.UserForm) error {
 //	@Param			body	body		dto.UserForm	true	"UserForm"
 //	@Success		200		{string}	UserID
 //	@Failure		500		{string}	UserID
-//	@Router			/users/{id} [put]
+//	@Router			/v1/users/{id} [put]
 func (c *UserController) Update(ctx *fiber.Ctx, id int64, body *dto.UserForm) error {
 	return c.userSvc.Update(ctx.Context(), id, body)
 }
@@ -178,7 +178,7 @@ func (c *UserController) Update(ctx *fiber.Ctx, id int64, body *dto.UserForm) er
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{string}	UserID
 //	@Failure		500	{string}	UserID
-//	@Router			/users/{id} [delete]
+//	@Router			/v1/users/{id} [delete]
 func (c *UserController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.userSvc.Delete(ctx.Context(), id)
 }

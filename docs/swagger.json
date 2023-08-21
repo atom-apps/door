@@ -306,9 +306,9 @@
                 "responses": {}
             }
         },
-        "/users": {
+        "/v1/permission/check": {
             "post": {
-                "description": "create new item",
+                "description": "CheckPermission",
                 "consumes": [
                     "application/json"
                 ],
@@ -316,28 +316,21 @@
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Auth"
                 ],
-                "summary": "create new item",
+                "summary": "CheckPermission",
                 "parameters": [
                     {
-                        "description": "UserForm",
+                        "description": "PermissionCheckForm",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserForm"
+                            "$ref": "#/definitions/dto.PermissionCheckForm"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/v1/permissions/attach/{role_id}/{tenant_id}": {
@@ -621,6 +614,38 @@
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create new item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "create new item",
+                "parameters": [
+                    {
+                        "description": "UserForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1824,6 +1849,17 @@
                     "type": "string"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PermissionCheckForm": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "path": {
                     "type": "string"
                 }
             }

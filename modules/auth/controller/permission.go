@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/atom-apps/door/modules/auth/dto"
-	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-providers/casbin"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -19,16 +19,17 @@ type PermissionController struct {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		dto.PermissionCheckForm	true	"PermissionCheckForm"
+//	@Param			body	body	dto.PermissionCheckForm	true	"PermissionCheckForm"
 //	@Router			/v1/permission/check [post]
 func (c *PermissionController) Check(ctx *fiber.Ctx, check *dto.PermissionCheckForm) error {
 	claim, ok := ctx.Locals(jwt.CtxKey).(*jwt.Claims)
 	if !ok {
-		return fiber.ErrUnauthorized
+		return ctx.SendStatus(fiber.StatusUnauthorized)
 	}
 
 	if !c.casbin.Check(claim.UserID, claim.TenantID, check.Path, check.Method) {
-		return fiber.ErrForbidden
+		return ctx.SendStatus(fiber.StatusUnauthorized)
 	}
+
 	return nil
 }

@@ -1,8 +1,8 @@
 package seeders
 
 import (
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
+	"github.com/atom-providers/jwt"
 	"github.com/samber/lo"
 
 	"github.com/brianvoe/gofakeit/v6"
@@ -21,9 +21,9 @@ func (s *RoleSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.Role{}).TableName(nil))
 
 	roles := []models.Role{
-		{Name: "超级管理员", Slug: consts.RoleSuperAdmin.String(), Description: "超级管理员", ParentID: 0},
-		{Name: "系统管理员", Slug: consts.RoleSysAdmin.String(), Description: "系统管理员", ParentID: 1},
-		{Name: "租户管理员", Slug: consts.RoleTenantAdmin.String(), Description: "租户管理员", ParentID: 2},
+		{Name: "超级管理员", Slug: jwt.RoleSuperAdmin.String(), Description: "超级管理员", ParentID: 0},
+		{Name: "系统管理员", Slug: jwt.RoleSysAdmin.String(), Description: "系统管理员", ParentID: 1},
+		{Name: "租户管理员", Slug: jwt.RoleTenantAdmin.String(), Description: "租户管理员", ParentID: 2},
 	}
 	lo.ForEach(roles, func(role models.Role, _ int) {
 		db.Create(&role)

@@ -2,8 +2,8 @@ package boot
 
 import (
 	userModule "github.com/atom-apps/door/modules/user/service"
-	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-providers/casbin"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/rogeecn/atom"

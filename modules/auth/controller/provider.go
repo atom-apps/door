@@ -58,6 +58,17 @@ func Provide(opts ...opt.Option) error {
 		return err
 	}
 
+	if err := container.Container.Provide(func(
+		casbin *casbin.Casbin,
+	) (*PermissionController, error) {
+		obj := &PermissionController{
+			casbin: casbin,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
 	if err := container.Container.Provide(func() (*RoutesController, error) {
 		obj := &RoutesController{}
 		return obj, nil

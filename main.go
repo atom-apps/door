@@ -17,7 +17,6 @@ import (
 
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/providers/bcrypt"
-	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/captcha"
@@ -25,6 +24,7 @@ import (
 	databasePostgres "github.com/atom-providers/database-postgres"
 	redis "github.com/atom-providers/database-redis"
 	"github.com/atom-providers/hashids"
+	"github.com/atom-providers/jwt"
 	service "github.com/atom-providers/service-httpgrpc"
 	"github.com/atom-providers/swagger"
 	"github.com/atom-providers/uuid"

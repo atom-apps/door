@@ -3,18 +3,18 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/user/controller"
 	"github.com/atom-apps/door/modules/user/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeUserController(engine fiber.Router, controller *controller.UserController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
+	basePath := "/" + engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/users/:id<int>", basePath), DataFunc1(controller.Show, Integer[int64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/users", basePath), DataFunc3(controller.List, Query[dto.UserListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Get(strings.TrimPrefix("/v1/users/roles/:roleId", basePath), DataFunc4(controller.Role, Integer[int64]("roleID", PathParamError), Query[dto.UserListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))

@@ -3,10 +3,9 @@ package boot
 import (
 	"strings"
 
-	"github.com/atom-apps/door/common/consts"
 	userModule "github.com/atom-apps/door/modules/user/service"
-	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-providers/casbin"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
 )
@@ -39,7 +38,7 @@ func httpMiddlewareCasbin(
 			return errors.Wrap(err, "middleware: get user role failed")
 		}
 
-		if role.Slug == consts.RoleSuperAdmin.String() {
+		if role.Slug == jwt.RoleSuperAdmin.String() {
 			return ctx.Next()
 		}
 

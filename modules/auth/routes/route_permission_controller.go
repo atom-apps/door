@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/auth/controller"
 	"github.com/atom-apps/door/modules/auth/dto"
@@ -13,6 +13,6 @@ import (
 )
 
 func routePermissionController(engine fiber.Router, controller *controller.PermissionController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Post(strings.TrimPrefix("/permission/check", basePath), Func1(controller.Check, Body[dto.PermissionCheckForm](BodyParamError)))
+	basePath := "/" + engine.(*fiber.Group).Prefix
+	engine.Post(strings.TrimPrefix("/v1/permission/check", basePath), Func1(controller.Check, Body[dto.PermissionCheckForm](BodyParamError)))
 }

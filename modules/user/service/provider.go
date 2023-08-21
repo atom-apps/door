@@ -3,9 +3,9 @@ package service
 import (
 	"github.com/atom-apps/door/modules/user/dao"
 	"github.com/atom-apps/door/providers/bcrypt"
-	"github.com/atom-apps/door/providers/jwt"
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-providers/hashids"
+	"github.com/atom-providers/jwt"
 	"github.com/atom-providers/uuid"
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"

@@ -3,7 +3,7 @@ package boot
 import (
 	"strings"
 
-	"github.com/atom-apps/door/providers/jwt"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -22,7 +22,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.0.5
 	github.com/rogeecn/atom v1.0.8
-	github.com/rogeecn/fen v1.0.7
+	github.com/rogeecn/fen v1.0.9
 	github.com/samber/lo v1.38.1
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/crypto v0.12.0

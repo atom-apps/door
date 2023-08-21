@@ -5,6 +5,7 @@ import (
 
 	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/rogeecn/fen"
 )
 
 func httpMiddlewareJWT(j *jwt.JWT) func(ctx *fiber.Ctx) error {
@@ -28,7 +29,7 @@ func httpMiddlewareJWT(j *jwt.JWT) func(ctx *fiber.Ctx) error {
 		if err != nil {
 			return ctx.SendStatus(fiber.StatusUnauthorized)
 		}
-		ctx.Locals(jwt.CtxKey, claims)
+		ctx.Locals(fen.JwtCtxKey, claims)
 
 		return ctx.Next()
 	}

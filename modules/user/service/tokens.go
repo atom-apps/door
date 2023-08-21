@@ -180,7 +180,12 @@ func (svc *TokenService) GetByRefreshToken(ctx context.Context, refreshToken, ap
 
 // RefreshToken
 func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token, app *oauth.App) (*models.Token, error) {
-	claim := svc.getClaims(ctx, token.UserID, token.TenantID)
+	role, err := svc.permissionSvc.GetRoleOfTenantUser(ctx, token.TenantID, token.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	claim := svc.getClaims(ctx, token.UserID, token.TenantID, role.Name)
 	accessToken, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err

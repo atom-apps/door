@@ -17,6 +17,7 @@ import (
 
 var (
 	Q              = new(Query)
+	Location       *location
 	Migration      *migration
 	PermissionRule *permissionRule
 	Role           *role
@@ -29,6 +30,7 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Location = &Q.Location
 	Migration = &Q.Migration
 	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
@@ -42,6 +44,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:             db,
+		Location:       newLocation(db, opts...),
 		Migration:      newMigration(db, opts...),
 		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
@@ -56,6 +59,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	Location       location
 	Migration      migration
 	PermissionRule permissionRule
 	Role           role
@@ -71,6 +75,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		Location:       q.Location.clone(db),
 		Migration:      q.Migration.clone(db),
 		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
@@ -93,6 +98,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		Location:       q.Location.replaceDB(db),
 		Migration:      q.Migration.replaceDB(db),
 		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
@@ -105,6 +111,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	Location       ILocationDo
 	Migration      IMigrationDo
 	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
@@ -117,6 +124,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		Location:       q.Location.WithContext(ctx),
 		Migration:      q.Migration.WithContext(ctx),
 		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),

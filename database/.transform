@@ -3,3 +3,5 @@ users.status => consts.UserStatus
 user_infos.gender => consts.Gender
 
 tokens.token_type => consts.TokenType
+
+routes.metadata => datatypes.JSONType[common.RouteMetadata]

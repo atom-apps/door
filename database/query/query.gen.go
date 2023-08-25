@@ -21,6 +21,7 @@ var (
 	Migration      *migration
 	PermissionRule *permissionRule
 	Role           *role
+	Route          *route
 	Session        *session
 	Tenant         *tenant
 	Token          *token
@@ -34,6 +35,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Migration = &Q.Migration
 	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
+	Route = &Q.Route
 	Session = &Q.Session
 	Tenant = &Q.Tenant
 	Token = &Q.Token
@@ -48,6 +50,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Migration:      newMigration(db, opts...),
 		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
+		Route:          newRoute(db, opts...),
 		Session:        newSession(db, opts...),
 		Tenant:         newTenant(db, opts...),
 		Token:          newToken(db, opts...),
@@ -63,6 +66,7 @@ type Query struct {
 	Migration      migration
 	PermissionRule permissionRule
 	Role           role
+	Route          route
 	Session        session
 	Tenant         tenant
 	Token          token
@@ -79,6 +83,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Migration:      q.Migration.clone(db),
 		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
+		Route:          q.Route.clone(db),
 		Session:        q.Session.clone(db),
 		Tenant:         q.Tenant.clone(db),
 		Token:          q.Token.clone(db),
@@ -102,6 +107,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Migration:      q.Migration.replaceDB(db),
 		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
+		Route:          q.Route.replaceDB(db),
 		Session:        q.Session.replaceDB(db),
 		Tenant:         q.Tenant.replaceDB(db),
 		Token:          q.Token.replaceDB(db),
@@ -115,6 +121,7 @@ type queryCtx struct {
 	Migration      IMigrationDo
 	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
+	Route          IRouteDo
 	Session        ISessionDo
 	Tenant         ITenantDo
 	Token          ITokenDo
@@ -128,6 +135,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Migration:      q.Migration.WithContext(ctx),
 		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),
+		Route:          q.Route.WithContext(ctx),
 		Session:        q.Session.WithContext(ctx),
 		Tenant:         q.Tenant.WithContext(ctx),
 		Token:          q.Token.WithContext(ctx),

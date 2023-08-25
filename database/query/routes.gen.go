@@ -28,7 +28,7 @@ func newRoute(db *gorm.DB, opts ...gen.DOOption) route {
 	tableName := _route.routeDo.TableName()
 	_route.ALL = field.NewAsterisk(tableName)
 	_route.ID = field.NewInt64(tableName, "id")
-	_route.Type = field.NewString(tableName, "type")
+	_route.Type = field.NewField(tableName, "type")
 	_route.ParentID = field.NewInt64(tableName, "parent_id")
 	_route.Name = field.NewString(tableName, "name")
 	_route.Path = field.NewString(tableName, "path")
@@ -44,7 +44,7 @@ type route struct {
 
 	ALL      field.Asterisk
 	ID       field.Int64
-	Type     field.String
+	Type     field.Field
 	ParentID field.Int64
 	Name     field.String
 	Path     field.String
@@ -66,7 +66,7 @@ func (r route) As(alias string) *route {
 func (r *route) updateTableName(table string) *route {
 	r.ALL = field.NewAsterisk(table)
 	r.ID = field.NewInt64(table, "id")
-	r.Type = field.NewString(table, "type")
+	r.Type = field.NewField(table, "type")
 	r.ParentID = field.NewInt64(table, "parent_id")
 	r.Name = field.NewString(table, "name")
 	r.Path = field.NewString(table, "path")

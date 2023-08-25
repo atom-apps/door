@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/atom-apps/door/modules/tools/controller"
+	"github.com/atom-apps/door/modules/systems/controller"
 	"github.com/atom-providers/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rogeecn/atom"
@@ -14,11 +14,11 @@ func Provide(opts ...opt.Option) error {
 	return container.Container.Provide(newRoute, atom.GroupRoutes)
 }
 
-func newRoute(svc contracts.HttpService, locationController *controller.LocationController) contracts.HttpRoute {
+func newRoute(svc contracts.HttpService, routeController *controller.RouteController) contracts.HttpRoute {
 	engine := svc.GetEngine().(*fiber.App)
-	group := engine.Group("tools")
+	group := engine.Group("systems")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
 
-	routeLocationController(group, locationController)
+	routeRouteController(group, routeController)
 	return nil
 }

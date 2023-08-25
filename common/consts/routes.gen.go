@@ -14,6 +14,166 @@ import (
 )
 
 const (
+	// RouteModeFlat is a RouteMode of type flat.
+	RouteModeFlat RouteMode = "flat"
+	// RouteModeTree is a RouteMode of type tree.
+	RouteModeTree RouteMode = "tree"
+)
+
+var ErrInvalidRouteMode = fmt.Errorf("not a valid RouteMode, try [%s]", strings.Join(_RouteModeNames, ", "))
+
+var _RouteModeNames = []string{
+	string(RouteModeFlat),
+	string(RouteModeTree),
+}
+
+// RouteModeNames returns a list of possible string values of RouteMode.
+func RouteModeNames() []string {
+	tmp := make([]string, len(_RouteModeNames))
+	copy(tmp, _RouteModeNames)
+	return tmp
+}
+
+// RouteModeValues returns a list of the values for RouteMode
+func RouteModeValues() []RouteMode {
+	return []RouteMode{
+		RouteModeFlat,
+		RouteModeTree,
+	}
+}
+
+// String implements the Stringer interface.
+func (x RouteMode) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x RouteMode) IsValid() bool {
+	_, err := ParseRouteMode(string(x))
+	return err == nil
+}
+
+var _RouteModeValue = map[string]RouteMode{
+	"flat": RouteModeFlat,
+	"tree": RouteModeTree,
+}
+
+// ParseRouteMode attempts to convert a string to a RouteMode.
+func ParseRouteMode(name string) (RouteMode, error) {
+	if x, ok := _RouteModeValue[name]; ok {
+		return x, nil
+	}
+	return RouteMode(""), fmt.Errorf("%s is %w", name, ErrInvalidRouteMode)
+}
+
+var errRouteModeNilPtr = errors.New("value pointer is nil") // one per type for package clashes
+
+// Scan implements the Scanner interface.
+func (x *RouteMode) Scan(value interface{}) (err error) {
+	if value == nil {
+		*x = RouteMode("")
+		return
+	}
+
+	// A wider range of scannable types.
+	// driver.Value values at the top of the list for expediency
+	switch v := value.(type) {
+	case string:
+		*x, err = ParseRouteMode(v)
+	case []byte:
+		*x, err = ParseRouteMode(string(v))
+	case RouteMode:
+		*x = v
+	case *RouteMode:
+		if v == nil {
+			return errRouteModeNilPtr
+		}
+		*x = *v
+	case *string:
+		if v == nil {
+			return errRouteModeNilPtr
+		}
+		*x, err = ParseRouteMode(*v)
+	default:
+		return errors.New("invalid type for RouteMode")
+	}
+
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x RouteMode) Value() (driver.Value, error) {
+	return x.String(), nil
+}
+
+// Set implements the Golang flag.Value interface func.
+func (x *RouteMode) Set(val string) error {
+	v, err := ParseRouteMode(val)
+	*x = v
+	return err
+}
+
+// Get implements the Golang flag.Getter interface func.
+func (x *RouteMode) Get() interface{} {
+	return *x
+}
+
+// Type implements the github.com/spf13/pFlag Value interface.
+func (x *RouteMode) Type() string {
+	return "RouteMode"
+}
+
+type NullRouteMode struct {
+	RouteMode RouteMode
+	Valid     bool
+}
+
+func NewNullRouteMode(val interface{}) (x NullRouteMode) {
+	err := x.Scan(val) // yes, we ignore this error, it will just be an invalid value.
+	_ = err            // make any errcheck linters happy
+	return
+}
+
+// Scan implements the Scanner interface.
+func (x *NullRouteMode) Scan(value interface{}) (err error) {
+	if value == nil {
+		x.RouteMode, x.Valid = RouteMode(""), false
+		return
+	}
+
+	err = x.RouteMode.Scan(value)
+	x.Valid = (err == nil)
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x NullRouteMode) Value() (driver.Value, error) {
+	if !x.Valid {
+		return nil, nil
+	}
+	// driver.Value accepts int64 for int values.
+	return string(x.RouteMode), nil
+}
+
+type NullRouteModeStr struct {
+	NullRouteMode
+}
+
+func NewNullRouteModeStr(val interface{}) (x NullRouteModeStr) {
+	x.Scan(val) // yes, we ignore this error, it will just be an invalid value.
+	return
+}
+
+// Value implements the driver Valuer interface.
+func (x NullRouteModeStr) Value() (driver.Value, error) {
+	if !x.Valid {
+		return nil, nil
+	}
+	return x.RouteMode.String(), nil
+}
+
+const (
 	// RouteTypePage is a RouteType of type page.
 	RouteTypePage RouteType = "page"
 	// RouteTypeApi is a RouteType of type api.

@@ -1,5 +1,9 @@
 package errorx
 
-import "errors"
+import (
+	"net/http"
 
-var ErrInvalidRedirectURL = errors.New("跳转地址不合法")
+	"github.com/rogeecn/fen"
+)
+
+var ErrInvalidRedirectURL = fen.NewBusError(http.StatusBadRequest, http.StatusBadRequest, "跳转地址不合法")

@@ -3,7 +3,7 @@
 package routes
 
 import (
-	"strings"
+	 "strings"
 
 	"github.com/atom-apps/door/modules/auth/controller"
 	"github.com/atom-apps/door/modules/auth/dto"
@@ -13,7 +13,7 @@ import (
 )
 
 func routeAuthController(engine fiber.Router, controller *controller.AuthController) {
-	basePath := "/" + engine.(*fiber.Group).Prefix
+	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Post(strings.TrimPrefix("/auth/signup", basePath), DataFunc1(controller.SignUp, Body[dto.SignUpForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/auth/signin", basePath), DataFunc1(controller.SignIn, Body[dto.SignInForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/auth/logout", basePath), Func1(controller.Logout, Body[dto.LogoutForm](BodyParamError)))

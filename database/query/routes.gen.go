@@ -33,6 +33,7 @@ func newRoute(db *gorm.DB, opts ...gen.DOOption) route {
 	_route.Name = field.NewString(tableName, "name")
 	_route.Path = field.NewString(tableName, "path")
 	_route.Metadata = field.NewField(tableName, "metadata")
+	_route.Order = field.NewInt64(tableName, "order")
 
 	_route.fillFieldMap()
 
@@ -49,6 +50,7 @@ type route struct {
 	Name     field.String
 	Path     field.String
 	Metadata field.Field
+	Order    field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -71,6 +73,7 @@ func (r *route) updateTableName(table string) *route {
 	r.Name = field.NewString(table, "name")
 	r.Path = field.NewString(table, "path")
 	r.Metadata = field.NewField(table, "metadata")
+	r.Order = field.NewInt64(table, "order")
 
 	r.fillFieldMap()
 
@@ -95,13 +98,14 @@ func (r *route) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *route) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 6)
+	r.fieldMap = make(map[string]field.Expr, 7)
 	r.fieldMap["id"] = r.ID
 	r.fieldMap["type"] = r.Type
 	r.fieldMap["parent_id"] = r.ParentID
 	r.fieldMap["name"] = r.Name
 	r.fieldMap["path"] = r.Path
 	r.fieldMap["metadata"] = r.Metadata
+	r.fieldMap["order"] = r.Order
 }
 
 func (r route) clone(db *gorm.DB) route {

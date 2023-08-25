@@ -98,6 +98,9 @@ func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.Route
 	return dao.Context(ctx).Where(
 		dao.query.Route.ParentID.Eq(parentID),
 		dao.query.Route.Type.Eq(mode),
+	).Order(
+		dao.query.Route.Order,
+		dao.query.Route.ID,
 	).Find()
 }
 

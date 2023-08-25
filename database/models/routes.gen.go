@@ -21,6 +21,7 @@ type Route struct {
 	Name     string                                   `gorm:"column:name;type:character varying(255);not null" json:"name"`
 	Path     string                                   `gorm:"column:path;type:character varying(1024);not null" json:"path"`
 	Metadata datatypes.JSONType[common.RouteMetadata] `gorm:"column:metadata;type:text" json:"metadata"`
+	Order    int64                                    `gorm:"column:order;type:bigint" json:"order"`
 }
 
 func (*Route) TableName(namer schema.Namer) string {

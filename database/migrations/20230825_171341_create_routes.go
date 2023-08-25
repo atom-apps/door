@@ -13,6 +13,7 @@ func (m *Migration20230825_171341CreateRoutes) table() interface{} {
 		Name     string `gorm:"size:255;not null"`
 		Path     string `gorm:"size:1024;not null"`
 		Metadata string `gorm:"default '{}'"`
+		Order    uint   `gorm:"default 0"`
 	}
 
 	return &Routes{}

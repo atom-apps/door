@@ -14,4 +14,5 @@ import (
 func routeRoutesController(engine fiber.Router, controller *controller.RoutesController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/auth/routes", basePath), DataFunc(controller.List))
+	engine.Get(strings.TrimPrefix("/auth/pages", basePath), DataFunc(controller.Pages))
 }

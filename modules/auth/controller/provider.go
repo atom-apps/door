@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/atom-apps/door/modules/auth/service"
 	serviceSvc "github.com/atom-apps/door/modules/service/service"
+	systemSvc "github.com/atom-apps/door/modules/systems/service"
 	userSvc "github.com/atom-apps/door/modules/user/service"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/casbin"
@@ -69,8 +70,12 @@ func Provide(opts ...opt.Option) error {
 		return err
 	}
 
-	if err := container.Container.Provide(func() (*RoutesController, error) {
-		obj := &RoutesController{}
+	if err := container.Container.Provide(func(
+		routeSvc *systemSvc.RouteService,
+	) (*RoutesController, error) {
+		obj := &RoutesController{
+			routeSvc: routeSvc,
+		}
 		return obj, nil
 	}); err != nil {
 		return err

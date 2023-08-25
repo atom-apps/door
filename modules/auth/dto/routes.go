@@ -1,6 +1,11 @@
 package dto
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/consts"
+)
 
 type SwaggerDoc struct {
 	Paths map[string]map[string]routeDefinition
@@ -33,4 +38,14 @@ func (doc *SwaggerDoc) ToRoues() []*Route {
 		}
 	}
 	return routes
+}
+
+type RouteItem struct {
+	ID       int64                `json:"id,omitempty"`                //
+	Type     *consts.RouteType    `query:"type" json:"type,omitempty"` //
+	ParentID int64                `json:"parent_id,omitempty"`         //
+	Name     string               `json:"name,omitempty"`              //
+	Path     string               `json:"path,omitempty"`              //
+	Metadata common.RouteMetadata `json:"metadata,omitempty"`          //
+	Children []*RouteItem         `json:"children,omitempty"`          //
 }

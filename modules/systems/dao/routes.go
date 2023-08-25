@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -91,6 +92,13 @@ func (dao *RouteDao) Create(ctx context.Context, model *models.Route) error {
 
 func (dao *RouteDao) GetByID(ctx context.Context, id int64) (*models.Route, error) {
 	return dao.Context(ctx).Where(dao.query.Route.ID.Eq(id)).First()
+}
+
+func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.RouteType, parentID int64) ([]*models.Route, error) {
+	return dao.Context(ctx).Where(
+		dao.query.Route.ParentID.Eq(parentID),
+		dao.query.Route.Type.Eq(mode),
+	).Find()
 }
 
 func (dao *RouteDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Route, error) {

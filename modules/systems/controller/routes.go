@@ -36,7 +36,7 @@ func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id int64) (*dt
 		return nil, err
 	}
 
-	return c.routeSvc.DecorateItem(consts.RouteModeFlat)(item, 0), nil
+	return c.routeSvc.DecorateItem(item, 0), nil
 }
 
 // List list by query filter
@@ -69,7 +69,7 @@ func (c *RouteController) List(
 	return &common.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           total,
-		Items:           lo.Map(items, c.routeSvc.DecorateItem(consts.RouteModeFlat)),
+		Items:           lo.Map(items, c.routeSvc.DecorateItem),
 	}, nil
 }
 
@@ -81,22 +81,14 @@ func (c *RouteController) List(
 //	@Produce		json
 //	@Param			queryFilter	query		dto.RouteListQueryFilter	true	"RouteListQueryFilter"
 //	@Success		200			{array}	dto.RouteItem
-//	@Router			/v1/routes/pages/{mode} [get]
-func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, mode string) ([]*dto.RouteItem, error) {
-	m, err := consts.ParseRouteMode(mode)
+//	@Router			/v1/routes/type/{route_type} [get]
+func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType string) ([]*dto.RouteItem, error) {
+	typ, err := consts.ParseRouteType(routeType)
 	if err != nil {
 		return nil, err
 	}
 
-	queryFilter := &dto.RouteListQueryFilter{
-		Type: lo.ToPtr(consts.RouteTypePage),
-	}
-	items, err := c.routeSvc.FindByQueryFilter(ctx.Context(), queryFilter, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return lo.Map(items, c.routeSvc.DecorateItem(m)), nil
+	return c.routeSvc.Tree(ctx.Context(), typ, 0)
 }
 
 // Create a new item

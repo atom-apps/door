@@ -150,20 +150,14 @@ func (dao *TokenDao) FirstByQueryFilter(
 }
 
 // GetByToken
-func (dao *TokenDao) GetByToken(ctx context.Context, token, scope string) (*models.Token, error) {
+func (dao *TokenDao) GetByToken(ctx context.Context, token string) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
-	return query.Where(
-		table.AccessToken.Eq(token),
-		table.Scope.Eq(scope),
-	).First()
+	return query.Where(table.AccessToken.Eq(token)).First()
 }
 
-func (dao *TokenDao) GetByUserID(ctx context.Context, userID int64, scope string) (*models.Token, error) {
+func (dao *TokenDao) GetByUserID(ctx context.Context, userID int64) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
-	return query.Where(
-		table.UserID.Eq(userID),
-		table.Scope.Eq(scope),
-	).First()
+	return query.Where(table.UserID.Eq(userID)).First()
 }
 
 // DeleteBySessionID
@@ -173,30 +167,21 @@ func (dao *TokenDao) DeleteBySessionID(ctx context.Context, sessionID int64) err
 }
 
 // GetByRefreshToken
-func (dao *TokenDao) GetByRefreshToken(ctx context.Context, refreshToken, scope string) (*models.Token, error) {
+func (dao *TokenDao) GetByRefreshToken(ctx context.Context, refreshToken string) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
-	return query.Where(
-		table.RefreshToken.Eq(refreshToken),
-		table.Scope.Eq(scope),
-	).First()
+	return query.Where(table.RefreshToken.Eq(refreshToken)).First()
 }
 
 // GetByCode
-func (dao *TokenDao) GetByCode(ctx context.Context, code, scope string) (*models.Token, error) {
+func (dao *TokenDao) GetByCode(ctx context.Context, code string) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
-	return query.Where(
-		table.Code.Eq(code),
-		table.Scope.Eq(scope),
-	).First()
+	return query.Where(table.Code.Eq(code)).First()
 }
 
 // GetBySessionID
-func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID int64, scope string) (*models.Token, error) {
+func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID int64) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
-	return query.Where(
-		table.SessionID.Eq(sessionID),
-		table.Scope.Eq(scope),
-	).First()
+	return query.Where(table.SessionID.Eq(sessionID)).First()
 }
 
 // GetBySessionIDWithoutScope

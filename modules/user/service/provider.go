@@ -4,6 +4,7 @@ import (
 	"github.com/atom-apps/door/modules/user/dao"
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/md5"
+	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/jwt"
 	"github.com/atom-providers/uuid"
@@ -73,6 +74,7 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		auth *oauth.Auth,
 		hash *md5.Hash,
 		jwt *jwt.JWT,
 		permissionSvc *PermissionRuleService,
@@ -82,6 +84,7 @@ func Provide(opts ...opt.Option) error {
 		uuid *uuid.Generator,
 	) (*TokenService, error) {
 		obj := &TokenService{
+			auth:          auth,
 			hash:          hash,
 			jwt:           jwt,
 			permissionSvc: permissionSvc,

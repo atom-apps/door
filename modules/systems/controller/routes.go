@@ -47,8 +47,8 @@ func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id int64) (*dt
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.RouteListQueryFilter	true	"RouteListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.RouteItem}
 //	@Router			/v1/routes [get]
 func (c *RouteController) List(
@@ -75,13 +75,13 @@ func (c *RouteController) List(
 
 // Pages get page routes
 //
-//	@Summary		获取页面路由
-//	@Tags			Systems
-//	@Accept			json
-//	@Produce		json
-//	@Param			queryFilter	query		dto.RouteListQueryFilter	true	"RouteListQueryFilter"
-//	@Success		200			{array}	dto.RouteItem
-//	@Router			/v1/routes/type/{route_type} [get]
+//	@Summary	获取页面路由
+//	@Tags		Systems
+//	@Accept		json
+//	@Produce	json
+//	@Param		queryFilter	query	dto.RouteListQueryFilter	true	"RouteListQueryFilter"
+//	@Success	200			{array}	dto.RouteItem
+//	@Router		/v1/routes/type/{route_type} [get]
 func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType string) ([]*dto.RouteItem, error) {
 	typ, err := consts.ParseRouteType(routeType)
 	if err != nil {

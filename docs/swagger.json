@@ -99,6 +99,31 @@
                 "responses": {}
             }
         },
+        "/auth/pages": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "获取页面路由",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_atom-apps_door_modules_auth_dto.RouteItem"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/refresh-token": {
             "post": {
                 "description": "RefreshToken",
@@ -439,6 +464,291 @@
                 }
             }
         },
+        "/v1/routes": {
+            "get": {
+                "description": "list by query filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "list by query filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "parent_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "page",
+                            "api"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "RouteTypePage",
+                            "RouteTypeApi"
+                        ],
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "asc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.PageDataResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "$ref": "#/definitions/github_com_atom-apps_door_modules_systems_dto.RouteItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create new item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "create new item",
+                "parameters": [
+                    {
+                        "description": "RouteForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RouteForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/routes/type/{route_type}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "获取页面路由",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "parent_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "page",
+                            "api"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "RouteTypePage",
+                            "RouteTypeApi"
+                        ],
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_atom-apps_door_modules_systems_dto.RouteItem"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/routes/{id}": {
+            "get": {
+                "description": "get info by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "get by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RouteID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_atom-apps_door_modules_systems_dto.RouteItem"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "update by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RouteID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "RouteForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RouteForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "delete by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RouteID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/services/captcha/generate": {
             "get": {
                 "consumes": [
@@ -511,6 +821,239 @@
                     }
                 ],
                 "responses": {}
+            }
+        },
+        "/v1/tools/locations": {
+            "get": {
+                "description": "list by query filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "list by query filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "city",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "行政区划代码",
+                        "name": "code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "province",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "town",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "asc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.PageDataResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "$ref": "#/definitions/dto.LocationItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create new item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "create new item",
+                "parameters": [
+                    {
+                        "description": "LocationForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LocationForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tools/locations/{id}": {
+            "get": {
+                "description": "get info by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "get by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "LocationID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LocationItem"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "update by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "LocationID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "LocationForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LocationForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "delete by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "LocationID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/v1/users": {
@@ -1773,6 +2316,31 @@
                 }
             }
         },
+        "common.RouteMetadata": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "requiresAuth": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "consts.RouteType": {
+            "type": "string",
+            "enum": [
+                "page",
+                "api"
+            ],
+            "x-enum-varnames": [
+                "RouteTypePage",
+                "RouteTypeApi"
+            ]
+        },
         "consts.TokenType": {
             "type": "string",
             "enum": [
@@ -1839,15 +2407,66 @@
                 },
                 "scope": {
                     "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LocationForm": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "code": {
+                    "description": "行政区划代码",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "town": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LocationItem": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "code": {
+                    "description": "行政区划代码",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "town": {
+                    "type": "string"
                 }
             }
         },
         "dto.LogoutForm": {
             "type": "object",
             "properties": {
-                "app_name": {
-                    "type": "string"
-                },
                 "token": {
                     "type": "string"
                 }
@@ -1867,9 +2486,6 @@
         "dto.RefreshTokenForm": {
             "type": "object",
             "properties": {
-                "app_name": {
-                    "type": "string"
-                },
                 "token": {
                     "type": "string"
                 }
@@ -1878,9 +2494,6 @@
         "dto.ResetPasswordForm": {
             "type": "object",
             "properties": {
-                "app_name": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
@@ -1926,6 +2539,26 @@
                 },
                 "slug": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.RouteForm": {
+            "type": "object",
+            "properties": {
+                "metadata": {
+                    "$ref": "#/definitions/common.RouteMetadata"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/consts.RouteType"
                 }
             }
         },
@@ -1976,14 +2609,14 @@
                 "tokens": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_atom-apps_door_database_models.Token"
+                        "$ref": "#/definitions/models.Token"
                     }
                 },
                 "updated_at": {
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_atom-apps_door_database_models.User"
+                    "$ref": "#/definitions/models.User"
                 },
                 "user_id": {
                     "type": "integer"
@@ -1993,9 +2626,6 @@
         "dto.SignInForm": {
             "type": "object",
             "properties": {
-                "app_name": {
-                    "type": "string"
-                },
                 "captcha": {
                     "type": "string"
                 },
@@ -2011,6 +2641,9 @@
                 "password": {
                     "type": "string"
                 },
+                "token": {
+                    "type": "boolean"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -2019,9 +2652,6 @@
         "dto.SignUpForm": {
             "type": "object",
             "properties": {
-                "app_name": {
-                    "type": "string"
-                },
                 "captcha": {
                     "type": "string"
                 },
@@ -2116,7 +2746,7 @@
                     "type": "string"
                 },
                 "session": {
-                    "$ref": "#/definitions/github_com_atom-apps_door_database_models.Session"
+                    "$ref": "#/definitions/models.Session"
                 },
                 "session_id": {
                     "type": "integer"
@@ -2199,7 +2829,65 @@
                 }
             }
         },
-        "github_com_atom-apps_door_database_models.Session": {
+        "github_com_atom-apps_door_modules_auth_dto.RouteItem": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_atom-apps_door_modules_auth_dto.RouteItem"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/common.RouteMetadata"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/consts.RouteType"
+                }
+            }
+        },
+        "github_com_atom-apps_door_modules_systems_dto.RouteItem": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_atom-apps_door_modules_systems_dto.RouteItem"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/common.RouteMetadata"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/consts.RouteType"
+                }
+            }
+        },
+        "models.Session": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -2222,7 +2910,7 @@
                 }
             }
         },
-        "github_com_atom-apps_door_database_models.Token": {
+        "models.Token": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -2275,7 +2963,7 @@
                 }
             }
         },
-        "github_com_atom-apps_door_database_models.User": {
+        "models.User": {
             "type": "object",
             "properties": {
                 "avatar": {

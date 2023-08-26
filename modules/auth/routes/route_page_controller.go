@@ -13,7 +13,7 @@ import (
 
 func routePageController(engine fiber.Router, controller *controller.PageController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/auth/signin/:appName", basePath), Func1(controller.Signin, String("appName", PathParamError)))
-	engine.Get(strings.TrimPrefix("/auth/signup/:appName", basePath), Func1(controller.Signup, String("appName", PathParamError)))
-	engine.Get(strings.TrimPrefix("/auth/reset-password/:appName", basePath), Func1(controller.ResetPassword, String("appName", PathParamError)))
+	engine.Get(strings.TrimPrefix("/auth/signin", basePath), Func1(controller.Signin, String("appName", PathParamError)))
+	engine.Get(strings.TrimPrefix("/auth/signup", basePath), Func(controller.Signup))
+	engine.Get(strings.TrimPrefix("/auth/reset-password", basePath), Func(controller.ResetPassword))
 }

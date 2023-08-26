@@ -33,12 +33,7 @@ func (c *PageController) sendCookie(ctx *fiber.Ctx) {
 	})
 }
 
-func (c *PageController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, bool) {
-	app, err := c.oauth.GetAppByName(appName)
-	if err != nil {
-		return "", false
-	}
-
+func (c *PageController) canAutoLogin(ctx *fiber.Ctx) (string, bool) {
 	session := ctx.Cookies(consts.SessionName, "")
 	if session == "" {
 		return "", false
@@ -54,12 +49,12 @@ func (c *PageController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, b
 		return "", false
 	}
 
-	token, err := c.tokenSvc.GetByUserID(ctx.Context(), user.ID, app.Name)
+	token, err := c.tokenSvc.GetByUserID(ctx.Context(), user.ID)
 	if err != nil {
 		return "", false
 	}
 
-	redirect, err := app.GetCallbackURL(token.Code, token.Scope, ctx.Query("redirect", ""))
+	redirect, err := c.oauth.GetCallbackURL(token.Code, token.Scope, ctx.Query("redirect", ""))
 	if err != nil {
 		return "", false
 	}
@@ -74,9 +69,9 @@ func (c *PageController) canAutoLogin(ctx *fiber.Ctx, appName string) (string, b
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Router			/auth/signin/{app_name} [get]
+//	@Router			/auth/signin [get]
 func (c *PageController) Signin(ctx *fiber.Ctx, appName string) error {
-	if redirect, can := c.canAutoLogin(ctx, appName); can {
+	if redirect, can := c.canAutoLogin(ctx); can {
 		return ctx.Redirect(redirect, fiber.StatusTemporaryRedirect)
 	}
 	c.sendCookie(ctx)
@@ -90,9 +85,9 @@ func (c *PageController) Signin(ctx *fiber.Ctx, appName string) error {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Router			/auth/signup/{app_name} [get]
-func (c *PageController) Signup(ctx *fiber.Ctx, appName string) error {
-	if redirect, can := c.canAutoLogin(ctx, appName); can {
+//	@Router			/auth/signup [get]
+func (c *PageController) Signup(ctx *fiber.Ctx) error {
+	if redirect, can := c.canAutoLogin(ctx); can {
 		return ctx.Redirect(redirect, fiber.StatusTemporaryRedirect)
 	}
 	c.sendCookie(ctx)
@@ -106,9 +101,9 @@ func (c *PageController) Signup(ctx *fiber.Ctx, appName string) error {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Router			/auth/reset-password/{app_name} [get]
-func (c *PageController) ResetPassword(ctx *fiber.Ctx, appName string) error {
-	if redirect, can := c.canAutoLogin(ctx, appName); can {
+//	@Router			/auth/reset-password [get]
+func (c *PageController) ResetPassword(ctx *fiber.Ctx) error {
+	if redirect, can := c.canAutoLogin(ctx); can {
 		return ctx.Redirect(redirect, fiber.StatusTemporaryRedirect)
 	}
 	c.sendCookie(ctx)

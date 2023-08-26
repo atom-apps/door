@@ -24,6 +24,7 @@ type TokenService struct {
 	hash          *md5.Hash
 	uuid          *uuid.Generator
 	jwt           *jwt.JWT
+	auth          *oauth.Auth
 	tokenDao      *dao.TokenDao
 	userDao       *dao.UserDao
 	sessionDao    *dao.SessionDao
@@ -120,8 +121,8 @@ func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64, 
 }
 
 // CreateForUser
-func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, sessID int64, app *oauth.App) (*models.Token, error) {
-	m, _ := svc.tokenDao.GetBySessionID(ctx, sessID, app.Name)
+func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, sessID int64) (*models.Token, error) {
+	m, _ := svc.tokenDao.GetBySessionID(ctx, sessID)
 	if m != nil {
 		return m, nil
 	}
@@ -132,12 +133,12 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 	}
 
 	claim := svc.getClaims(ctx, userID, tenantID, role.Name)
-	token, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
+	token, err := svc.jwt.WithExpireTime(svc.auth.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := svc.jwt.WithExpireTime(app.RefreshTokenDuration).CreateToken(claim)
+	refreshToken, err := svc.jwt.WithExpireTime(svc.auth.RefreshTokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +149,8 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 		SessionID:     sessID,
 		AccessToken:   token,
 		RefreshToken:  refreshToken,
-		ExpireAt:      time.Now().Add(lo.Must1(time.ParseDuration(app.TokenDuration))),
-		Scope:         app.Name,
+		ExpireAt:      time.Now().Add(lo.Must1(time.ParseDuration(svc.auth.TokenDuration))),
+		Scope:         "",
 		TokenType:     consts.TokenTypeBearer,
 		CodeChallenge: "",
 		Code:          svc.hash.Hash(svc.uuid.MustGenerate()),
@@ -164,41 +165,41 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 }
 
 // GetByToken
-func (svc *TokenService) GetByToken(ctx context.Context, token, appName string) (*models.Token, error) {
-	return svc.tokenDao.GetByToken(ctx, token, appName)
+func (svc *TokenService) GetByToken(ctx context.Context, token string) (*models.Token, error) {
+	return svc.tokenDao.GetByToken(ctx, token)
 }
 
 // GetByUserID
-func (svc *TokenService) GetByUserID(ctx context.Context, userID int64, appName string) (*models.Token, error) {
-	return svc.tokenDao.GetByUserID(ctx, userID, appName)
+func (svc *TokenService) GetByUserID(ctx context.Context, userID int64) (*models.Token, error) {
+	return svc.tokenDao.GetByUserID(ctx, userID)
 }
 
 // GetByRefreshToken
-func (svc *TokenService) GetByRefreshToken(ctx context.Context, refreshToken, appName string) (*models.Token, error) {
-	return svc.tokenDao.GetByRefreshToken(ctx, refreshToken, appName)
+func (svc *TokenService) GetByRefreshToken(ctx context.Context, refreshToken string) (*models.Token, error) {
+	return svc.tokenDao.GetByRefreshToken(ctx, refreshToken)
 }
 
 // RefreshToken
-func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token, app *oauth.App) (*models.Token, error) {
+func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token) (*models.Token, error) {
 	role, err := svc.permissionSvc.GetRoleOfTenantUser(ctx, token.TenantID, token.UserID)
 	if err != nil {
 		return nil, err
 	}
 
 	claim := svc.getClaims(ctx, token.UserID, token.TenantID, role.Name)
-	accessToken, err := svc.jwt.WithExpireTime(app.TokenDuration).CreateToken(claim)
+	accessToken, err := svc.jwt.WithExpireTime(svc.auth.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := svc.jwt.WithExpireTime(app.RefreshTokenDuration).CreateToken(claim)
+	refreshToken, err := svc.jwt.WithExpireTime(svc.auth.RefreshTokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
 	}
 
 	token.AccessToken = accessToken
 	token.RefreshToken = refreshToken
-	token.ExpireAt = time.Now().Add(lo.Must1(time.ParseDuration(app.TokenDuration)))
+	token.ExpireAt = time.Now().Add(lo.Must1(time.ParseDuration(svc.auth.TokenDuration)))
 
 	if err := svc.UpdateFromModel(ctx, token); err != nil {
 		return nil, err
@@ -207,8 +208,8 @@ func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token, 
 }
 
 // GetByCode
-func (svc *TokenService) GetOAuthTokenByCode(ctx context.Context, code, scope string) (*oauth2.Token, error) {
-	model, err := svc.tokenDao.GetByCode(ctx, code, scope)
+func (svc *TokenService) GetOAuthTokenByCode(ctx context.Context, code string) (*oauth2.Token, error) {
+	model, err := svc.tokenDao.GetByCode(ctx, code)
 	if err != nil {
 		return nil, err
 	}
@@ -226,6 +227,6 @@ func (svc *TokenService) GetOAuthTokenByCode(ctx context.Context, code, scope st
 }
 
 // GetBySessionID
-func (svc *TokenService) GetBySessionID(ctx context.Context, sessionID int64, scope string) (*models.Token, error) {
-	return svc.tokenDao.GetBySessionID(ctx, sessionID, scope)
+func (svc *TokenService) GetBySessionID(ctx context.Context, sessionID int64) (*models.Token, error) {
+	return svc.tokenDao.GetBySessionID(ctx, sessionID)
 }

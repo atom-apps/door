@@ -24,19 +24,12 @@ Host = "10.58.144.6"
 Port = 30432
 
 [OAuth]
-[[OAuth.App]]
-Name="app"
+[OAuth.App]
 ClientID = "asdfasdfasdf"
 ClientSecret = "asdfasdfasfdasfdasdf"
 CallbackUrl = "http://www.baidu.com/auth/callback"
 RegisterFields = ["username", "phone", "password"]
 PasswordComplexRule = { MinLength = 6, MaxLength = 16, UpperCase = 1, SpecialChars = 1 }
-
-[[OAuth.App]]
-Name="app1"
-ClientID = "asdfasdfasdf"
-ClientSecret = "asdfasdfasfdasfdasdf"
-
 
 [Casbin]
 AdapterTableName="permission_rules"

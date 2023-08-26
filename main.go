@@ -13,6 +13,7 @@ import (
 
 	moduleAuth "github.com/atom-apps/door/modules/auth"
 	moduleService "github.com/atom-apps/door/modules/service"
+	moduleSystem "github.com/atom-apps/door/modules/systems"
 	moduleUser "github.com/atom-apps/door/modules/user"
 
 	"github.com/atom-apps/door/database/query"
@@ -54,6 +55,7 @@ func main() {
 			moduleUser.Providers(),
 			moduleAuth.Providers(),
 			moduleService.Providers(),
+			moduleSystem.Providers(),
 		)
 
 	opts := []atom.Option{

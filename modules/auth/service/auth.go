@@ -21,10 +21,11 @@ type AuthService struct {
 	hash    *bcrypt.Hash
 	userSvc *service.UserService
 	sendSvc *serviceSvc.SendService
+	auth    *oauth.Auth
 }
 
-func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto.SignUpForm, app *oauth.App) error {
-	for _, m := range app.RegisterFields {
+func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto.SignUpForm) error {
+	for _, m := range svc.auth.RegisterFields {
 		switch m {
 		case oauth.RegisterFieldEmail:
 			if form.Email == nil {
@@ -70,7 +71,7 @@ func (svc *AuthService) SignUpCheckRegisterMethod(ctx context.Context, form *dto
 			if form.Password == nil {
 				return oauth.ErrPasswordRequired
 			}
-			if err := svc.CheckPasswordComplex(ctx, *form.Password, app.PasswordComplexRules()); err != nil {
+			if err := svc.CheckPasswordComplex(ctx, *form.Password, svc.auth.PasswordComplexRules()); err != nil {
 				return oauth.ErrUsernameInvalid
 			}
 		}

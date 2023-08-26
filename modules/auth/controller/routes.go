@@ -36,12 +36,12 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 
 // Pages get page routes
 //
-//	@Summary		获取页面路由
-//	@Tags			Systems
-//	@Accept			json
-//	@Produce		json
-//	@Success		200			{array}	dto.RouteItem
-//	@Router			/auth/pages [get]
+//	@Summary	获取页面路由
+//	@Tags		Systems
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{array}	dto.RouteItem
+//	@Router		/auth/pages [get]
 func (c *RoutesController) Pages(ctx *fiber.Ctx) ([]*systemDto.RouteItem, error) {
 	return c.routeSvc.Tree(ctx.Context(), consts.RouteTypePage, 0)
 }

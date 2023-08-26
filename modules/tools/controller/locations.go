@@ -42,8 +42,8 @@ func (c *LocationController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id int64) (
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.LocationListQueryFilter	true	"LocationListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.LocationItem}
 //	@Router			/v1/tools/locations [get]
 func (c *LocationController) List(
@@ -86,7 +86,7 @@ func (c *LocationController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto
 //	@Tags			Tool
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int				true	"LocationID"
+//	@Param			id		path		int					true	"LocationID"
 //	@Param			body	body		dto.LocationForm	true	"LocationForm"
 //	@Success		200		{string}	LocationID
 //	@Failure		500		{string}	LocationID

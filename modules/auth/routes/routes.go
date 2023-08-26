@@ -19,8 +19,8 @@ func newRoute(svc contracts.HttpService, permissionController *controller.Permis
 	group := engine.Group("v1")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
 
-	routeAuthController(group, authController)
 	routePageController(engine.Group("auth"), pageController)
+	routeAuthController(group, authController)
 	routePageController(group, pageController)
 	routeRoutesController(group, routesController)
 	routePermissionController(group, permissionController)

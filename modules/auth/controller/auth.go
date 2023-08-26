@@ -38,7 +38,7 @@ type AuthController struct {
 //	@Produce		json
 //	@Param			body	body		dto.SignUpForm	true	"SignUpForm"
 //	@Success		200		{object}	dto.ExchangeTokenByCodeForm
-//	@Router			/auth/signup [post]
+//	@Router			/v1/auth/signup [post]
 func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.ExchangeTokenByCodeForm, error) {
 	if err := c.authSvc.SignUpCheckRegisterMethod(ctx.Context(), form); err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.Exch
 //	@Produce		json
 //	@Param			body	body		dto.SignInForm	true	"SignInForm"
 //	@Success		200		{object}	dto.ExchangeTokenByCodeForm
-//	@Router			/auth/signin [post]
+//	@Router			/v1/auth/signin [post]
 func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.ExchangeTokenByCodeForm, error) {
 	sessID := ctx.Cookies(consts.SessionName, "")
 	if sessID == "" {
@@ -128,7 +128,7 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body	dto.LogoutForm	true	"LogoutForm"
-//	@Router			/auth/logout [post]
+//	@Router			/v1/auth/logout [post]
 func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 	token, err := c.tokenSvc.GetByToken(ctx.Context(), form.Token)
 	if err != nil {
@@ -147,7 +147,7 @@ func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 //	@Produce		json
 //	@Param			body	body		dto.RefreshTokenForm	true	"RefreshTokenForm"
 //	@Success		200		{string}	oauth2.Token
-//	@Router			/auth/refresh-token [post]
+//	@Router			/v1/auth/refresh-token [post]
 func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm) (*oauth2.Token, error) {
 	token, err := c.tokenSvc.GetByRefreshToken(ctx.Context(), form.RefreshToken)
 	if err != nil {
@@ -175,7 +175,7 @@ func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm
 //	@Produce		json
 //	@Param			body	body		dto.ExchangeTokenByCodeForm	true	"ExchangeTokenByCodeForm"
 //	@Success		200		{object}	oauth2.Token
-//	@Router			/auth/exchange-token-by-code [post]
+//	@Router			/v1/auth/exchange-token-by-code [post]
 func (c *AuthController) ExchangeTokenByCode(ctx *fiber.Ctx, form *dto.ExchangeTokenByCodeForm) (*oauth2.Token, error) {
 	return c.tokenSvc.GetOAuthTokenByCode(ctx.Context(), form.Code)
 }
@@ -189,7 +189,7 @@ func (c *AuthController) ExchangeTokenByCode(ctx *fiber.Ctx, form *dto.ExchangeT
 //	@Produce		json
 //	@Param			body	body		dto.CheckPasswordResetCodeForm	true	"CheckPasswordResetCode"
 //	@Success		200		{object}	oauth2.Token
-//	@Router			/auth/check-reset-password-code [post]
+//	@Router			/v1/auth/check-reset-password-code [post]
 func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPasswordResetCodeForm) (*dto.CheckPasswordResetToken, error) {
 	if !c.sendSvc.VerifyCode(ctx.Context(), consts.VerifyCodeChannelResetPassword, form.Username, form.Code) {
 		return nil, errorx.ErrInvalidVerifyCode

@@ -32,17 +32,13 @@
     </div>
 
     <div class="flex justify-between items-center">
-      <router-link :to="{ name: 'reset-password', params: { app: form.app_name } }"
-        >忘记密码</router-link
-      >
-      <router-link :to="{ name: 'signup', params: { app: form.app_name } }"
-        >注册新账号</router-link
-      >
+      <router-link :to="{ name: 'reset-password' }" >忘记密码</router-link>
+      <router-link :to="{ name: 'signup' }" >注册新账号</router-link>
     </div>
 
     <button
       @click.prevent="submit"
-      class="my-5 btn btn-lg lg:btn-xl btn-primary my-10"
+      class="my-10 btn btn-lg lg:btn-xl btn-primary"
       :disabled="loading"
     >
       <span class="loading loading-spinner" v-if="loading"></span>
@@ -61,11 +57,9 @@ import SendVerifyCode from "@components/SendVerifyCode.vue";
 import { UrlBuilder } from "@innova2/url-builder";
 import { AxiosError } from "axios";
 import { onMounted, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
 
 interface Form {
   method: SigninMethod;
-  app_name: string;
   username: string;
   code: string;
 }
@@ -79,12 +73,10 @@ interface ScopeResponse {
 const inputUsername = ref<HTMLInputElement>();
 const inputPassword = ref<HTMLInputElement>();
 
-const router = useRoute();
 const errors = ref<string[]>([]);
 const loading = ref(false);
 const form = reactive<Form>({
   method: SigninMethod.Code,
-  app_name: router.params["app"].toString(),
   username: "",
   code: "",
 });

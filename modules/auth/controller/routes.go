@@ -8,6 +8,7 @@ import (
 	"github.com/atom-apps/door/modules/auth/dto"
 	systemDto "github.com/atom-apps/door/modules/systems/dto"
 	systemSvc "github.com/atom-apps/door/modules/systems/service"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -24,7 +25,7 @@ type RoutesController struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.ExchangeTokenByCodeForm
-//	@Router			/auth/routes [get]
+//	@Router			/v1/auth/routes [get]
 func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 	var doc *dto.SwaggerDoc
 	err := json.Unmarshal([]byte(docs.SwaggerSpec), &doc)
@@ -41,7 +42,7 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Accept		json
 //	@Produce	json
 //	@Success	200	{array}	dto.RouteItem
-//	@Router		/auth/pages [get]
-func (c *RoutesController) Pages(ctx *fiber.Ctx) ([]*systemDto.RouteItem, error) {
+//	@Router		/v1/auth/pages [get]
+func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*systemDto.RouteItem, error) {
 	return c.routeSvc.Tree(ctx.Context(), consts.RouteTypePage, 0)
 }

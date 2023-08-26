@@ -18,8 +18,8 @@
 
 
         <div class="flex justify-between items-center">
-            <router-link :to="{ name: 'reset-password', params: { app: form.app_name } }">忘记密码</router-link>
-            <router-link :to="{ name: 'signup', params: { app: form.app_name } }">注册新账号</router-link>
+            <router-link :to="{ name: 'reset-password' }">忘记密码</router-link>
+            <router-link :to="{ name: 'signup'}">注册新账号</router-link>
         </div>
 
         <button @click.prevent="submit" class="my-5 btn btn-lg lg:btn-xl btn-primary" :disabled="loading">
@@ -36,7 +36,6 @@ import Alert from '@components/Alert.vue';
 import { UrlBuilder } from '@innova2/url-builder';
 import { AxiosError } from "axios";
 import { onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
 
 components: {
     Alert
@@ -44,7 +43,6 @@ components: {
 
 interface Form {
     method: SigninMethod,
-    app_name: string,
     username: string,
     password?: string,
 }
@@ -74,13 +72,11 @@ const usernamePressEnter = () => {
 }
 
 
-const router = useRoute();
 const errors = ref<string[]>([])
 const loading = ref<boolean>(false)
 
 const form = reactive<Form>({
     method: SigninMethod.Password,
-    app_name: router.params['app'].toString(),
     username: '',
     password: '',
 })
@@ -101,11 +97,6 @@ const submit = () => {
 
     if (form.method != SigninMethod.Password) {
         errors.value.push('登录方式错误')
-        return
-    }
-
-    if (form.app_name == '') {
-        errors.value.push('应用名称不能为空')
         return
     }
 

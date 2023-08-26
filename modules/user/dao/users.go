@@ -56,9 +56,6 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 	if queryFilter.Username != nil {
 		query = query.Where(dao.query.User.Username.Eq(*queryFilter.Username))
 	}
-	if queryFilter.Password != nil {
-		query = query.Where(dao.query.User.Password.Eq(*queryFilter.Password))
-	}
 	if queryFilter.Email != nil {
 		query = query.Where(dao.query.User.Email.Eq(*queryFilter.Email))
 	}

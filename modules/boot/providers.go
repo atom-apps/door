@@ -13,7 +13,20 @@ import (
 )
 
 var (
-	skipJwt  = []string{"/auth", "/v1/auth", "/v1/services"}
+	skipJwt = []string{
+		"/auth/signin",
+		"/auth/signup",
+		"/auth/reset-password",
+
+		"/v1/auth/check-reset-password-code",
+		"/v1/auth/exchange-token-by-code",
+		"/v1/auth/signin",
+		"/v1/auth/signup",
+
+		"/v1/services/captcha/generate",
+		"/v1/services/send/sms",
+		"/v1/services/send/email",
+	}
 	skipAuth = []string{"/v1/permission/check"}
 )
 

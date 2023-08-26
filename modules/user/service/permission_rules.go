@@ -94,12 +94,21 @@ func (svc *PermissionRuleService) DeleteByTenantID(ctx context.Context, tenantID
 }
 
 func (svc *PermissionRuleService) GetTenantsByUserID(ctx context.Context, userID int64) ([]*models.Tenant, error) {
-	tenantIDs, err := svc.dao.GetTenantsByUserID(ctx, userID)
+	tenantIDs, err := svc.GetTenantIDsByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
+	// super admin
+	if len(tenantIDs) == 1 && tenantIDs[0] == 0 {
+		return []*models.Tenant{{ID: 0, Name: "Super Admin"}}, nil
+	}
+
 	return svc.tenantDao.GetByIDs(ctx, tenantIDs)
+}
+
+func (svc *PermissionRuleService) GetTenantIDsByUserID(ctx context.Context, userID int64) ([]int64, error) {
+	return svc.dao.GetTenantsByUserID(ctx, userID)
 }
 
 func (svc *PermissionRuleService) GetTenantsByRoleID(ctx context.Context, roleID int64) ([]*models.Tenant, error) {

@@ -3,6 +3,7 @@ package boot
 import (
 	"strings"
 
+	"github.com/atom-apps/door/common"
 	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rogeecn/fen"
@@ -16,15 +17,11 @@ func httpMiddlewareJWT(j *jwt.JWT) func(ctx *fiber.Ctx) error {
 			}
 		}
 
-		token, ok := ctx.GetReqHeaders()[jwt.HttpHeader]
-		if !ok {
-			return ctx.SendStatus(fiber.StatusUnauthorized)
+		token, err := common.GetJwtToken(ctx)
+		if err != nil {
+			return err
 		}
 
-		if !strings.HasPrefix(token, jwt.TokenPrefix) {
-			return ctx.SendStatus(fiber.StatusUnauthorized)
-		}
-		token = token[len(jwt.TokenPrefix):]
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			return ctx.SendStatus(fiber.StatusUnauthorized)

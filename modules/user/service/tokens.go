@@ -28,6 +28,7 @@ type TokenService struct {
 	tokenDao      *dao.TokenDao
 	userDao       *dao.UserDao
 	sessionDao    *dao.SessionDao
+	roleDao       *dao.RoleDao
 	permissionSvc *PermissionRuleService
 }
 
@@ -127,9 +128,18 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 		return m, nil
 	}
 
-	role, err := svc.permissionSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
-	if err != nil {
-		return nil, err
+	var err error
+	var role *models.Role
+	if tenantID != 0 {
+		role, err = svc.permissionSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		role, err = svc.roleDao.GetBySlug(ctx, jwt.RoleSuperAdmin.String())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	claim := svc.getClaims(ctx, userID, tenantID, role.Name)

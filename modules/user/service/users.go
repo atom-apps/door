@@ -26,8 +26,19 @@ type UserService struct {
 }
 
 func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
-	var dtoItem *dto.UserItem
-	_ = copier.Copy(dtoItem, model)
+	dtoItem := &dto.UserItem{
+		ID:            model.ID,
+		CreatedAt:     model.CreatedAt,
+		UpdatedAt:     model.UpdatedAt,
+		UUID:          model.UUID,
+		Username:      model.Username,
+		Email:         model.Email,
+		EmailVerified: model.EmailVerified,
+		Phone:         model.Phone,
+		DisplayName:   model.DisplayName,
+		Avatar:        model.Avatar,
+		Status:        model.Status,
+	}
 
 	return dtoItem
 }

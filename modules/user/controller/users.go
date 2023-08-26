@@ -4,6 +4,7 @@ import (
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/user/dto"
 	"github.com/atom-apps/door/modules/user/service"
+	"github.com/atom-providers/jwt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
@@ -13,6 +14,24 @@ import (
 type UserController struct {
 	userSvc           *service.UserService
 	permissionRuleSvc *service.PermissionRuleService
+}
+
+// Profile get current user info
+//
+//	@Summary		get current user info
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"UserID"
+//	@Success		200	{object}	dto.UserItem
+//	@Router			/v1/users/profile [get]
+func (c *UserController) Profile(ctx *fiber.Ctx, claim *jwt.Claims) (*dto.UserItem, error) {
+	item, err := c.userSvc.GetByID(ctx.Context(), claim.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.userSvc.DecorateItem(item, 0), nil
 }
 
 // Show get single item info

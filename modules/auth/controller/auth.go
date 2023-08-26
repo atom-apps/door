@@ -12,6 +12,7 @@ import (
 	serviceSvc "github.com/atom-apps/door/modules/service/service"
 	userSvc "github.com/atom-apps/door/modules/user/service"
 	"github.com/atom-apps/door/providers/oauth"
+	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 	"golang.org/x/oauth2"
@@ -67,9 +68,9 @@ func (c *AuthController) SignUp(ctx *fiber.Ctx, form *dto.SignUpForm) (*dto.Exch
 //	@Router			/v1/auth/signin [post]
 func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.ExchangeTokenByCodeForm, error) {
 	sessID := ctx.Cookies(consts.SessionName, "")
-	if sessID == "" {
-		return nil, errorx.ErrInvalidRequest
-	}
+	// if sessID == "" {
+	// 	return nil, errorx.ErrInvalidRequest
+	// }
 
 	user, err := c.userSvc.GetByUsernameOrEmailOrPhone(ctx.Context(), form.Username)
 	if err != nil {
@@ -91,10 +92,10 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 		return nil, err
 	}
 
-	tenantID := int64(0)
-	if len(tenants) > 0 {
-		tenantID = tenants[0].ID
+	if len(tenants) == 0 {
+		return nil, errorx.ErrForbidden
 	}
+	tenantID := tenants[0].ID
 
 	token, err := c.tokenSvc.CreateForUser(ctx.Context(), user.ID, tenantID, sess.ID)
 	if err != nil {
@@ -127,10 +128,9 @@ func (c *AuthController) SignIn(ctx *fiber.Ctx, form *dto.SignInForm) (*dto.Exch
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	dto.LogoutForm	true	"LogoutForm"
 //	@Router			/v1/auth/logout [post]
-func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
-	token, err := c.tokenSvc.GetByToken(ctx.Context(), form.Token)
+func (c *AuthController) Logout(ctx *fiber.Ctx, claim *jwt.Claims) error {
+	token, err := c.tokenSvc.GetByUserID(ctx.Context(), claim.UserID)
 	if err != nil {
 		return err
 	}
@@ -145,11 +145,10 @@ func (c *AuthController) Logout(ctx *fiber.Ctx, form *dto.LogoutForm) error {
 //	@Tags			Auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		dto.RefreshTokenForm	true	"RefreshTokenForm"
 //	@Success		200		{string}	oauth2.Token
 //	@Router			/v1/auth/refresh-token [post]
-func (c *AuthController) RefreshToken(ctx *fiber.Ctx, form *dto.RefreshTokenForm) (*oauth2.Token, error) {
-	token, err := c.tokenSvc.GetByRefreshToken(ctx.Context(), form.RefreshToken)
+func (c *AuthController) RefreshToken(ctx *fiber.Ctx, claim *jwt.Claims) (*oauth2.Token, error) {
+	token, err := c.tokenSvc.GetByUserID(ctx.Context(), claim.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +225,7 @@ func (c *AuthController) CheckResetPasswordCoe(ctx *fiber.Ctx, form *dto.CheckPa
 //	@Produce		json
 //	@Param			body	body		dto.ResetPasswordForm	true	"ResetPassword"
 //	@Success		200		{object}	oauth2.Token
-//	@Router			/auth/reset-password-by-token [post]
+//	@Router			/v1/auth/reset-password-by-token [post]
 func (c *AuthController) ResetPassword(ctx *fiber.Ctx, form *dto.ResetPasswordForm) error {
 	user, err := c.userSvc.GetUserFromHashToken(ctx.Context(), form.Token)
 	if err != nil {

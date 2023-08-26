@@ -25,8 +25,9 @@ func (s *PermissionRulesSeeder) Generate(faker *gofakeit.Faker, idx int) []model
 		s.genPolicyModel("2", "1", "/v1/users/tenants", "GET"),
 		s.genPolicyModel("2", "2", "/v1/users/tenants", "GET"),
 
+		s.genRoleModel("1", "0", "1"),
 		s.genRoleModel("2", "2", "1"),
-		s.genRoleModel("3", "2", "2"),
+		s.genRoleModel("3", "2", "0"),
 	}
 }
 

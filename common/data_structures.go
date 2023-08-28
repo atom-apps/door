@@ -1,6 +1,8 @@
 package common
 
-import "strings"
+import (
+	"strings"
+)
 
 type SortQueryFilter struct {
 	Asc  *string `json:"asc" form:"asc"`

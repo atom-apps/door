@@ -50,6 +50,9 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 	if queryFilter == nil {
 		return query
 	}
+	if queryFilter.IDs != nil {
+		query = query.Where(dao.query.User.ID.In(queryFilter.IDs...))
+	}
 	if queryFilter.UUID != nil {
 		query = query.Where(dao.query.User.UUID.Eq(*queryFilter.UUID))
 	}
@@ -68,10 +71,6 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 	if queryFilter.DisplayName != nil {
 		query = query.Where(dao.query.User.DisplayName.Eq(*queryFilter.DisplayName))
 	}
-	if queryFilter.Avatar != nil {
-		query = query.Where(dao.query.User.Avatar.Eq(*queryFilter.Avatar))
-	}
-
 	return query
 }
 

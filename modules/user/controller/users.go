@@ -83,6 +83,53 @@ func (c *UserController) List(
 	}, nil
 }
 
+// Filters get list filter items
+//
+//	@Summary		get list filters
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Success		200			{array}	common.Filter
+//	@Router			/v1/users/filters [get]
+func (c *UserController) Filters(ctx *fiber.Ctx) ([]common.Filter, error) {
+	return dto.UserListQueryFilters(), nil
+}
+
+// Columns of list
+//
+//	@Summary		get list columns
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Success		200			{object}	common.Columns
+//	@Router			/v1/users/columns [get]
+func (c *UserController) Columns(ctx *fiber.Ctx) (common.Columns, error) {
+	columns := []common.TableColumnData{
+		{Title: "ID", DataIndex: "id"},
+		{Title: "UUID", DataIndex: "uuid", Hidden: true},
+		{Title: "昵称", DataIndex: "display_name"},
+		{Title: "名称", DataIndex: "username"},
+		{Title: "状态", Align: lo.ToPtr("center"), DataIndex: "status"},
+		{Title: "Email", DataIndex: "email"},
+		{Title: "电话", DataIndex: "phone"},
+		{Title: "创建时间", DataIndex: "created_at", Hidden: true},
+		{Title: "更新时间", DataIndex: "updated_at"},
+		{Title: "操作", DataIndex: "operations", Align: lo.ToPtr("right")},
+	}
+
+	return common.Columns{
+		Columns: lo.Map(columns, func(item common.TableColumnData, _ int) common.TableColumnData {
+			return item.Format()
+		}),
+		Hidden: lo.FilterMap(columns, func(item common.TableColumnData, _ int) (string, bool) {
+			if item.Hidden {
+				return item.DataIndex, true
+			}
+			return "", false
+		}),
+	}, nil
+}
+
 // Role users
 //
 //	@Summary		list by query filter

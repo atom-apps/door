@@ -30,8 +30,10 @@ type PageDataResponse struct {
 }
 
 type PageQueryFilter struct {
-	Page  int `json:"page" form:"page"`
-	Limit int `json:"limit" form:"limit"`
+	Page     int `json:"page,omitempty" form:"page"`
+	Limit    int `json:"limit,omitempty" form:"limit"`
+	Current  int `json:"current,omitempty" form:"current"`
+	PageSize int `json:"page_size,omitempty" form:"pageSize"`
 }
 
 func (filter *PageQueryFilter) Offset() int {
@@ -39,6 +41,11 @@ func (filter *PageQueryFilter) Offset() int {
 }
 
 func (filter *PageQueryFilter) Format() *PageQueryFilter {
+	if (filter.Page == 0 && filter.Current > 0) || (filter.Limit == 0 && filter.PageSize > 0) {
+		filter.Page = filter.Current
+		filter.PageSize = filter.Limit
+	}
+
 	if filter.Page <= 0 {
 		filter.Page = 1
 	}

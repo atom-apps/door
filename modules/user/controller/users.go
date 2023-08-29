@@ -1,6 +1,9 @@
 package controller
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/user/dto"
 	"github.com/atom-apps/door/modules/user/service"
@@ -49,8 +52,37 @@ func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
 	if err != nil {
 		return nil, err
 	}
+	time.Sleep(time.Second * 2)
 
 	return c.userSvc.DecorateItem(item, 0), nil
+}
+
+// LabelShow
+//
+//	@Summary		LabelShow
+//	@Description	get info by id
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"UserID"
+//	@Success		200	{object}	dto.UserItem
+//	@Router			/v1/users/{id}/label [get]
+func (c *UserController) LabelShow(ctx *fiber.Ctx, id int64) ([]common.LabelItem, error) {
+	item, err := c.userSvc.GetByID(ctx.Context(), id)
+	if err != nil {
+		return nil, err
+	}
+
+	return []common.LabelItem{
+		{Label: "ID", Value: fmt.Sprintf("%d", item.ID)},
+		{Label: "UUID", Value: item.UUID},
+		{Label: "用户名", Value: item.Username},
+		{Label: "昵称", Value: item.DisplayName},
+		{Label: "电子邮箱", Value: item.Email},
+		{Label: "邮箱验证", Value: common.BoolOrStr(item.EmailVerified, "已验证", "未验证")},
+		{Label: "手机", Value: item.Phone},
+		{Label: "状态", Value: item.Status.Cn()},
+	}, nil
 }
 
 // List list by query filter

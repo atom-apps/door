@@ -57,7 +57,7 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 		query = query.Where(dao.query.User.UUID.Eq(*queryFilter.UUID))
 	}
 	if queryFilter.Username != nil {
-		query = query.Where(dao.query.User.Username.Eq(*queryFilter.Username))
+		query = query.Where(dao.query.User.Username.Like(common.WrapLike(*queryFilter.Username)))
 	}
 	if queryFilter.Email != nil {
 		query = query.Where(dao.query.User.Email.Eq(*queryFilter.Email))
@@ -66,10 +66,13 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 		query = query.Where(dao.query.User.EmailVerified.Is(*queryFilter.EmailVerified))
 	}
 	if queryFilter.Phone != nil {
-		query = query.Where(dao.query.User.Phone.Eq(*queryFilter.Phone))
+		query = query.Where(dao.query.User.Phone.Like(common.WrapLike(*queryFilter.Phone)))
 	}
 	if queryFilter.DisplayName != nil {
-		query = query.Where(dao.query.User.DisplayName.Eq(*queryFilter.DisplayName))
+		query = query.Where(dao.query.User.DisplayName.Like(common.WrapLike(*queryFilter.DisplayName)))
+	}
+	if queryFilter.Status != nil {
+		query = query.Where(dao.query.User.Status.Eq(*queryFilter.Status))
 	}
 	return query
 }

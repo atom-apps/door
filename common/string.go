@@ -14,3 +14,10 @@ func RandomString(n int) string {
 
 	return string(b)
 }
+
+func BoolOrStr(b bool, yes, no string) string {
+	if b {
+		return yes
+	}
+	return no
+}

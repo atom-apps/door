@@ -18,6 +18,7 @@ func routeUserController(engine fiber.Router, controller *controller.UserControl
 	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/users/profile", basePath), DataFunc1(controller.Profile, JwtClaim[jwt.Claims](ClaimParamError)))
 	engine.Get(strings.TrimPrefix("/v1/users/:id<int>", basePath), DataFunc1(controller.Show, Integer[int64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/:id<int>/label", basePath), DataFunc1(controller.LabelShow, Integer[int64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/users", basePath), DataFunc3(controller.List, Query[dto.UserListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Get(strings.TrimPrefix("/v1/users/filters", basePath), DataFunc(controller.Filters))
 	engine.Get(strings.TrimPrefix("/v1/users/columns", basePath), DataFunc(controller.Columns))

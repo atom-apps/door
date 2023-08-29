@@ -20,14 +20,14 @@ type UserForm struct {
 }
 
 type UserListQueryFilter struct {
-	IDs           []int64           `query:"ids" json:"ids,omitempty"`                       //
-	UUID          *string           `query:"uuid" json:"uuid,omitempty"`                     //
-	Username      *string           `query:"username" json:"username,omitempty"`             //
-	Email         *string           `query:"email" json:"email,omitempty"`                   //
-	EmailVerified *bool             `query:"email_verified" json:"email_verified,omitempty"` //
-	Phone         *string           `query:"phone" json:"phone,omitempty"`                   //
-	DisplayName   *string           `query:"display_name" json:"display_name,omitempty"`     //
-	Status        consts.UserStatus `json:"status,omitempty"`                                //
+	IDs           []int64            `query:"ids" json:"ids,omitempty"`                       //
+	UUID          *string            `query:"uuid" json:"uuid,omitempty"`                     //
+	Username      *string            `query:"username" json:"username,omitempty"`             //
+	Email         *string            `query:"email" json:"email,omitempty"`                   //
+	EmailVerified *bool              `query:"email_verified" json:"email_verified,omitempty"` //
+	Phone         *string            `query:"phone" json:"phone,omitempty"`                   //
+	DisplayName   *string            `query:"display_name" json:"display_name,omitempty"`     //
+	Status        *consts.UserStatus `json:"status,omitempty"`                                //
 }
 
 func UserListQueryFilters() []common.Filter {

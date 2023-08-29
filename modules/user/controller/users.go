@@ -162,79 +162,79 @@ func (c *UserController) Columns(ctx *fiber.Ctx) (common.Columns, error) {
 	}, nil
 }
 
-// Role users
-//
-//	@Summary		list by query filter
-//	@Description	list by query filter
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Param			queryFilter	query		dto.UserListQueryFilter	true	"UserListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/v1/users/roles/{role_id} [get]
-func (c *UserController) Role(
-	ctx *fiber.Ctx,
-	roleID int64,
-	queryFilter *dto.UserListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
-	var err error
-	queryFilter.IDs, err = c.permissionRuleSvc.GetUserIDsOfRole(ctx.Context(), roleID)
-	if err != nil {
-		return nil, err
-	}
+// // Role users
+// //
+// //	@Summary		list by query filter
+// //	@Description	list by query filter
+// //	@Tags			User
+// //	@Accept			json
+// //	@Produce		json
+// //	@Param			queryFilter	query		dto.UserListQueryFilter	true	"UserListQueryFilter"
+// //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
+// //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+// //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
+// //	@Router			/v1/users/roles/{id} [get]
+// func (c *UserController) Role(
+// 	ctx *fiber.Ctx,
+// 	id int64,
+// 	queryFilter *dto.UserListQueryFilter,
+// 	pageFilter *common.PageQueryFilter,
+// 	sortFilter *common.SortQueryFilter,
+// ) (*common.PageDataResponse, error) {
+// 	var err error
+// 	queryFilter.IDs, err = c.permissionRuleSvc.GetUserIDsOfRole(ctx.Context(), id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	items, total, err := c.userSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
-	if err != nil {
-		return nil, err
-	}
+// 	items, total, err := c.userSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	return &common.PageDataResponse{
-		PageQueryFilter: *pageFilter,
-		Total:           total,
-		Items:           lo.Map(items, c.userSvc.DecorateItem),
-	}, nil
-}
+// 	return &common.PageDataResponse{
+// 		PageQueryFilter: *pageFilter,
+// 		Total:           total,
+// 		Items:           lo.Map(items, c.userSvc.DecorateItem),
+// 	}, nil
+// }
 
-// Tenant users
-//
-//	@Summary		list by query filter
-//	@Description	list by query filter
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Param			queryFilter	query		dto.UserListQueryFilter	true	"UserListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/v1/users/tenants/{tenant_id} [get]
-func (c *UserController) Tenant(
-	ctx *fiber.Ctx,
-	tenantID int64,
-	queryFilter *dto.UserListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
-	var err error
-	queryFilter.IDs, err = c.permissionRuleSvc.GetUserIDsOfTenant(ctx.Context(), tenantID)
-	if err != nil {
-		return nil, err
-	}
+// // Tenant users
+// //
+// //	@Summary		list by query filter
+// //	@Description	list by query filter
+// //	@Tags			User
+// //	@Accept			json
+// //	@Produce		json
+// //	@Param			queryFilter	query		dto.UserListQueryFilter	true	"UserListQueryFilter"
+// //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
+// //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
+// //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
+// //	@Router			/v1/users/tenants/{id} [get]
+// func (c *UserController) Tenant(
+// 	ctx *fiber.Ctx,
+// 	id int64,
+// 	queryFilter *dto.UserListQueryFilter,
+// 	pageFilter *common.PageQueryFilter,
+// 	sortFilter *common.SortQueryFilter,
+// ) (*common.PageDataResponse, error) {
+// 	var err error
+// 	queryFilter.IDs, err = c.permissionRuleSvc.GetUserIDsOfTenant(ctx.Context(), id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	items, total, err := c.userSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
-	if err != nil {
-		return nil, err
-	}
+// 	items, total, err := c.userSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	return &common.PageDataResponse{
-		PageQueryFilter: *pageFilter,
-		Total:           total,
-		Items:           lo.Map(items, c.userSvc.DecorateItem),
-	}, nil
-}
+// 	return &common.PageDataResponse{
+// 		PageQueryFilter: *pageFilter,
+// 		Total:           total,
+// 		Items:           lo.Map(items, c.userSvc.DecorateItem),
+// 	}, nil
+// }
 
 // Create a new item
 //

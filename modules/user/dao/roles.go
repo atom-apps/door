@@ -50,10 +50,13 @@ func (dao *RoleDao) decorateQueryFilter(query query.IRoleDo, queryFilter *dto.Ro
 		return query
 	}
 	if queryFilter.Name != nil {
-		query = query.Where(dao.query.Role.Name.Eq(*queryFilter.Name))
+		query = query.Where(dao.query.Role.Name.Like(common.WrapLike(*queryFilter.Name)))
+	}
+	if queryFilter.Slug != nil {
+		query = query.Where(dao.query.Role.Slug.Like(common.WrapLike(*queryFilter.Slug)))
 	}
 	if queryFilter.Description != nil {
-		query = query.Where(dao.query.Role.Description.Eq(*queryFilter.Description))
+		query = query.Where(dao.query.Role.Description.Like(common.WrapLike(*queryFilter.Description)))
 	}
 	if queryFilter.ParentID != nil {
 		query = query.Where(dao.query.Role.ParentID.Eq(*queryFilter.ParentID))

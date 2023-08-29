@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/errorx"
@@ -69,8 +70,8 @@ func (svc *RoleService) PageByQueryFilter(
 
 // CreateFromModel
 func (svc *RoleService) CreateFromModel(ctx context.Context, model *models.Role) error {
-	if _, err := svc.GetBySlug(ctx, model.Slug); err != nil {
-		return err
+	if _, err := svc.GetBySlug(ctx, model.Slug); err == nil {
+		return errors.New("slug exists")
 	}
 	return svc.roleDao.Create(ctx, model)
 }

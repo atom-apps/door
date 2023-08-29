@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/user/dto"
 	"github.com/atom-apps/door/modules/user/service"
@@ -12,6 +14,72 @@ import (
 // @provider
 type RoleController struct {
 	roleSvc *service.RoleService
+}
+
+// LabelShow
+//
+//	@Summary		LabelShow
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"UserID"
+//	@Success		200	{object}	dto.UserItem
+//	@Router			/v1/users/roles/{id}/label [get]
+func (c *RoleController) LabelShow(ctx *fiber.Ctx, id int64) ([]common.LabelItem, error) {
+	item, err := c.roleSvc.GetByID(ctx.Context(), id)
+	if err != nil {
+		return nil, err
+	}
+
+	return []common.LabelItem{
+		{Label: "ID", Value: fmt.Sprintf("%d", item.ID)},
+		{Label: "名称", Value: item.Name},
+		{Label: "别名", Value: item.Slug},
+		{Label: "父ID", Value: fmt.Sprintf("%d", item.ParentID)},
+	}, nil
+}
+
+// Filters get list filter items
+//
+//	@Summary		get list filters
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Success		200			{array}	common.Filter
+//	@Router			/v1/users/roles/filters [get]
+func (c *RoleController) Filters(ctx *fiber.Ctx) ([]common.Filter, error) {
+	return dto.RoleListQueryFilters(), nil
+}
+
+// Columns of list
+//
+//	@Summary		get list columns
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Success		200			{object}	common.Columns
+//	@Router			/v1/users/roles/columns [get]
+func (c *RoleController) Columns(ctx *fiber.Ctx) (common.Columns, error) {
+	columns := []common.TableColumnData{
+		{Title: "ID", DataIndex: "id", Hidden: true},
+		{Title: "名称", DataIndex: "name"},
+		{Title: "别名", DataIndex: "slug"},
+		{Title: "描述", DataIndex: "description"},
+		{Title: "父级", DataIndex: "parent_id"},
+		{Title: "操作", DataIndex: "operations", Align: lo.ToPtr("right")},
+	}
+
+	return common.Columns{
+		Columns: lo.Map(columns, func(item common.TableColumnData, _ int) common.TableColumnData {
+			return item.Format()
+		}),
+		Hidden: lo.FilterMap(columns, func(item common.TableColumnData, _ int) (string, bool) {
+			if item.Hidden {
+				return item.DataIndex, true
+			}
+			return "", false
+		}),
+	}, nil
 }
 
 // Show get single item info

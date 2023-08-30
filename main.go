@@ -20,7 +20,6 @@ import (
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
-	"github.com/atom-providers/app"
 	"github.com/atom-providers/captcha"
 	"github.com/atom-providers/casbin"
 	databasePostgres "github.com/atom-providers/database-postgres"
@@ -50,7 +49,6 @@ func main() {
 			query.DefaultProvider(),
 			jwt.DefaultProvider(),
 			databasePostgres.DefaultProvider(),
-			app.DefaultProvider(),
 		).
 		With(boot.Providers()).
 		With(

@@ -1,0 +1,4 @@
+# users 
+# get users
+GET {{host}}/users
+Authorization: {{token}}

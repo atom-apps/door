@@ -1,5 +1,4 @@
 vendor/
-.vscode
 .idea
 tmp/
 docker-compose.yml

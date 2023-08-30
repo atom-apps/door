@@ -1,0 +1,16 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "version": "v1",
+        },
+        "local": {
+            "host": "http://localhost:9800/v1",
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoi6LaF57qn566h55CG5ZGYIiwiZXhwIjoxNjkzNzMwNTM4LCJuYmYiOjE2OTMxMjU2Nzh9.WkySeAGZyDaOJm_07HROLzs6B8sEnyOx_ZHQV-X8NWg",
+        },
+        "production": {
+            "schema": "http",
+            "host": "localhost:9800",
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoi6LaF57qn566h55CG5ZGYIiwiZXhwIjoxNjkzNzMwNTM4LCJuYmYiOjE2OTMxMjU2Nzh9.WkySeAGZyDaOJm_07HROLzs6B8sEnyOx_ZHQV-X8NWg"
+        }
+    }
+}

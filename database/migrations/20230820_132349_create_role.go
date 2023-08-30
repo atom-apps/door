@@ -7,11 +7,12 @@ import (
 
 func (m *Migration20230820_132349CreateRole) table() interface{} {
 	type Role struct {
-		ID          uint   `gorm:"primarykey"`
-		Name        string `gorm:"size:128"`
-		Slug        string `gorm:"size:128"`
-		Description string `gorm:"size:256"`
-		ParentID    uint
+		ModelOnlyID
+
+		Name        string `gorm:"size:128; not null; default ''; comment:名称"`
+		Slug        string `gorm:"size:128; not null; unique; default ''; comment:唯一标识"`
+		Description string `gorm:"size:256; comment:描述"`
+		ParentID    uint   `gorm:"comment:父角色"`
 	}
 
 	return &Role{}

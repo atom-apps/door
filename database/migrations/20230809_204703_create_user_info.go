@@ -10,15 +10,16 @@ import (
 
 func (m *Migration20230809_204703CreateUserInfo) table() interface{} {
 	type UserInfo struct {
-		gorm.Model
-		UserID      uint          `gorm:"uniqueIndex"`
+		Model
+
+		UserID      uint          `gorm:"uniqueIndex; comment:用户ID"`
 		Affiliation string        `gorm:"size:128; comment:工作单位"`
 		Title       string        `gorm:"size:128; comment:职称"`
 		IdCardType  string        `gorm:"size:128; not null; default ''; comment:证件类型"`
-		IdCard      string        `gorm:"size:128"`
+		IdCard      string        `gorm:"size:128; not null; default ''; comment:证件号码"`
 		Biography   string        `gorm:"size:256; comment:自我介绍"`
-		Tag         string        `gorm:"size:128"`
-		Language    string        `gorm:"size:128"`
+		Tag         string        `gorm:"size:128; comment:标签"`
+		Language    string        `gorm:"size:128; comment:语言"`
 		Gender      consts.Gender `gorm:"not null; default ''; comment:性别"`
 		Birthday    time.Time     `gorm:"comment:生日"`
 		Education   string        `gorm:"size:128; comment:学历"`

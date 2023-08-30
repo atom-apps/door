@@ -148,18 +148,7 @@ func (c *UserController) Columns(ctx *fiber.Ctx) (common.Columns, error) {
 		{Title: "更新时间", DataIndex: "updated_at"},
 		{Title: "操作", DataIndex: "operations", Align: lo.ToPtr("right")},
 	}
-
-	return common.Columns{
-		Columns: lo.Map(columns, func(item common.TableColumnData, _ int) common.TableColumnData {
-			return item.Format()
-		}),
-		Hidden: lo.FilterMap(columns, func(item common.TableColumnData, _ int) (string, bool) {
-			if item.Hidden {
-				return item.DataIndex, true
-			}
-			return "", false
-		}),
-	}, nil
+	return common.NewColumns(columns), nil
 }
 
 // // Role users

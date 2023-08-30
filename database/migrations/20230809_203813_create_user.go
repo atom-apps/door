@@ -8,16 +8,17 @@ import (
 
 func (m *Migration20230809_203813CreateUser) table() interface{} {
 	type User struct {
-		gorm.Model
-		Uuid          string `gorm:"size:128"`
-		Username      string `gorm:"size:128"`
-		Password      string `gorm:"size:128"`
-		Email         string `gorm:"size:128"`
-		EmailVerified bool
-		Phone         string `gorm:"size:128"`
-		DisplayName   string `gorm:"size:128"`
-		Avatar        string
-		Status        consts.UserStatus `gorm:"size:64"`
+		Model
+
+		Uuid          string            `gorm:"size:128;comment:UUID"`
+		Username      string            `gorm:"size:128; comment:用户名"`
+		Password      string            `gorm:"size:128; comment:密码"`
+		Email         string            `gorm:"size:128; comment:邮箱"`
+		EmailVerified bool              `gorm:"comment:邮箱是否验证"`
+		Phone         string            `gorm:"size:128; comment:手机号"`
+		DisplayName   string            `gorm:"size:128; comment:显示名称"`
+		Avatar        string            `gorm:"size:256; comment:头像"`
+		Status        consts.UserStatus `gorm:"size:64; comment:状态"`
 	}
 
 	return &User{}

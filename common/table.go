@@ -30,6 +30,20 @@ type Columns struct {
 	Hidden  []string          `json:"hidden,omitempty"`
 }
 
+func NewColumns(columns []TableColumnData) Columns {
+	return Columns{
+		Columns: lo.Map(columns, func(item TableColumnData, _ int) TableColumnData {
+			return item.Format()
+		}),
+		Hidden: lo.FilterMap(columns, func(item TableColumnData, _ int) (string, bool) {
+			if item.Hidden {
+				return item.DataIndex, true
+			}
+			return "", false
+		}),
+	}
+}
+
 type TableColumnData struct {
 	DataIndex         string             `json:"dataIndex,omitempty"`
 	Title             string             `json:"title,omitempty"` // RenderFunction 类型被忽略

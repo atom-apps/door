@@ -9,12 +9,11 @@ import (
 
 func (m *Migration20230809_203608CreateSession) table() interface{} {
 	type Session struct {
-		ID        uint `gorm:"primarykey"`
-		CreatedAt time.Time
-		UpdatedAt time.Time
-		UserID    uint
-		SessionID string `gorm:"size:64"`
-		ExpireAt  time.Time
+		ModelNoSoftDelete
+
+		UserID    uint      `gorm:"comment:用户ID"`
+		SessionID string    `gorm:"size:64; comment:会话ID"`
+		ExpireAt  time.Time `gorm:"comment:过期时间"`
 	}
 
 	return &Session{}

@@ -11,18 +11,18 @@ func (m *Migration20230809_203822CreateToken) table() interface{} {
 	type Token struct {
 		gorm.Model
 
-		TenantID      uint
-		UserID        uint
-		SessionID     uint
-		AccessToken   string
-		RefreshToken  string
-		ExpireAt      time.Time
-		Scope         string `gorm:"size:128"`
-		TokenType     string `gorm:"size:128"`
-		CodeChallenge string `gorm:"size:128"`
-		Code          string `gorm:"unique"`
-		CodeExpireAt  time.Time
-		Used          bool
+		TenantID      uint      `gorm:"comment:租户ID"`
+		UserID        uint      `gorm:"comment:用户ID"`
+		SessionID     uint      `gorm:"comment:会话ID"`
+		AccessToken   string    `gorm:"size:1024; comment:访问令牌"`
+		RefreshToken  string    `gorm:"size:1024; comment:刷新令牌"`
+		ExpireAt      time.Time `gorm:"comment:过期时间"`
+		Scope         string    `gorm:"size:128; comment:Scope"`
+		TokenType     string    `gorm:"size:128; comment:令牌类型"`
+		CodeChallenge string    `gorm:"size:128; comment:CodeChallenge"`
+		Code          string    `gorm:"unique; size:128; comment:Code"`
+		CodeExpireAt  time.Time `gorm:"comment:Code过期时间"`
+		Used          bool      `gorm:"comment:是否已使用"`
 	}
 
 	return &Token{}

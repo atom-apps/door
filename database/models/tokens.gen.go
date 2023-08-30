@@ -20,18 +20,18 @@ type Token struct {
 	CreatedAt     time.Time        `gorm:"column:created_at;type:timestamp with time zone" json:"created_at"`
 	UpdatedAt     time.Time        `gorm:"column:updated_at;type:timestamp with time zone" json:"updated_at"`
 	DeletedAt     gorm.DeletedAt   `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at" swaggertype:"string"`
-	TenantID      int64            `gorm:"column:tenant_id;type:bigint" json:"tenant_id"`
-	UserID        int64            `gorm:"column:user_id;type:bigint" json:"user_id"`
-	SessionID     int64            `gorm:"column:session_id;type:bigint" json:"session_id"`
-	AccessToken   string           `gorm:"column:access_token;type:text" json:"access_token"`
-	RefreshToken  string           `gorm:"column:refresh_token;type:text" json:"refresh_token"`
-	ExpireAt      time.Time        `gorm:"column:expire_at;type:timestamp with time zone" json:"expire_at"`
-	Scope         string           `gorm:"column:scope;type:character varying(128)" json:"scope"`
-	TokenType     consts.TokenType `gorm:"column:token_type;type:character varying(128)" json:"token_type"`
-	CodeChallenge string           `gorm:"column:code_challenge;type:character varying(128)" json:"code_challenge"`
-	Code          string           `gorm:"column:code;type:text" json:"code"`
-	CodeExpireAt  time.Time        `gorm:"column:code_expire_at;type:timestamp with time zone" json:"code_expire_at"`
-	Used          bool             `gorm:"column:used;type:boolean" json:"used"`
+	TenantID      int64            `gorm:"column:tenant_id;type:bigint;comment:租户ID" json:"tenant_id"`                                    // 租户ID
+	UserID        int64            `gorm:"column:user_id;type:bigint;comment:用户ID" json:"user_id"`                                        // 用户ID
+	SessionID     int64            `gorm:"column:session_id;type:bigint;comment:会话ID" json:"session_id"`                                  // 会话ID
+	AccessToken   string           `gorm:"column:access_token;type:character varying(1024);comment:访问令牌" json:"access_token"`             // 访问令牌
+	RefreshToken  string           `gorm:"column:refresh_token;type:character varying(1024);comment:刷新令牌" json:"refresh_token"`           // 刷新令牌
+	ExpireAt      time.Time        `gorm:"column:expire_at;type:timestamp with time zone;comment:过期时间" json:"expire_at"`                  // 过期时间
+	Scope         string           `gorm:"column:scope;type:character varying(128);comment:Scope" json:"scope"`                           // Scope
+	TokenType     consts.TokenType `gorm:"column:token_type;type:character varying(128);comment:令牌类型" json:"token_type"`                  // 令牌类型
+	CodeChallenge string           `gorm:"column:code_challenge;type:character varying(128);comment:CodeChallenge" json:"code_challenge"` // CodeChallenge
+	Code          string           `gorm:"column:code;type:character varying(128);comment:Code" json:"code"`                              // Code
+	CodeExpireAt  time.Time        `gorm:"column:code_expire_at;type:timestamp with time zone;comment:Code过期时间" json:"code_expire_at"`    // Code过期时间
+	Used          bool             `gorm:"column:used;type:boolean;comment:是否已使用" json:"used"`                                            // 是否已使用
 }
 
 func (*Token) TableName(namer schema.Namer) string {

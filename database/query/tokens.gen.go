@@ -57,18 +57,18 @@ type token struct {
 	CreatedAt     field.Time
 	UpdatedAt     field.Time
 	DeletedAt     field.Field
-	TenantID      field.Int64
-	UserID        field.Int64
-	SessionID     field.Int64
-	AccessToken   field.String
-	RefreshToken  field.String
-	ExpireAt      field.Time
-	Scope         field.String
-	TokenType     field.Field
-	CodeChallenge field.String
-	Code          field.String
-	CodeExpireAt  field.Time
-	Used          field.Bool
+	TenantID      field.Int64  // 租户ID
+	UserID        field.Int64  // 用户ID
+	SessionID     field.Int64  // 会话ID
+	AccessToken   field.String // 访问令牌
+	RefreshToken  field.String // 刷新令牌
+	ExpireAt      field.Time   // 过期时间
+	Scope         field.String // Scope
+	TokenType     field.Field  // 令牌类型
+	CodeChallenge field.String // CodeChallenge
+	Code          field.String // Code
+	CodeExpireAt  field.Time   // Code过期时间
+	Used          field.Bool   // 是否已使用
 
 	fieldMap map[string]field.Expr
 }

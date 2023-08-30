@@ -50,19 +50,19 @@ type user struct {
 	userDo userDo
 
 	ALL           field.Asterisk
-	ID            field.Int64
-	CreatedAt     field.Time
-	UpdatedAt     field.Time
-	DeletedAt     field.Field
-	UUID          field.String
-	Username      field.String
-	Password      field.String
-	Email         field.String
-	EmailVerified field.Bool
-	Phone         field.String
-	DisplayName   field.String
-	Avatar        field.String
-	Status        field.Field
+	ID            field.Int64  // ID
+	CreatedAt     field.Time   // 创建时间
+	UpdatedAt     field.Time   // 更新时间
+	DeletedAt     field.Field  // 删除时间
+	UUID          field.String // UUID
+	Username      field.String // 用户名
+	Password      field.String // 密码
+	Email         field.String // 邮箱
+	EmailVerified field.Bool   // 邮箱是否验证
+	Phone         field.String // 手机号
+	DisplayName   field.String // 显示名称
+	Avatar        field.String // 头像
+	Status        field.Field  // 状态
 
 	fieldMap map[string]field.Expr
 }

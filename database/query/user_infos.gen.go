@@ -53,18 +53,18 @@ type userInfo struct {
 	userInfoDo userInfoDo
 
 	ALL         field.Asterisk
-	ID          field.Int64
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
-	UserID      field.Int64
+	ID          field.Int64  // ID
+	CreatedAt   field.Time   // 创建时间
+	UpdatedAt   field.Time   // 更新时间
+	DeletedAt   field.Field  // 删除时间
+	UserID      field.Int64  // 用户ID
 	Affiliation field.String // 工作单位
 	Title       field.String // 职称
 	IDCardType  field.String // 证件类型
-	IDCard      field.String
+	IDCard      field.String // 证件号码
 	Biography   field.String // 自我介绍
-	Tag         field.String
-	Language    field.String
+	Tag         field.String // 标签
+	Language    field.String // 语言
 	Gender      field.Field  // 性别
 	Birthday    field.Time   // 生日
 	Education   field.String // 学历

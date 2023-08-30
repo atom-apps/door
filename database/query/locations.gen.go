@@ -28,6 +28,7 @@ func newLocation(db *gorm.DB, opts ...gen.DOOption) location {
 	tableName := _location.locationDo.TableName()
 	_location.ALL = field.NewAsterisk(tableName)
 	_location.ID = field.NewInt64(tableName, "id")
+	_location.CreatedAt = field.NewTime(tableName, "created_at")
 	_location.Code = field.NewInt64(tableName, "code")
 	_location.Name = field.NewString(tableName, "name")
 	_location.Province = field.NewString(tableName, "province")
@@ -43,14 +44,15 @@ func newLocation(db *gorm.DB, opts ...gen.DOOption) location {
 type location struct {
 	locationDo locationDo
 
-	ALL      field.Asterisk
-	ID       field.Int64
-	Code     field.Int64 // 行政区划代码
-	Name     field.String
-	Province field.String
-	City     field.String
-	Area     field.String
-	Town     field.String
+	ALL       field.Asterisk
+	ID        field.Int64  // ID
+	CreatedAt field.Time   // 创建时间
+	Code      field.Int64  // 行政区划代码
+	Name      field.String // 名称
+	Province  field.String // 省/直辖市
+	City      field.String // 市
+	Area      field.String // 区县
+	Town      field.String // 乡镇
 
 	fieldMap map[string]field.Expr
 }
@@ -68,6 +70,7 @@ func (l location) As(alias string) *location {
 func (l *location) updateTableName(table string) *location {
 	l.ALL = field.NewAsterisk(table)
 	l.ID = field.NewInt64(table, "id")
+	l.CreatedAt = field.NewTime(table, "created_at")
 	l.Code = field.NewInt64(table, "code")
 	l.Name = field.NewString(table, "name")
 	l.Province = field.NewString(table, "province")
@@ -98,8 +101,9 @@ func (l *location) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *location) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 7)
+	l.fieldMap = make(map[string]field.Expr, 8)
 	l.fieldMap["id"] = l.ID
+	l.fieldMap["created_at"] = l.CreatedAt
 	l.fieldMap["code"] = l.Code
 	l.fieldMap["name"] = l.Name
 	l.fieldMap["province"] = l.Province

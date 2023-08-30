@@ -28,6 +28,7 @@ func newRole(db *gorm.DB, opts ...gen.DOOption) role {
 	tableName := _role.roleDo.TableName()
 	_role.ALL = field.NewAsterisk(tableName)
 	_role.ID = field.NewInt64(tableName, "id")
+	_role.CreatedAt = field.NewTime(tableName, "created_at")
 	_role.Name = field.NewString(tableName, "name")
 	_role.Slug = field.NewString(tableName, "slug")
 	_role.Description = field.NewString(tableName, "description")
@@ -42,11 +43,12 @@ type role struct {
 	roleDo roleDo
 
 	ALL         field.Asterisk
-	ID          field.Int64
-	Name        field.String
-	Slug        field.String
-	Description field.String
-	ParentID    field.Int64
+	ID          field.Int64  // ID
+	CreatedAt   field.Time   // 创建时间
+	Name        field.String // 名称
+	Slug        field.String // 唯一标识
+	Description field.String // 描述
+	ParentID    field.Int64  // 父角色
 
 	fieldMap map[string]field.Expr
 }
@@ -64,6 +66,7 @@ func (r role) As(alias string) *role {
 func (r *role) updateTableName(table string) *role {
 	r.ALL = field.NewAsterisk(table)
 	r.ID = field.NewInt64(table, "id")
+	r.CreatedAt = field.NewTime(table, "created_at")
 	r.Name = field.NewString(table, "name")
 	r.Slug = field.NewString(table, "slug")
 	r.Description = field.NewString(table, "description")
@@ -92,8 +95,9 @@ func (r *role) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *role) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 5)
+	r.fieldMap = make(map[string]field.Expr, 6)
 	r.fieldMap["id"] = r.ID
+	r.fieldMap["created_at"] = r.CreatedAt
 	r.fieldMap["name"] = r.Name
 	r.fieldMap["slug"] = r.Slug
 	r.fieldMap["description"] = r.Description

@@ -43,12 +43,12 @@ type session struct {
 	sessionDo sessionDo
 
 	ALL       field.Asterisk
-	ID        field.Int64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	UserID    field.Int64
-	SessionID field.String
-	ExpireAt  field.Time
+	ID        field.Int64  // ID
+	CreatedAt field.Time   // 创建时间
+	UpdatedAt field.Time   // 更新时间
+	UserID    field.Int64  // 用户ID
+	SessionID field.String // 会话ID
+	ExpireAt  field.Time   // 过期时间
 
 	fieldMap map[string]field.Expr
 }

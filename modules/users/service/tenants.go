@@ -19,6 +19,8 @@ type TenantService struct {
 
 func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.TenantItem {
 	return &dto.TenantItem{
+		ID:          model.ID,
+		CreatedAt:   model.CreatedAt,
 		Name:        model.Name,
 		Description: model.Description,
 		Meta:        model.Meta,

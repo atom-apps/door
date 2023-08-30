@@ -22,7 +22,7 @@ type PermissionRuleController struct {
 //	@Param		body		body		common.IDsForm	true	"IDsForm"
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
-//	@Router		/v1/permissions/attach/{role_id}/{tenant_id} [put]
+//	@Router		/v1/users/permissions/attach/{role_id}/{tenant_id} [put]
 func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, id, tenantID int64, users *common.IDsForm) error {
 	return c.permissionRuleSvc.AddRoleUsers(ctx.Context(), tenantID, id, users.IDs)
 }

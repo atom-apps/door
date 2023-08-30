@@ -20,6 +20,7 @@ type SessionItem struct {
 	ID        int64           `json:"id,omitempty"`         //
 	CreatedAt time.Time       `json:"created_at,omitempty"` //
 	UpdatedAt time.Time       `json:"updated_at,omitempty"` //
+	ExpireAt  time.Time       `json:"expire_at,omitempty"`  //
 	UserID    int64           `json:"user_id,omitempty"`    //
 	User      *models.User    `json:"user,omitempty"`       //
 	SessionID string          `json:"session_id,omitempty"` //

@@ -25,10 +25,12 @@ type SessionService struct {
 
 func (svc *SessionService) DecorateItem(model *models.Session, id int) *dto.SessionItem {
 	dtoItem := &dto.SessionItem{
+		ID:        model.ID,
 		CreatedAt: model.CreatedAt,
 		UpdatedAt: model.UpdatedAt,
 		UserID:    model.UserID,
 		SessionID: model.SessionID,
+		ExpireAt:  model.ExpireAt,
 		User:      nil,
 		Tokens:    nil,
 	}

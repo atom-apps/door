@@ -2,7 +2,7 @@ package service
 
 import (
 	serviceSvc "github.com/atom-apps/door/modules/service/service"
-	"github.com/atom-apps/door/modules/user/service"
+	"github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/uuid"

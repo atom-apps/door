@@ -4,7 +4,7 @@ import (
 	authSvc "github.com/atom-apps/door/modules/auth/service"
 	"github.com/atom-apps/door/modules/service/dto"
 	"github.com/atom-apps/door/modules/service/service"
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/captcha"
 	"github.com/gofiber/fiber/v2"

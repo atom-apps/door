@@ -3,7 +3,7 @@ package boot
 import (
 	"strings"
 
-	userModule "github.com/atom-apps/door/modules/user/service"
+	userModule "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"

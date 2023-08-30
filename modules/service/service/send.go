@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/samber/lo"
 
 	"github.com/atom-apps/door/common/consts"

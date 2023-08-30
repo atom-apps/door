@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/atom-apps/door/common/consts"
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/uuid"

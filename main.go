@@ -14,7 +14,7 @@ import (
 	moduleAuth "github.com/atom-apps/door/modules/auth"
 	moduleService "github.com/atom-apps/door/modules/service"
 	moduleSystem "github.com/atom-apps/door/modules/systems"
-	moduleUser "github.com/atom-apps/door/modules/user"
+	moduleUser "github.com/atom-apps/door/modules/users"
 
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/providers/bcrypt"

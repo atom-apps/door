@@ -3,7 +3,7 @@ package controller
 import (
 	authSvc "github.com/atom-apps/door/modules/auth/service"
 	"github.com/atom-apps/door/modules/service/service"
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/captcha"
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/utils/opt"

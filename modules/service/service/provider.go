@@ -1,7 +1,7 @@
 package service
 
 import (
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/app"
 	redis "github.com/redis/go-redis/v9"
 	"github.com/rogeecn/atom/container"

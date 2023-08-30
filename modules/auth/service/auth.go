@@ -9,7 +9,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/auth/dto"
 	serviceSvc "github.com/atom-apps/door/modules/service/service"
-	"github.com/atom-apps/door/modules/user/service"
+	"github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/uuid"

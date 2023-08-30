@@ -10,7 +10,7 @@ import (
 	"github.com/atom-apps/door/modules/auth/dto"
 	"github.com/atom-apps/door/modules/auth/service"
 	serviceSvc "github.com/atom-apps/door/modules/service/service"
-	userSvc "github.com/atom-apps/door/modules/user/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"

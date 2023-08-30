@@ -6,7 +6,7 @@ require (
 	github.com/atom-providers/app v0.0.0-20230811023801-3f6c46f8f414
 	github.com/atom-providers/captcha v0.0.0-20230801062818-95beaace4c91
 	github.com/atom-providers/casbin v0.0.0-20230820111045-c8280b845202
-	github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58
+	github.com/atom-providers/database-mysql v0.0.0-20230801062833-f884a0ac6f21
 	github.com/atom-providers/database-redis v0.0.0-20230821072757-ad64d54a6ae3
 	github.com/atom-providers/hashids v0.0.0-20230817110758-056afe89011f
 	github.com/atom-providers/jwt v0.0.0-20230821103149-df366e6a5287
@@ -39,6 +39,7 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 // indirect
+	github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 // indirect
 	github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb // indirect
 	github.com/casbin/casbin/v2 v2.77.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

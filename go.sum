@@ -62,10 +62,12 @@ github.com/atom-providers/casbin v0.0.0-20230820111045-c8280b845202 h1:V5oPA3cIr
 github.com/atom-providers/casbin v0.0.0-20230820111045-c8280b845202/go.mod h1:FLXaksC2fN3UN4O31LtZWaKjBWw4/TjWQ0n/JJPxA5A=
 github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 h1:DJQmnHW5MgGfdFj1rP+XUNfEq4gY13wZ3BtfM47agcg=
 github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287/go.mod h1:940U+71qe5153e3esr1PQZCpM1SzP4Vu9VI2LePJIhc=
-github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58 h1:y0VN68DULkO3rH9D+/qWnbjsBONXZqdmQ2hiLm1oMyI=
-github.com/atom-providers/database-postgres v0.0.0-20230801062836-e1fae5b15d58/go.mod h1:AYZjXEJKdj78t1neNGzbVl6G5x+9a2/d3WgWRHkWDPE=
+github.com/atom-providers/database-mysql v0.0.0-20230801062833-f884a0ac6f21 h1:cym1h1rrcFmD7oPEswUMPqQWCBNlfWiB/46XbcVpHhs=
+github.com/atom-providers/database-mysql v0.0.0-20230801062833-f884a0ac6f21/go.mod h1:JfRI8IWkUK6KfBOkfUbL6BQwWpvQOXH1YwAHLn0P/hk=
 github.com/atom-providers/database-redis v0.0.0-20230821072757-ad64d54a6ae3 h1:+/8HX3W1ROz/TfbxuZpArP+4nkmod7ZHdnTC9gwL/Nw=
 github.com/atom-providers/database-redis v0.0.0-20230821072757-ad64d54a6ae3/go.mod h1:ohZDjCyI8YGv47MZus8q37YXBRGvQ6EHvhdZqfRGyxw=
+github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 h1:Bp515BdvUp8sgOoKoueULGFJyIc9jzrK3/gEfx5/Gh8=
+github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34/go.mod h1:e7hDQRsPZlQLt6fm3cRVl+amii/TwoqmESKqzxLQ9/Q=
 github.com/atom-providers/hashids v0.0.0-20230817110758-056afe89011f h1:COiiuw0H2WIJ1PTP2/gHxvNkxtnoqgER1Ssl4rCzcpA=
 github.com/atom-providers/hashids v0.0.0-20230817110758-056afe89011f/go.mod h1:Xk8+e7xwS2djt02XBoEnw14RwChSLyDUwT2BX0x6mfM=
 github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb h1:lvDupzZievdg1R9OUidfNkdmE3UkO+X1yVtmLlPS27c=

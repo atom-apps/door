@@ -22,7 +22,7 @@ import (
 	"github.com/atom-apps/door/providers/oauth"
 	"github.com/atom-providers/captcha"
 	"github.com/atom-providers/casbin"
-	databasePostgres "github.com/atom-providers/database-postgres"
+	database "github.com/atom-providers/database-mysql"
 	redis "github.com/atom-providers/database-redis"
 	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/jwt"
@@ -48,7 +48,7 @@ func main() {
 			swagger.DefaultProvider(),
 			query.DefaultProvider(),
 			jwt.DefaultProvider(),
-			databasePostgres.DefaultProvider(),
+			database.DefaultProvider(),
 		).
 		With(boot.Providers()).
 		With(

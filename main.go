@@ -26,7 +26,7 @@ import (
 	redis "github.com/atom-providers/database-redis"
 	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/jwt"
-	service "github.com/atom-providers/service-httpgrpc"
+	service "github.com/atom-providers/service-http"
 	"github.com/atom-providers/swagger"
 	"github.com/atom-providers/uuid"
 	_ "github.com/go-gormigrate/gormigrate/v2"

@@ -5,8 +5,8 @@ package routes
 import (
 	 "strings"
 
-	"github.com/atom-apps/door/modules/user/controller"
-	"github.com/atom-apps/door/modules/user/dto"
+	"github.com/atom-apps/door/modules/test/controller"
+	"github.com/atom-apps/door/modules/test/dto"
 	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/atom-apps/door/common"
@@ -57,34 +56,6 @@ func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
 	return c.userSvc.DecorateItem(item, 0), nil
 }
 
-// LabelShow
-//
-//	@Summary		LabelShow
-//	@Description	get info by id
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		int	true	"UserID"
-//	@Success		200	{object}	dto.UserItem
-//	@Router			/v1/users/{id}/label [get]
-func (c *UserController) LabelShow(ctx *fiber.Ctx, id int64) ([]common.LabelItem, error) {
-	item, err := c.userSvc.GetByID(ctx.Context(), id)
-	if err != nil {
-		return nil, err
-	}
-
-	return []common.LabelItem{
-		{Label: "ID", Value: fmt.Sprintf("%d", item.ID)},
-		{Label: "UUID", Value: item.UUID},
-		{Label: "用户名", Value: item.Username},
-		{Label: "昵称", Value: item.DisplayName},
-		{Label: "电子邮箱", Value: item.Email},
-		{Label: "邮箱验证", Value: common.BoolOrStr(item.EmailVerified, "已验证", "未验证")},
-		{Label: "手机", Value: item.Phone},
-		{Label: "状态", Value: item.Status.Cn()},
-	}, nil
-}
-
 // List list by query filter
 //
 //	@Summary		list by query filter
@@ -113,42 +84,6 @@ func (c *UserController) List(
 		Total:           total,
 		Items:           lo.Map(items, c.userSvc.DecorateItem),
 	}, nil
-}
-
-// Filters get list filter items
-//
-//	@Summary		get list filters
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Success		200			{array}	common.Filter
-//	@Router			/v1/users/filters [get]
-func (c *UserController) Filters(ctx *fiber.Ctx) ([]common.Filter, error) {
-	return dto.UserListQueryFilters(), nil
-}
-
-// Columns of list
-//
-//	@Summary		get list columns
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Success		200			{object}	common.Columns
-//	@Router			/v1/users/columns [get]
-func (c *UserController) Columns(ctx *fiber.Ctx) (common.Columns, error) {
-	columns := []common.TableColumnData{
-		{Title: "ID", DataIndex: "id"},
-		{Title: "UUID", DataIndex: "uuid", Hidden: true},
-		{Title: "昵称", DataIndex: "display_name"},
-		{Title: "名称", DataIndex: "username"},
-		{Title: "状态", Align: lo.ToPtr("center"), DataIndex: "status"},
-		{Title: "Email", DataIndex: "email"},
-		{Title: "电话", DataIndex: "phone"},
-		{Title: "创建时间", DataIndex: "created_at", Hidden: true},
-		{Title: "更新时间", DataIndex: "updated_at"},
-		{Title: "操作", DataIndex: "operations", Align: lo.ToPtr("right")},
-	}
-	return common.NewColumns(columns), nil
 }
 
 // // Role users

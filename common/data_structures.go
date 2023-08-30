@@ -63,3 +63,8 @@ func (filter *PageQueryFilter) Format() *PageQueryFilter {
 type IDsForm struct {
 	IDs []int64 `json:"ids" form:"ids"`
 }
+
+type LabelItem struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
+}

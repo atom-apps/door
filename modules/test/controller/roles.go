@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
-	"github.com/atom-apps/door/modules/user/dto"
-	"github.com/atom-apps/door/modules/user/service"
+	"github.com/atom-apps/door/modules/test/dto"
+	"github.com/atom-apps/door/modules/test/service"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
@@ -16,9 +16,8 @@ type RoleController struct {
 
 // Show get single item info
 //
-//	@Summary		get by id
-//	@Description	get info by id
-//	@Tags			User
+//	@Summary		Show
+//	@Tags			Test
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"RoleID"
@@ -35,9 +34,8 @@ func (c *RoleController) Show(ctx *fiber.Ctx, id int64) (*dto.RoleItem, error) {
 
 // List list by query filter
 //
-//	@Summary		list by query filter
-//	@Description	list by query filter
-//	@Tags			User
+//	@Summary		List
+//	@Tags			Test
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.RoleListQueryFilter	true	"RoleListQueryFilter"
@@ -65,9 +63,8 @@ func (c *RoleController) List(
 
 // Create a new item
 //
-//	@Summary		create new item
-//	@Description	create new item
-//	@Tags			User
+//	@Summary		Create
+//	@Tags			Test
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body		dto.RoleForm	true	"RoleForm"
@@ -77,32 +74,28 @@ func (c *RoleController) Create(ctx *fiber.Ctx, body *dto.RoleForm) error {
 	return c.roleSvc.Create(ctx.Context(), body)
 }
 
-// Update update by id
+// Update by id
 //
 //	@Summary		update by id
-//	@Description	update by id
-//	@Tags			User
+//	@Tags			Test
 //	@Accept			json
 //	@Produce		json
 //	@Param			id		path		int				true	"RoleID"
 //	@Param			body	body		dto.RoleForm	true	"RoleForm"
 //	@Success		200		{string}	RoleID
-//	@Failure		500		{string}	RoleID
 //	@Router			/v1/users/roles/{id} [put]
 func (c *RoleController) Update(ctx *fiber.Ctx, id int64, body *dto.RoleForm) error {
 	return c.roleSvc.Update(ctx.Context(), id, body)
 }
 
-// Delete delete by id
+// Delete by id
 //
-//	@Summary		delete by id
-//	@Description	delete by id
-//	@Tags			User
+//	@Summary		Delete
+//	@Tags			Test
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"RoleID"
 //	@Success		200	{string}	RoleID
-//	@Failure		500	{string}	RoleID
 //	@Router			/v1/users/roles/{id} [delete]
 func (c *RoleController) Delete(ctx *fiber.Ctx, id int64) error {
 	return c.roleSvc.Delete(ctx.Context(), id)

@@ -3,7 +3,6 @@ package dto
 import (
 	"time"
 
-	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/consts"
 )
 
@@ -28,19 +27,6 @@ type UserListQueryFilter struct {
 	Phone         *string            `query:"phone" json:"phone,omitempty"`                   //
 	DisplayName   *string            `query:"display_name" json:"display_name,omitempty"`     //
 	Status        *consts.UserStatus `json:"status,omitempty"`                                //
-}
-
-func UserListQueryFilters() []common.Filter {
-	return []common.Filter{
-		{Type: common.FilterTypeList, Name: "ids", Label: "ID"},
-		{Type: common.FilterTypeString, Name: "uuid", Label: "UUID"},
-		{Type: common.FilterTypeString, Name: "username", Label: "用户名"},
-		{Type: common.FilterTypeString, Name: "display_name", Label: "昵称"},
-		{Type: common.FilterTypeString, Name: "email", Label: "邮箱"},
-		{Type: common.FilterTypeBool, Name: "email_verified", Label: "已验证"},
-		{Type: common.FilterTypeString, Name: "phone", Label: "手机号"},
-		{Type: common.FilterTypeString, Name: "status", Value: string(consts.UserStatusDefault), Items: consts.UserStatusLabel(false), Label: "状态"},
-	}
 }
 
 type UserItem struct {

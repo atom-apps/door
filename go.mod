@@ -11,7 +11,7 @@ require (
 	github.com/atom-providers/hashids v0.0.0-20230817110758-056afe89011f
 	github.com/atom-providers/jwt v0.0.0-20230821103149-df366e6a5287
 	github.com/atom-providers/log v0.0.0-20230805054420-343ad809890e
-	github.com/atom-providers/service-httpgrpc v0.0.0-20230801062936-e5c2344a7495
+	github.com/atom-providers/service-http v0.0.0-20230811021646-9685461114d2
 	github.com/atom-providers/swagger v0.0.0-20230801062947-5ad4735e505b
 	github.com/atom-providers/uuid v0.0.0-20230801062951-5331ee1b8af6
 	github.com/brianvoe/gofakeit/v6 v6.23.1
@@ -39,8 +39,6 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/atom-providers/config v0.0.0-20230801062037-db91396e3287 // indirect
-	github.com/atom-providers/faker v0.0.0-20230801062847-1ecbe384fc34 // indirect
-	github.com/atom-providers/grpc-server v0.0.0-20230801062851-a1bb364b0114 // indirect
 	github.com/atom-providers/http-fiber v0.0.0-20230801062902-dd7466ac87eb // indirect
 	github.com/casbin/casbin/v2 v2.77.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -115,8 +113,6 @@ require (
 	golang.org/x/text v0.12.0 // indirect
 	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230807174057-1744710a1577 // indirect
-	google.golang.org/grpc v1.57.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

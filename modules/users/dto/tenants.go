@@ -22,4 +22,5 @@ type TenantItem struct {
 	Name        string    `json:"name,omitempty"`        //
 	Description string    `json:"description,omitempty"` //
 	Meta        string    `json:"meta,omitempty"`        //
+	UserAmount  int64     `json:"user_amount,omitempty"` //
 }

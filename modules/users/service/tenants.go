@@ -7,6 +7,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
+	"github.com/atom-providers/log"
 
 	"github.com/jinzhu/copier"
 )
@@ -18,12 +19,18 @@ type TenantService struct {
 }
 
 func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.TenantItem {
+	userAmount, err := svc.permissionRuleSvc.GetUserAmountOfTenant(context.Background(), model.ID)
+	if err != nil {
+		log.Warnf("get user amount of tenant %d failed: %v", model.ID, err)
+	}
+
 	return &dto.TenantItem{
 		ID:          model.ID,
 		CreatedAt:   model.CreatedAt,
 		Name:        model.Name,
 		Description: model.Description,
 		Meta:        model.Meta,
+		UserAmount:  userAmount,
 	}
 }
 

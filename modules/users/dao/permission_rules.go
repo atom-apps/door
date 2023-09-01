@@ -187,6 +187,13 @@ func (dao *PermissionRuleDao) GetUserIDsOfTenant(ctx context.Context, tenantID i
 	}), nil
 }
 
+func (dao *PermissionRuleDao) GetUserAmountOfTenant(ctx context.Context, tenantID int64) (int64, error) {
+	return dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V1.Eq(strconv.Itoa(int(tenantID))),
+	).Count()
+}
+
 // GetUserIDsOfRole
 func (dao *PermissionRuleDao) GetUserIDsOfRole(ctx context.Context, roleID int64) ([]int64, error) {
 	ms, err := dao.Context(ctx).Where(
@@ -201,4 +208,11 @@ func (dao *PermissionRuleDao) GetUserIDsOfRole(ctx context.Context, roleID int64
 		id, _ := strconv.Atoi(m.V0)
 		return int64(id)
 	}), nil
+}
+
+func (dao *PermissionRuleDao) GetUserAmountOfRole(ctx context.Context, roleID int64) (int64, error) {
+	return dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq("g"),
+		dao.query.PermissionRule.V2.Eq(strconv.Itoa(int(roleID))),
+	).Count()
 }

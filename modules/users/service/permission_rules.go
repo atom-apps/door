@@ -145,7 +145,15 @@ func (svc *PermissionRuleService) GetUserIDsOfTenant(ctx context.Context, tenant
 	return svc.dao.GetUserIDsOfTenant(ctx, tenantID)
 }
 
+func (svc *PermissionRuleService) GetUserAmountOfTenant(ctx context.Context, tenantID int64) (int64, error) {
+	return svc.dao.GetUserAmountOfTenant(ctx, tenantID)
+}
+
 // GetUserIDsOfRole
 func (svc *PermissionRuleService) GetUserIDsOfRole(ctx context.Context, roleID int64) ([]int64, error) {
 	return svc.dao.GetUserIDsOfRole(ctx, roleID)
+}
+
+func (svc *PermissionRuleService) GetUserAmountOfRole(ctx context.Context, roleID int64) (int64, error) {
+	return svc.dao.GetUserAmountOfRole(ctx, roleID)
 }

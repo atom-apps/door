@@ -51,14 +51,14 @@ func (c *RoleController) List(
 	pageFilter *common.PageQueryFilter,
 	sortFilter *common.SortQueryFilter,
 ) (*common.PageDataResponse, error) {
-	items, total, err := c.roleSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
+	items, err := c.roleSvc.FindByQueryFilter(ctx.Context(), queryFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
 	return &common.PageDataResponse{
 		PageQueryFilter: *pageFilter,
-		Total:           total,
+		Total:           0,
 		Items:           lo.Map(items, c.roleSvc.DecorateItem),
 	}, nil
 }

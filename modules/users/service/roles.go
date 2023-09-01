@@ -9,6 +9,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
+	"github.com/atom-providers/log"
 
 	"github.com/jinzhu/copier"
 )
@@ -20,6 +21,11 @@ type RoleService struct {
 }
 
 func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
+	userAmount, err := svc.permissionRuleSvc.GetUserAmountOfRole(context.Background(), model.ID)
+	if err != nil {
+		log.Warnf("get user amount of role %d failed: %v", model.ID, err)
+	}
+
 	dtoItem := &dto.RoleItem{
 		ID:          model.ID,
 		Name:        model.Name,
@@ -27,6 +33,7 @@ func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
 		Description: model.Description,
 		ParentID:    model.ParentID,
 		Parent:      nil,
+		UserAmount:  userAmount,
 	}
 
 	if model.ParentID != 0 {

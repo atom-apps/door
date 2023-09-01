@@ -16,12 +16,12 @@ Addresses = ["10.58.144.6:36379"]
 Password = "xixi@0202"
 DB = 0
 
-[Postgres]
-Username = "postgres"
+[MySQL]
+Username = "root"
 Password = "xixi@0202"
 Database = "atom"
 Host = "10.58.144.6"
-Port = 30432
+Port = 33306
 
 [OAuth]
 [OAuth.App]

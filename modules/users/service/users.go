@@ -13,6 +13,8 @@ import (
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-providers/hashids"
+	"github.com/atom-providers/log"
+	"github.com/samber/lo"
 
 	"github.com/jinzhu/copier"
 )
@@ -26,6 +28,11 @@ type UserService struct {
 }
 
 func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
+	tenants, err := svc.permissionRuleSvc.GetTenantsByUserID(context.Background(), model.ID)
+	if err != nil {
+		log.Warnf("get tenants of user %d failed: %v", model.ID, err)
+	}
+
 	dtoItem := &dto.UserItem{
 		ID:            model.ID,
 		CreatedAt:     model.CreatedAt,
@@ -38,6 +45,15 @@ func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
 		DisplayName:   model.DisplayName,
 		Avatar:        model.Avatar,
 		Status:        model.Status,
+		TenantRoles: lo.FilterMap(tenants, func(tenant *models.Tenant, _ int) (*dto.UserItemTenantRole, bool) {
+			role, err := svc.permissionRuleSvc.GetRoleOfTenantUser(context.Background(), tenant.ID, model.ID)
+			if err != nil {
+				log.Warnf("get role of tenant %d user %d failed: %v", tenant.ID, model.ID, err)
+				return nil, false
+			}
+
+			return &dto.UserItemTenantRole{Role: role, Tenant: tenant}, true
+		}),
 	}
 
 	return dtoItem

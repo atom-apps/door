@@ -3,19 +3,19 @@
 package routes
 
 import (
-	"strings"
+	 "strings"
 
-	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/tools/controller"
-	"github.com/atom-apps/door/modules/tools/dto"
 	"github.com/atom-providers/jwt"
+	"github.com/atom-apps/door/modules/tools/dto"
+	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeLocationController(engine fiber.Router, controller *controller.LocationController) {
-	basePath := "/" + engine.(*fiber.Group).Prefix
+	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), DataFunc2(controller.Show, JwtClaim[jwt.Claims](ClaimParamError), Integer[int64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/tools/locations", basePath), DataFunc4(controller.List, JwtClaim[jwt.Claims](ClaimParamError), Query[dto.LocationListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Post(strings.TrimPrefix("/v1/tools/locations", basePath), Func2(controller.Create, JwtClaim[jwt.Claims](ClaimParamError), Body[dto.LocationForm](BodyParamError)))

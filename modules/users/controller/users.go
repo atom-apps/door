@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"time"
-
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
@@ -51,7 +49,6 @@ func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
 	if err != nil {
 		return nil, err
 	}
-	time.Sleep(time.Second * 2)
 
 	return c.userSvc.DecorateItem(item, 0), nil
 }

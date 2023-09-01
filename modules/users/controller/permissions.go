@@ -23,8 +23,8 @@ type PermissionRuleController struct {
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
 //	@Router		/v1/users/permissions/attach/{role_id}/{tenant_id} [put]
-func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, id, tenantID int64, users *common.IDsForm) error {
-	return c.permissionRuleSvc.AddRoleUsers(ctx.Context(), tenantID, id, users.IDs)
+func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID int64, users *common.IDsForm) error {
+	return c.permissionRuleSvc.AddRoleUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }
 
 // Detach users
@@ -38,7 +38,7 @@ func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, id, tenantID int6
 //	@Param		body		body		common.IDsForm	true	"IDsForm"
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
-//	@Router		/v1/permissions/detach/{role_id}/{tenant_id} [put]
-func (c *PermissionRuleController) DetachUsers(ctx *fiber.Ctx, id, tenantID int64, users *common.IDsForm) error {
-	return c.permissionRuleSvc.DeleteRoleUsers(ctx.Context(), tenantID, id, users.IDs)
+//	@Router		/v1/users/permissions/detach/{role_id}/{tenant_id} [put]
+func (c *PermissionRuleController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID int64, users *common.IDsForm) error {
+	return c.permissionRuleSvc.DeleteRoleUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }

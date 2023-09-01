@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/atom-apps/door/common/consts"
+	"github.com/atom-apps/door/database/models"
 )
 
 type UserForm struct {
@@ -30,15 +31,21 @@ type UserListQueryFilter struct {
 }
 
 type UserItem struct {
-	ID            int64             `json:"id,omitempty"`             //
-	CreatedAt     time.Time         `json:"created_at,omitempty"`     //
-	UpdatedAt     time.Time         `json:"updated_at,omitempty"`     //
-	UUID          string            `json:"uuid,omitempty"`           //
-	Username      string            `json:"username,omitempty"`       //
-	Email         string            `json:"email,omitempty"`          //
-	EmailVerified bool              `json:"email_verified,omitempty"` //
-	Phone         string            `json:"phone,omitempty"`          //
-	DisplayName   string            `json:"display_name,omitempty"`   //
-	Avatar        string            `json:"avatar,omitempty"`         //
-	Status        consts.UserStatus `json:"status,omitempty"`         //
+	ID            int64                 `json:"id,omitempty"`             //
+	CreatedAt     time.Time             `json:"created_at,omitempty"`     //
+	UpdatedAt     time.Time             `json:"updated_at,omitempty"`     //
+	UUID          string                `json:"uuid,omitempty"`           //
+	Username      string                `json:"username,omitempty"`       //
+	Email         string                `json:"email,omitempty"`          //
+	EmailVerified bool                  `json:"email_verified,omitempty"` //
+	Phone         string                `json:"phone,omitempty"`          //
+	DisplayName   string                `json:"display_name,omitempty"`   //
+	Avatar        string                `json:"avatar,omitempty"`         //
+	Status        consts.UserStatus     `json:"status,omitempty"`         //
+	TenantRoles   []*UserItemTenantRole `json:"tenant_roles,omitempty"`
+}
+
+type UserItemTenantRole struct {
+	Role   *models.Role   `json:"role,omitempty"`
+	Tenant *models.Tenant `json:"tenant,omitempty"`
 }

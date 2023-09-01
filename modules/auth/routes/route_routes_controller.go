@@ -3,7 +3,7 @@
 package routes
 
 import (
-	"strings"
+	 "strings"
 
 	"github.com/atom-apps/door/modules/auth/controller"
 	"github.com/atom-providers/jwt"
@@ -13,7 +13,7 @@ import (
 )
 
 func routeRoutesController(engine fiber.Router, controller *controller.RoutesController) {
-	basePath := "/" + engine.(*fiber.Group).Prefix
+	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/auth/routes", basePath), DataFunc(controller.List))
 	engine.Get(strings.TrimPrefix("/v1/auth/pages", basePath), DataFunc1(controller.Pages, JwtClaim[jwt.Claims](ClaimParamError)))
 }

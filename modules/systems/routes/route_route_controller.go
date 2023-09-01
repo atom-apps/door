@@ -3,19 +3,19 @@
 package routes
 
 import (
-	"strings"
+	 "strings"
 
-	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/modules/systems/controller"
-	"github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-providers/jwt"
+	"github.com/atom-apps/door/modules/systems/dto"
+	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeRouteController(engine fiber.Router, controller *controller.RouteController) {
-	basePath := "/" + engine.(*fiber.Group).Prefix
+	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/routes/:id<int>", basePath), DataFunc2(controller.Show, JwtClaim[jwt.Claims](ClaimParamError), Integer[int64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/routes", basePath), DataFunc4(controller.List, JwtClaim[jwt.Claims](ClaimParamError), Query[dto.RouteListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Get(strings.TrimPrefix("/v1/routes/type/:routeType", basePath), DataFunc2(controller.Pages, JwtClaim[jwt.Claims](ClaimParamError), String("routeType", PathParamError)))

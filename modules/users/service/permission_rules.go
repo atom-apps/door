@@ -43,12 +43,12 @@ func (svc *PermissionRuleService) DeletePolicy(ctx context.Context, tenantID, ro
 
 // create role
 func (svc *PermissionRuleService) CreateGroup(ctx context.Context, userID, tenantID, roleID int64) error {
-	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(roleID)), strconv.Itoa(int(tenantID))}
+	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(tenantID)), strconv.Itoa(int(roleID))}
 	return svc.dao.Create(ctx, svc.genGroupModel(ctx, args...))
 }
 
 func (svc *PermissionRuleService) DeleteGroup(ctx context.Context, userID, tenantID, roleID int64) error {
-	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(roleID)), strconv.Itoa(int(tenantID))}
+	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(tenantID)), strconv.Itoa(int(roleID))}
 	return svc.dao.DeleteByModel(ctx, svc.genGroupModel(ctx, args...))
 }
 
@@ -100,7 +100,7 @@ func (svc *PermissionRuleService) GetTenantsByUserID(ctx context.Context, userID
 	}
 
 	// super admin
-	if len(tenantIDs) == 1 && tenantIDs[0] == 0 {
+	if len(tenantIDs) >= 1 && tenantIDs[0] == 0 {
 		return []*models.Tenant{{ID: 0, Name: "Super Admin"}}, nil
 	}
 

@@ -15,11 +15,12 @@ import (
 // @provider
 type TenantService struct {
 	tenantDao         *dao.TenantDao
-	permissionRuleSvc *PermissionRuleService
+	permissionSvc     *PermissionService
+	userTenantRoleSvc *UserTenantRoleService
 }
 
 func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.TenantItem {
-	userAmount, err := svc.permissionRuleSvc.GetUserAmountOfTenant(context.Background(), model.ID)
+	userAmount, err := svc.userTenantRoleSvc.GetUserAmountOfTenant(context.Background(), model.ID)
 	if err != nil {
 		log.Warnf("get user amount of tenant %d failed: %v", model.ID, err)
 	}
@@ -91,6 +92,14 @@ func (svc *TenantService) Delete(ctx context.Context, id uint64) error {
 			return err
 		}
 
-		return svc.permissionRuleSvc.DeleteByTenantID(ctx, id)
+		if err := svc.userTenantRoleSvc.DeleteByTenantID(ctx, id); err != nil {
+			return err
+		}
+
+		if err := svc.permissionSvc.DeleteByTenantID(ctx, id); err != nil {
+			return err
+		}
+
+		return nil
 	})
 }

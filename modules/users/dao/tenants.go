@@ -130,3 +130,10 @@ func (dao *TenantDao) FirstByQueryFilter(
 	tenantQuery = dao.decorateSortQueryFilter(tenantQuery, sortFilter)
 	return tenantQuery.First()
 }
+
+// FindByIDs
+func (dao *TenantDao) FindByIDs(ctx context.Context, ids []uint64) ([]*models.Tenant, error) {
+	query := dao.query.Tenant
+	tenantQuery := query.WithContext(ctx)
+	return tenantQuery.Where(dao.query.Tenant.ID.In(ids...)).Find()
+}

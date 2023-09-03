@@ -9,8 +9,8 @@ import (
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		query *query.Query,
-	) (*PermissionRuleDao, error) {
-		obj := &PermissionRuleDao{
+	) (*PermissionDao, error) {
+		obj := &PermissionDao{
 			query: query,
 		}
 		return obj, nil
@@ -66,6 +66,17 @@ func Provide(opts ...opt.Option) error {
 		query *query.Query,
 	) (*UserInfoDao, error) {
 		obj := &UserInfoDao{
+			query: query,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		query *query.Query,
+	) (*UserTenantRoleDao, error) {
+		obj := &UserTenantRoleDao{
 			query: query,
 		}
 		return obj, nil

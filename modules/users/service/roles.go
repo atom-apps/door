@@ -17,11 +17,12 @@ import (
 // @provider
 type RoleService struct {
 	roleDao           *dao.RoleDao
-	permissionRuleSvc *PermissionRuleService
+	userTenantRoleSvc *UserTenantRoleService
+	permissionSvc     *PermissionService
 }
 
 func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
-	userAmount, err := svc.permissionRuleSvc.GetUserAmountOfRole(context.Background(), model.ID)
+	userAmount, err := svc.userTenantRoleSvc.GetUserAmountOfRole(context.Background(), model.ID)
 	if err != nil {
 		log.Warnf("get user amount of role %d failed: %v", model.ID, err)
 	}
@@ -55,7 +56,7 @@ func (svc *RoleService) GetBySlug(ctx context.Context, slug string) (*models.Rol
 }
 
 func (svc *RoleService) GetByUserID(ctx context.Context, tenantID, userID uint64) (*models.Role, error) {
-	return svc.permissionRuleSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
+	return svc.userTenantRoleSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
 }
 
 func (svc *RoleService) FindByQueryFilter(
@@ -118,16 +119,13 @@ func (svc *RoleService) Delete(ctx context.Context, id uint64) error {
 		}
 
 		// delete permission rules roles
-		return svc.permissionRuleSvc.DeleteByRoleID(ctx, id)
+		if err := svc.userTenantRoleSvc.DeleteByRoleID(ctx, id); err != nil {
+			return err
+		}
+
+		if err := svc.permissionSvc.DeleteByRoleID(ctx, id); err != nil {
+			return err
+		}
+		return nil
 	})
-}
-
-// AttachUsers
-func (svc *RoleService) AttachUsers(ctx context.Context, tenantID, roleID uint64, userIDs []uint64) error {
-	return svc.permissionRuleSvc.AddRoleUsers(ctx, tenantID, roleID, userIDs)
-}
-
-// DetachUsers
-func (svc *RoleService) DetachUsers(ctx context.Context, tenantID, roleID uint64, userIDs []uint64) error {
-	return svc.permissionRuleSvc.DeleteRoleUsers(ctx, tenantID, roleID, userIDs)
 }

@@ -8,10 +8,12 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
-		permissionRuleSvc *service.PermissionRuleService,
-	) (*PermissionRuleController, error) {
-		obj := &PermissionRuleController{
-			permissionRuleSvc: permissionRuleSvc,
+		permissionSvc *service.PermissionService,
+		userTenantRoleSvc *service.UserTenantRoleService,
+	) (*PermissionController, error) {
+		obj := &PermissionController{
+			permissionSvc:     permissionSvc,
+			userTenantRoleSvc: userTenantRoleSvc,
 		}
 		return obj, nil
 	}); err != nil {
@@ -63,12 +65,12 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		permissionRuleSvc *service.PermissionRuleService,
+		permissionSvc *service.PermissionService,
 		userSvc *service.UserService,
 	) (*UserController, error) {
 		obj := &UserController{
-			permissionRuleSvc: permissionRuleSvc,
-			userSvc:           userSvc,
+			permissionSvc: permissionSvc,
+			userSvc:       userSvc,
 		}
 		return obj, nil
 	}); err != nil {

@@ -24,11 +24,12 @@ type UserService struct {
 	userDao           *dao.UserDao
 	hashID            *hashids.HashID
 	hash              *bcrypt.Hash
-	permissionRuleSvc *PermissionRuleService
+	permissionSvc     *PermissionService
+	userTenantRoleSvc *UserTenantRoleService
 }
 
 func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
-	tenants, err := svc.permissionRuleSvc.GetTenantsByUserID(context.Background(), model.ID)
+	tenants, err := svc.userTenantRoleSvc.GetTenantsByUserID(context.Background(), model.ID)
 	if err != nil {
 		log.Warnf("get tenants of user %d failed: %v", model.ID, err)
 	}
@@ -46,7 +47,7 @@ func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
 		Avatar:        model.Avatar,
 		Status:        model.Status,
 		TenantRoles: lo.FilterMap(tenants, func(tenant *models.Tenant, _ int) (*dto.UserItemTenantRole, bool) {
-			role, err := svc.permissionRuleSvc.GetRoleOfTenantUser(context.Background(), tenant.ID, model.ID)
+			role, err := svc.userTenantRoleSvc.GetRoleOfTenantUser(context.Background(), tenant.ID, model.ID)
 			if err != nil {
 				log.Warnf("get role of tenant %d user %d failed: %v", tenant.ID, model.ID, err)
 				return nil, false
@@ -116,7 +117,7 @@ func (svc *UserService) Delete(ctx context.Context, id uint64) error {
 			return err
 		}
 
-		return svc.permissionRuleSvc.DeleteUser(ctx, id)
+		return svc.userTenantRoleSvc.DeleteByUserID(ctx, id)
 	})
 }
 

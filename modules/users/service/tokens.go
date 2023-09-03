@@ -21,15 +21,15 @@ import (
 
 // @provider
 type TokenService struct {
-	hash          *md5.Hash
-	uuid          *uuid.Generator
-	jwt           *jwt.JWT
-	auth          *oauth.Auth
-	tokenDao      *dao.TokenDao
-	userDao       *dao.UserDao
-	sessionDao    *dao.SessionDao
-	roleDao       *dao.RoleDao
-	permissionSvc *PermissionRuleService
+	hash              *md5.Hash
+	uuid              *uuid.Generator
+	jwt               *jwt.JWT
+	auth              *oauth.Auth
+	tokenDao          *dao.TokenDao
+	userDao           *dao.UserDao
+	sessionDao        *dao.SessionDao
+	roleDao           *dao.RoleDao
+	UserTenantRoleSvc *UserTenantRoleService
 }
 
 func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenItem {
@@ -131,7 +131,7 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 	var err error
 	var role *models.Role
 	if tenantID != 0 {
-		role, err = svc.permissionSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
+		role, err = svc.UserTenantRoleSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
 		if err != nil {
 			return nil, err
 		}
@@ -191,7 +191,7 @@ func (svc *TokenService) GetByRefreshToken(ctx context.Context, refreshToken str
 
 // RefreshToken
 func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token) (*models.Token, error) {
-	role, err := svc.permissionSvc.GetRoleOfTenantUser(ctx, token.TenantID, token.UserID)
+	role, err := svc.UserTenantRoleSvc.GetRoleOfTenantUser(ctx, token.TenantID, token.UserID)
 	if err != nil {
 		return nil, err
 	}

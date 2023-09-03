@@ -14,14 +14,14 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
-		dao *dao.PermissionRuleDao,
+		permissionDao *dao.PermissionDao,
 		roleDao *dao.RoleDao,
 		tenantDao *dao.TenantDao,
-	) (*PermissionRuleService, error) {
-		obj := &PermissionRuleService{
-			dao:       dao,
-			roleDao:   roleDao,
-			tenantDao: tenantDao,
+	) (*PermissionService, error) {
+		obj := &PermissionService{
+			permissionDao: permissionDao,
+			roleDao:       roleDao,
+			tenantDao:     tenantDao,
 		}
 		return obj, nil
 	}); err != nil {
@@ -29,12 +29,14 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		permissionRuleSvc *PermissionRuleService,
+		permissionSvc *PermissionService,
 		roleDao *dao.RoleDao,
+		userTenantRoleSvc *UserTenantRoleService,
 	) (*RoleService, error) {
 		obj := &RoleService{
-			permissionRuleSvc: permissionRuleSvc,
+			permissionSvc:     permissionSvc,
 			roleDao:           roleDao,
+			userTenantRoleSvc: userTenantRoleSvc,
 		}
 		return obj, nil
 	}); err != nil {
@@ -61,12 +63,14 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
-		permissionRuleSvc *PermissionRuleService,
+		permissionSvc *PermissionService,
 		tenantDao *dao.TenantDao,
+		userTenantRoleSvc *UserTenantRoleService,
 	) (*TenantService, error) {
 		obj := &TenantService{
-			permissionRuleSvc: permissionRuleSvc,
+			permissionSvc:     permissionSvc,
 			tenantDao:         tenantDao,
+			userTenantRoleSvc: userTenantRoleSvc,
 		}
 		return obj, nil
 	}); err != nil {
@@ -74,10 +78,10 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		UserTenantRoleSvc *UserTenantRoleService,
 		auth *oauth.Auth,
 		hash *md5.Hash,
 		jwt *jwt.JWT,
-		permissionSvc *PermissionRuleService,
 		roleDao *dao.RoleDao,
 		sessionDao *dao.SessionDao,
 		tokenDao *dao.TokenDao,
@@ -85,15 +89,15 @@ func Provide(opts ...opt.Option) error {
 		uuid *uuid.Generator,
 	) (*TokenService, error) {
 		obj := &TokenService{
-			auth:          auth,
-			hash:          hash,
-			jwt:           jwt,
-			permissionSvc: permissionSvc,
-			roleDao:       roleDao,
-			sessionDao:    sessionDao,
-			tokenDao:      tokenDao,
-			userDao:       userDao,
-			uuid:          uuid,
+			UserTenantRoleSvc: UserTenantRoleSvc,
+			auth:              auth,
+			hash:              hash,
+			jwt:               jwt,
+			roleDao:           roleDao,
+			sessionDao:        sessionDao,
+			tokenDao:          tokenDao,
+			userDao:           userDao,
+			uuid:              uuid,
 		}
 		return obj, nil
 	}); err != nil {
@@ -112,16 +116,33 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		roleDao *dao.RoleDao,
+		tenantDao *dao.TenantDao,
+		userTenantRoleDao *dao.UserTenantRoleDao,
+	) (*UserTenantRoleService, error) {
+		obj := &UserTenantRoleService{
+			roleDao:           roleDao,
+			tenantDao:         tenantDao,
+			userTenantRoleDao: userTenantRoleDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		hash *bcrypt.Hash,
 		hashID *hashids.HashID,
-		permissionRuleSvc *PermissionRuleService,
+		permissionSvc *PermissionService,
 		userDao *dao.UserDao,
+		userTenantRoleSvc *UserTenantRoleService,
 	) (*UserService, error) {
 		obj := &UserService{
 			hash:              hash,
 			hashID:            hashID,
-			permissionRuleSvc: permissionRuleSvc,
+			permissionSvc:     permissionSvc,
 			userDao:           userDao,
+			userTenantRoleSvc: userTenantRoleSvc,
 		}
 		return obj, nil
 	}); err != nil {

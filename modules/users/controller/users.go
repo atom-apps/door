@@ -12,8 +12,8 @@ import (
 
 // @provider
 type UserController struct {
-	userSvc           *service.UserService
-	permissionRuleSvc *service.PermissionRuleService
+	userSvc       *service.UserService
+	permissionSvc *service.PermissionService
 }
 
 // Profile get current user info

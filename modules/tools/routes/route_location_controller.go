@@ -16,9 +16,9 @@ import (
 
 func routeLocationController(engine fiber.Router, controller *controller.LocationController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), DataFunc2(controller.Show, JwtClaim[jwt.Claims](ClaimParamError), Integer[int64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), DataFunc2(controller.Show, JwtClaim[jwt.Claims](ClaimParamError), Integer[uint64]("id", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/tools/locations", basePath), DataFunc4(controller.List, JwtClaim[jwt.Claims](ClaimParamError), Query[dto.LocationListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Post(strings.TrimPrefix("/v1/tools/locations", basePath), Func2(controller.Create, JwtClaim[jwt.Claims](ClaimParamError), Body[dto.LocationForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), Func3(controller.Update, JwtClaim[jwt.Claims](ClaimParamError), Integer[int64]("id", PathParamError), Body[dto.LocationForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), Func2(controller.Delete, JwtClaim[jwt.Claims](ClaimParamError), Integer[int64]("id", PathParamError)))
+	engine.Put(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), Func3(controller.Update, JwtClaim[jwt.Claims](ClaimParamError), Integer[uint64]("id", PathParamError), Body[dto.LocationForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/tools/locations/:id<int>", basePath), Func2(controller.Delete, JwtClaim[jwt.Claims](ClaimParamError), Integer[uint64]("id", PathParamError)))
 }

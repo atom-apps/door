@@ -59,7 +59,7 @@ func (svc *UserService) DecorateItem(model *models.User, id int) *dto.UserItem {
 	return dtoItem
 }
 
-func (svc *UserService) GetByID(ctx context.Context, id int64) (*models.User, error) {
+func (svc *UserService) GetByID(ctx context.Context, id uint64) (*models.User, error) {
 	return svc.userDao.GetByID(ctx, id)
 }
 
@@ -93,7 +93,7 @@ func (svc *UserService) Create(ctx context.Context, body *dto.UserForm) error {
 }
 
 // Update
-func (svc *UserService) Update(ctx context.Context, id int64, body *dto.UserForm) error {
+func (svc *UserService) Update(ctx context.Context, id uint64, body *dto.UserForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -110,7 +110,7 @@ func (svc *UserService) UpdateFromModel(ctx context.Context, model *models.User)
 }
 
 // Delete
-func (svc *UserService) Delete(ctx context.Context, id int64) error {
+func (svc *UserService) Delete(ctx context.Context, id uint64) error {
 	return svc.userDao.Transaction(func() error {
 		if err := svc.userDao.Delete(ctx, id); err != nil {
 			return err
@@ -186,7 +186,7 @@ func (svc *UserService) GetByEmail(ctx context.Context, input string) (*models.U
 // GetUserIDHashToken
 func (svc *UserService) GetUserIDHashToken(ctx context.Context, user *models.User) (string, error) {
 	salt := common.RandomString(10)
-	hashid, err := svc.hashID.EncodeWithSalt(salt, user.ID)
+	hashid, err := svc.hashID.EncodeWithSalt(salt, int64(user.ID))
 	if err != nil {
 		return "", err
 	}
@@ -204,7 +204,7 @@ func (svc *UserService) GetUserFromHashToken(ctx context.Context, token string) 
 		return nil, err
 	}
 
-	return svc.userDao.GetByID(ctx, ids[0])
+	return svc.userDao.GetByID(ctx, uint64(ids[0]))
 }
 
 func (svc *UserService) ResetPassword(ctx context.Context, user *models.User, password string) error {

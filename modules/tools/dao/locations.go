@@ -72,7 +72,7 @@ func (dao *LocationDao) decorateQueryFilter(query query.ILocationDo, queryFilter
 	return query
 }
 
-func (dao *LocationDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *LocationDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Location.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -82,12 +82,12 @@ func (dao *LocationDao) Update(ctx context.Context, model *models.Location) erro
 	return err
 }
 
-func (dao *LocationDao) Delete(ctx context.Context, id int64) error {
+func (dao *LocationDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Location.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *LocationDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *LocationDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Location.ID.Eq(id)).Delete()
 	return err
 }
@@ -96,11 +96,11 @@ func (dao *LocationDao) Create(ctx context.Context, model *models.Location) erro
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *LocationDao) GetByID(ctx context.Context, id int64) (*models.Location, error) {
+func (dao *LocationDao) GetByID(ctx context.Context, id uint64) (*models.Location, error) {
 	return dao.Context(ctx).Where(dao.query.Location.ID.Eq(id)).First()
 }
 
-func (dao *LocationDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Location, error) {
+func (dao *LocationDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Location, error) {
 	return dao.Context(ctx).Where(dao.query.Location.ID.In(ids...)).Find()
 }
 

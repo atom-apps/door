@@ -20,7 +20,7 @@ type UserForm struct {
 }
 
 type UserListQueryFilter struct {
-	IDs           []int64            `query:"ids" json:"ids,omitempty"`                       //
+	IDs           []uint64           `query:"ids" json:"ids,omitempty"`                       //
 	UUID          *string            `query:"uuid" json:"uuid,omitempty"`                     //
 	Username      *string            `query:"username" json:"username,omitempty"`             //
 	Email         *string            `query:"email" json:"email,omitempty"`                   //
@@ -32,7 +32,7 @@ type UserListQueryFilter struct {
 }
 
 type UserItem struct {
-	ID            int64                 `json:"id,omitempty"`             //
+	ID            uint64                `json:"id,omitempty"`             //
 	CreatedAt     time.Time             `json:"created_at,omitempty"`     //
 	UpdatedAt     time.Time             `json:"updated_at,omitempty"`     //
 	UUID          string                `json:"uuid,omitempty"`           //

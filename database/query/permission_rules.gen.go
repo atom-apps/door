@@ -27,7 +27,7 @@ func newPermissionRule(db *gorm.DB, opts ...gen.DOOption) permissionRule {
 
 	tableName := _permissionRule.permissionRuleDo.TableName()
 	_permissionRule.ALL = field.NewAsterisk(tableName)
-	_permissionRule.ID = field.NewInt64(tableName, "id")
+	_permissionRule.ID = field.NewUint64(tableName, "id")
 	_permissionRule.Ptype = field.NewString(tableName, "ptype")
 	_permissionRule.V0 = field.NewString(tableName, "v0")
 	_permissionRule.V1 = field.NewString(tableName, "v1")
@@ -45,7 +45,7 @@ type permissionRule struct {
 	permissionRuleDo permissionRuleDo
 
 	ALL   field.Asterisk
-	ID    field.Int64
+	ID    field.Uint64
 	Ptype field.String
 	V0    field.String
 	V1    field.String
@@ -69,7 +69,7 @@ func (p permissionRule) As(alias string) *permissionRule {
 
 func (p *permissionRule) updateTableName(table string) *permissionRule {
 	p.ALL = field.NewAsterisk(table)
-	p.ID = field.NewInt64(table, "id")
+	p.ID = field.NewUint64(table, "id")
 	p.Ptype = field.NewString(table, "ptype")
 	p.V0 = field.NewString(table, "v0")
 	p.V1 = field.NewString(table, "v1")

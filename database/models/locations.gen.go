@@ -14,14 +14,14 @@ const TableNameLocation = "locations"
 
 // Location mapped from table <locations>
 type Location struct {
-	ID        int64     `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:ID" json:"id"`       // ID
-	CreatedAt time.Time `gorm:"column:created_at;type:timestamp with time zone;comment:创建时间" json:"created_at"` // 创建时间
-	Code      int64     `gorm:"column:code;type:bigint;comment:行政区划代码" json:"code"`                             // 行政区划代码
-	Name      string    `gorm:"column:name;type:character varying(256);comment:名称" json:"name"`                 // 名称
-	Province  string    `gorm:"column:province;type:character varying(256);comment:省/直辖市" json:"province"`      // 省/直辖市
-	City      string    `gorm:"column:city;type:character varying(256);comment:市" json:"city"`                  // 市
-	Area      string    `gorm:"column:area;type:character varying(256);comment:区县" json:"area"`                 // 区县
-	Town      string    `gorm:"column:town;type:character varying(256);comment:乡镇" json:"town"`                 // 乡镇
+	ID        uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
+	Code      uint64    `gorm:"column:code;type:bigint unsigned;comment:行政区划代码" json:"code"`                       // 行政区划代码
+	Name      string    `gorm:"column:name;type:varchar(256);comment:名称" json:"name"`                              // 名称
+	Province  string    `gorm:"column:province;type:varchar(256);comment:省/直辖市" json:"province"`                   // 省/直辖市
+	City      string    `gorm:"column:city;type:varchar(256);comment:市" json:"city"`                               // 市
+	Area      string    `gorm:"column:area;type:varchar(256);comment:区县" json:"area"`                              // 区县
+	Town      string    `gorm:"column:town;type:varchar(256);comment:乡镇" json:"town"`                              // 乡镇
 }
 
 func (*Location) TableName(namer schema.Namer) string {

@@ -27,11 +27,11 @@ func newUserInfo(db *gorm.DB, opts ...gen.DOOption) userInfo {
 
 	tableName := _userInfo.userInfoDo.TableName()
 	_userInfo.ALL = field.NewAsterisk(tableName)
-	_userInfo.ID = field.NewInt64(tableName, "id")
+	_userInfo.ID = field.NewUint64(tableName, "id")
 	_userInfo.CreatedAt = field.NewTime(tableName, "created_at")
 	_userInfo.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_userInfo.DeletedAt = field.NewField(tableName, "deleted_at")
-	_userInfo.UserID = field.NewInt64(tableName, "user_id")
+	_userInfo.UserID = field.NewUint64(tableName, "user_id")
 	_userInfo.Affiliation = field.NewString(tableName, "affiliation")
 	_userInfo.Title = field.NewString(tableName, "title")
 	_userInfo.IDCardType = field.NewString(tableName, "id_card_type")
@@ -53,11 +53,11 @@ type userInfo struct {
 	userInfoDo userInfoDo
 
 	ALL         field.Asterisk
-	ID          field.Int64  // ID
+	ID          field.Uint64 // ID
 	CreatedAt   field.Time   // 创建时间
 	UpdatedAt   field.Time   // 更新时间
 	DeletedAt   field.Field  // 删除时间
-	UserID      field.Int64  // 用户ID
+	UserID      field.Uint64 // 用户ID
 	Affiliation field.String // 工作单位
 	Title       field.String // 职称
 	IDCardType  field.String // 证件类型
@@ -85,11 +85,11 @@ func (u userInfo) As(alias string) *userInfo {
 
 func (u *userInfo) updateTableName(table string) *userInfo {
 	u.ALL = field.NewAsterisk(table)
-	u.ID = field.NewInt64(table, "id")
+	u.ID = field.NewUint64(table, "id")
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.DeletedAt = field.NewField(table, "deleted_at")
-	u.UserID = field.NewInt64(table, "user_id")
+	u.UserID = field.NewUint64(table, "user_id")
 	u.Affiliation = field.NewString(table, "affiliation")
 	u.Title = field.NewString(table, "title")
 	u.IDCardType = field.NewString(table, "id_card_type")

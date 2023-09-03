@@ -46,7 +46,7 @@ func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
 	return dtoItem
 }
 
-func (svc *RoleService) GetByID(ctx context.Context, id int64) (*models.Role, error) {
+func (svc *RoleService) GetByID(ctx context.Context, id uint64) (*models.Role, error) {
 	return svc.roleDao.GetByID(ctx, id)
 }
 
@@ -54,7 +54,7 @@ func (svc *RoleService) GetBySlug(ctx context.Context, slug string) (*models.Rol
 	return svc.roleDao.GetBySlug(ctx, slug)
 }
 
-func (svc *RoleService) GetByUserID(ctx context.Context, tenantID, userID int64) (*models.Role, error) {
+func (svc *RoleService) GetByUserID(ctx context.Context, tenantID, userID uint64) (*models.Role, error) {
 	return svc.permissionRuleSvc.GetRoleOfTenantUser(ctx, tenantID, userID)
 }
 
@@ -91,7 +91,7 @@ func (svc *RoleService) Create(ctx context.Context, body *dto.RoleForm) error {
 }
 
 // Update
-func (svc *RoleService) Update(ctx context.Context, id int64, body *dto.RoleForm) error {
+func (svc *RoleService) Update(ctx context.Context, id uint64, body *dto.RoleForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -111,7 +111,7 @@ func (svc *RoleService) UpdateFromModel(ctx context.Context, model *models.Role)
 }
 
 // Delete
-func (svc *RoleService) Delete(ctx context.Context, id int64) error {
+func (svc *RoleService) Delete(ctx context.Context, id uint64) error {
 	return svc.roleDao.Transaction(func() error {
 		if err := svc.roleDao.Delete(ctx, id); err != nil {
 			return err
@@ -123,11 +123,11 @@ func (svc *RoleService) Delete(ctx context.Context, id int64) error {
 }
 
 // AttachUsers
-func (svc *RoleService) AttachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
+func (svc *RoleService) AttachUsers(ctx context.Context, tenantID, roleID uint64, userIDs []uint64) error {
 	return svc.permissionRuleSvc.AddRoleUsers(ctx, tenantID, roleID, userIDs)
 }
 
 // DetachUsers
-func (svc *RoleService) DetachUsers(ctx context.Context, tenantID, roleID int64, userIDs []int64) error {
+func (svc *RoleService) DetachUsers(ctx context.Context, tenantID, roleID uint64, userIDs []uint64) error {
 	return svc.permissionRuleSvc.DeleteRoleUsers(ctx, tenantID, roleID, userIDs)
 }

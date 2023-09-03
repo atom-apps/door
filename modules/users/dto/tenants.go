@@ -17,7 +17,7 @@ type TenantListQueryFilter struct {
 }
 
 type TenantItem struct {
-	ID          int64     `json:"id,omitempty"`          //
+	ID          uint64    `json:"id,omitempty"`          //
 	CreatedAt   time.Time `json:"created_at,omitempty"`  //
 	Name        string    `json:"name,omitempty"`        //
 	Description string    `json:"description,omitempty"` //

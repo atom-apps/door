@@ -27,10 +27,10 @@ func newSession(db *gorm.DB, opts ...gen.DOOption) session {
 
 	tableName := _session.sessionDo.TableName()
 	_session.ALL = field.NewAsterisk(tableName)
-	_session.ID = field.NewInt64(tableName, "id")
+	_session.ID = field.NewUint64(tableName, "id")
 	_session.CreatedAt = field.NewTime(tableName, "created_at")
 	_session.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_session.UserID = field.NewInt64(tableName, "user_id")
+	_session.UserID = field.NewUint64(tableName, "user_id")
 	_session.SessionID = field.NewString(tableName, "session_id")
 	_session.ExpireAt = field.NewTime(tableName, "expire_at")
 
@@ -43,10 +43,10 @@ type session struct {
 	sessionDo sessionDo
 
 	ALL       field.Asterisk
-	ID        field.Int64  // ID
+	ID        field.Uint64 // ID
 	CreatedAt field.Time   // 创建时间
 	UpdatedAt field.Time   // 更新时间
-	UserID    field.Int64  // 用户ID
+	UserID    field.Uint64 // 用户ID
 	SessionID field.String // 会话ID
 	ExpireAt  field.Time   // 过期时间
 
@@ -65,10 +65,10 @@ func (s session) As(alias string) *session {
 
 func (s *session) updateTableName(table string) *session {
 	s.ALL = field.NewAsterisk(table)
-	s.ID = field.NewInt64(table, "id")
+	s.ID = field.NewUint64(table, "id")
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
-	s.UserID = field.NewInt64(table, "user_id")
+	s.UserID = field.NewUint64(table, "user_id")
 	s.SessionID = field.NewString(table, "session_id")
 	s.ExpireAt = field.NewTime(table, "expire_at")
 

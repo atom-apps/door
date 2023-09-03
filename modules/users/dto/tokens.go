@@ -8,7 +8,7 @@ import (
 )
 
 type TokenForm struct {
-	UserID        int64     `form:"user_id" json:"user_id,omitempty"`                 //
+	UserID        uint64    `form:"user_id" json:"user_id,omitempty"`                 //
 	TokenExpireAt time.Time `form:"token_expire_at" json:"token_expire_at,omitempty"` //
 	AccessToken   string    `form:"access_token" json:"access_token,omitempty"`       //
 	RefreshToken  string    `form:"refresh_token" json:"refresh_token,omitempty"`     //
@@ -21,7 +21,7 @@ type TokenForm struct {
 }
 
 type TokenListQueryFilter struct {
-	UserID        *int64            `query:"user_id" json:"user_id,omitempty"`                 //
+	UserID        *uint64           `query:"user_id" json:"user_id,omitempty"`                 //
 	TokenExpireAt *time.Time        `query:"token_expire_at" json:"token_expire_at,omitempty"` //
 	AccessToken   *string           `query:"access_token" json:"access_token,omitempty"`       //
 	RefreshToken  *string           `query:"refresh_token" json:"refresh_token,omitempty"`     //
@@ -34,9 +34,9 @@ type TokenListQueryFilter struct {
 }
 
 type TokenItem struct {
-	ID            int64            `json:"id,omitempty"`             //
+	ID            uint64           `json:"id,omitempty"`             //
 	CreatedAt     time.Time        `json:"created_at,omitempty"`     //
-	UserID        int64            `json:"user_id,omitempty"`        //
+	UserID        uint64           `json:"user_id,omitempty"`        //
 	AccessToken   string           `json:"access_token,omitempty"`   //
 	RefreshToken  string           `json:"refresh_token,omitempty"`  //
 	Scope         string           `json:"scope,omitempty"`          //
@@ -44,7 +44,7 @@ type TokenItem struct {
 	CodeChallenge string           `json:"code_challenge,omitempty"` //
 	Code          string           `json:"code,omitempty"`           //
 	CodeExpireAt  time.Time        `json:"code_expire_at,omitempty"` //
-	SessionID     int64            `json:"session_id"`
+	SessionID     uint64           `json:"session_id"`
 	Session       *models.Session  `json:"session,omitempty"`
 	ExpireAt      time.Time        `json:"expire_at"`
 	Used          bool             `json:"used,omitempty"` //

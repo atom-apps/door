@@ -32,7 +32,7 @@ func (svc *RouteService) DecorateItem(model *models.Route, id int) *dto.RouteIte
 	return dtoItem
 }
 
-func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parentID int64) ([]*dto.RouteItem, error) {
+func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parentID uint64) ([]*dto.RouteItem, error) {
 	items, err := svc.routeDao.FindByParentIDOfMode(ctx, mode, parentID)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parent
 	}), nil
 }
 
-func (svc *RouteService) GetByID(ctx context.Context, id int64) (*models.Route, error) {
+func (svc *RouteService) GetByID(ctx context.Context, id uint64) (*models.Route, error) {
 	return svc.routeDao.GetByID(ctx, id)
 }
 
@@ -92,7 +92,7 @@ func (svc *RouteService) Create(ctx context.Context, body *dto.RouteForm) error 
 }
 
 // Update
-func (svc *RouteService) Update(ctx context.Context, id int64, body *dto.RouteForm) error {
+func (svc *RouteService) Update(ctx context.Context, id uint64, body *dto.RouteForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -109,6 +109,6 @@ func (svc *RouteService) UpdateFromModel(ctx context.Context, model *models.Rout
 }
 
 // Delete
-func (svc *RouteService) Delete(ctx context.Context, id int64) error {
+func (svc *RouteService) Delete(ctx context.Context, id uint64) error {
 	return svc.routeDao.Delete(ctx, id)
 }

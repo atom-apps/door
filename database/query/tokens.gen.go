@@ -27,13 +27,13 @@ func newToken(db *gorm.DB, opts ...gen.DOOption) token {
 
 	tableName := _token.tokenDo.TableName()
 	_token.ALL = field.NewAsterisk(tableName)
-	_token.ID = field.NewInt64(tableName, "id")
+	_token.ID = field.NewUint64(tableName, "id")
 	_token.CreatedAt = field.NewTime(tableName, "created_at")
 	_token.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_token.DeletedAt = field.NewField(tableName, "deleted_at")
-	_token.TenantID = field.NewInt64(tableName, "tenant_id")
-	_token.UserID = field.NewInt64(tableName, "user_id")
-	_token.SessionID = field.NewInt64(tableName, "session_id")
+	_token.TenantID = field.NewUint64(tableName, "tenant_id")
+	_token.UserID = field.NewUint64(tableName, "user_id")
+	_token.SessionID = field.NewUint64(tableName, "session_id")
 	_token.AccessToken = field.NewString(tableName, "access_token")
 	_token.RefreshToken = field.NewString(tableName, "refresh_token")
 	_token.ExpireAt = field.NewTime(tableName, "expire_at")
@@ -53,13 +53,13 @@ type token struct {
 	tokenDo tokenDo
 
 	ALL           field.Asterisk
-	ID            field.Int64
+	ID            field.Uint64
 	CreatedAt     field.Time
 	UpdatedAt     field.Time
 	DeletedAt     field.Field
-	TenantID      field.Int64  // 租户ID
-	UserID        field.Int64  // 用户ID
-	SessionID     field.Int64  // 会话ID
+	TenantID      field.Uint64 // 租户ID
+	UserID        field.Uint64 // 用户ID
+	SessionID     field.Uint64 // 会话ID
 	AccessToken   field.String // 访问令牌
 	RefreshToken  field.String // 刷新令牌
 	ExpireAt      field.Time   // 过期时间
@@ -85,13 +85,13 @@ func (t token) As(alias string) *token {
 
 func (t *token) updateTableName(table string) *token {
 	t.ALL = field.NewAsterisk(table)
-	t.ID = field.NewInt64(table, "id")
+	t.ID = field.NewUint64(table, "id")
 	t.CreatedAt = field.NewTime(table, "created_at")
 	t.UpdatedAt = field.NewTime(table, "updated_at")
 	t.DeletedAt = field.NewField(table, "deleted_at")
-	t.TenantID = field.NewInt64(table, "tenant_id")
-	t.UserID = field.NewInt64(table, "user_id")
-	t.SessionID = field.NewInt64(table, "session_id")
+	t.TenantID = field.NewUint64(table, "tenant_id")
+	t.UserID = field.NewUint64(table, "user_id")
+	t.SessionID = field.NewUint64(table, "session_id")
 	t.AccessToken = field.NewString(table, "access_token")
 	t.RefreshToken = field.NewString(table, "refresh_token")
 	t.ExpireAt = field.NewTime(table, "expire_at")

@@ -25,7 +25,7 @@ type LocationController struct {
 //	@Param			id	path		int	true	"LocationID"
 //	@Success		200	{object}	dto.LocationItem
 //	@Router			/v1/tools/locations/{id} [get]
-func (c *LocationController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id int64) (*dto.LocationItem, error) {
+func (c *LocationController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) (*dto.LocationItem, error) {
 	item, err := c.locationSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (c *LocationController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto
 //	@Success		200		{string}	LocationID
 //	@Failure		500		{string}	LocationID
 //	@Router			/v1/tools/locations/{id} [put]
-func (c *LocationController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id int64, body *dto.LocationForm) error {
+func (c *LocationController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, body *dto.LocationForm) error {
 	return c.locationSvc.Update(ctx.Context(), id, body)
 }
 
@@ -106,6 +106,6 @@ func (c *LocationController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id int64,
 //	@Success		200	{string}	LocationID
 //	@Failure		500	{string}	LocationID
 //	@Router			/v1/tools/locations/{id} [delete]
-func (c *LocationController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id int64) error {
+func (c *LocationController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) error {
 	return c.locationSvc.Delete(ctx.Context(), id)
 }

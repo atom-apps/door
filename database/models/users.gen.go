@@ -16,19 +16,19 @@ const TableNameUser = "users"
 
 // User mapped from table <users>
 type User struct {
-	ID            int64             `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:ID" json:"id"`                            // ID
-	CreatedAt     time.Time         `gorm:"column:created_at;type:timestamp with time zone;comment:创建时间" json:"created_at"`                      // 创建时间
-	UpdatedAt     time.Time         `gorm:"column:updated_at;type:timestamp with time zone;comment:更新时间" json:"updated_at"`                      // 更新时间
-	DeletedAt     gorm.DeletedAt    `gorm:"column:deleted_at;type:timestamp with time zone;comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
-	UUID          string            `gorm:"column:uuid;type:character varying(128);comment:UUID" json:"uuid"`                                    // UUID
-	Username      string            `gorm:"column:username;type:character varying(128);comment:用户名" json:"username"`                             // 用户名
-	Password      string            `gorm:"column:password;type:character varying(128);comment:密码" json:"password"`                              // 密码
-	Email         string            `gorm:"column:email;type:character varying(128);comment:邮箱" json:"email"`                                    // 邮箱
-	EmailVerified bool              `gorm:"column:email_verified;type:boolean;comment:邮箱是否验证" json:"email_verified"`                             // 邮箱是否验证
-	Phone         string            `gorm:"column:phone;type:character varying(128);comment:手机号" json:"phone"`                                   // 手机号
-	DisplayName   string            `gorm:"column:display_name;type:character varying(128);comment:显示名称" json:"display_name"`                    // 显示名称
-	Avatar        string            `gorm:"column:avatar;type:character varying(256);comment:头像" json:"avatar"`                                  // 头像
-	Status        consts.UserStatus `gorm:"column:status;type:character varying(64);comment:状态" json:"status"`                                   // 状态
+	ID            uint64            `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`      // ID
+	CreatedAt     time.Time         `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                      // 创建时间
+	UpdatedAt     time.Time         `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                      // 更新时间
+	DeletedAt     gorm.DeletedAt    `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
+	UUID          string            `gorm:"column:uuid;type:varchar(128);comment:UUID" json:"uuid"`                                 // UUID
+	Username      string            `gorm:"column:username;type:varchar(128);comment:用户名" json:"username"`                          // 用户名
+	Password      string            `gorm:"column:password;type:varchar(128);comment:密码" json:"password"`                           // 密码
+	Email         string            `gorm:"column:email;type:varchar(128);comment:邮箱" json:"email"`                                 // 邮箱
+	EmailVerified bool              `gorm:"column:email_verified;type:tinyint(1);comment:邮箱是否验证" json:"email_verified"`             // 邮箱是否验证
+	Phone         string            `gorm:"column:phone;type:varchar(128);comment:手机号" json:"phone"`                                // 手机号
+	DisplayName   string            `gorm:"column:display_name;type:varchar(128);comment:显示名称" json:"display_name"`                 // 显示名称
+	Avatar        string            `gorm:"column:avatar;type:varchar(256);comment:头像" json:"avatar"`                               // 头像
+	Status        consts.UserStatus `gorm:"column:status;type:varchar(64);comment:状态" json:"status"`                                // 状态
 }
 
 func (*User) TableName(namer schema.Namer) string {

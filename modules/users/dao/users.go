@@ -78,7 +78,7 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 	return query
 }
 
-func (dao *UserDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *UserDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.User.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -88,17 +88,17 @@ func (dao *UserDao) Update(ctx context.Context, model *models.User) error {
 	return err
 }
 
-func (dao *UserDao) Delete(ctx context.Context, id int64) error {
+func (dao *UserDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.User.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *UserDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *UserDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.User.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *UserDao) Restore(ctx context.Context, id int64) error {
+func (dao *UserDao) Restore(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.User.ID.Eq(id)).UpdateSimple(dao.query.User.DeletedAt.Null())
 	return err
 }
@@ -107,11 +107,11 @@ func (dao *UserDao) Create(ctx context.Context, model *models.User) error {
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *UserDao) GetByID(ctx context.Context, id int64) (*models.User, error) {
+func (dao *UserDao) GetByID(ctx context.Context, id uint64) (*models.User, error) {
 	return dao.Context(ctx).Where(dao.query.User.ID.Eq(id)).First()
 }
 
-func (dao *UserDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.User, error) {
+func (dao *UserDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.User, error) {
 	return dao.Context(ctx).Where(dao.query.User.ID.In(ids...)).Find()
 }
 

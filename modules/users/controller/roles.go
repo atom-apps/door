@@ -24,7 +24,7 @@ type RoleController struct {
 //	@Param			id	path		int	true	"RoleID"
 //	@Success		200	{object}	dto.RoleItem
 //	@Router			/v1/users/roles/{id} [get]
-func (c *RoleController) Show(ctx *fiber.Ctx, id int64) (*dto.RoleItem, error) {
+func (c *RoleController) Show(ctx *fiber.Ctx, id uint64) (*dto.RoleItem, error) {
 	item, err := c.roleSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (c *RoleController) Create(ctx *fiber.Ctx, body *dto.RoleForm) error {
 //	@Success		200		{string}	RoleID
 //	@Failure		500		{string}	RoleID
 //	@Router			/v1/users/roles/{id} [put]
-func (c *RoleController) Update(ctx *fiber.Ctx, id int64, body *dto.RoleForm) error {
+func (c *RoleController) Update(ctx *fiber.Ctx, id uint64, body *dto.RoleForm) error {
 	return c.roleSvc.Update(ctx.Context(), id, body)
 }
 
@@ -104,6 +104,6 @@ func (c *RoleController) Update(ctx *fiber.Ctx, id int64, body *dto.RoleForm) er
 //	@Success		200	{string}	RoleID
 //	@Failure		500	{string}	RoleID
 //	@Router			/v1/users/roles/{id} [delete]
-func (c *RoleController) Delete(ctx *fiber.Ctx, id int64) error {
+func (c *RoleController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.roleSvc.Delete(ctx.Context(), id)
 }

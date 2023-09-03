@@ -7,7 +7,7 @@ import (
 )
 
 type UserInfoForm struct {
-	UserID      int64         `form:"user_id" json:"user_id,omitempty"`           //
+	UserID      uint64        `form:"user_id" json:"user_id,omitempty"`           //
 	Affiliation string        `form:"affiliation" json:"affiliation,omitempty"`   // 工作单位
 	Title       string        `form:"title" json:"title,omitempty"`               // 职称
 	IDCardType  string        `form:"id_card_type" json:"id_card_type,omitempty"` // 证件类型
@@ -22,7 +22,7 @@ type UserInfoForm struct {
 }
 
 type UserInfoListQueryFilter struct {
-	UserID      *int64         `query:"user_id" json:"user_id,omitempty"`           //
+	UserID      *uint64        `query:"user_id" json:"user_id,omitempty"`           //
 	Affiliation *string        `query:"affiliation" json:"affiliation,omitempty"`   // 工作单位
 	Title       *string        `query:"title" json:"title,omitempty"`               // 职称
 	IDCardType  *string        `query:"id_card_type" json:"id_card_type,omitempty"` // 证件类型
@@ -37,10 +37,10 @@ type UserInfoListQueryFilter struct {
 }
 
 type UserInfoItem struct {
-	ID          int64         `json:"id,omitempty"`           //
+	ID          uint64        `json:"id,omitempty"`           //
 	CreatedAt   time.Time     `json:"created_at,omitempty"`   //
 	UpdatedAt   time.Time     `json:"updated_at,omitempty"`   //
-	UserID      int64         `json:"user_id,omitempty"`      //
+	UserID      uint64        `json:"user_id,omitempty"`      //
 	Affiliation string        `json:"affiliation,omitempty"`  // 工作单位
 	Title       string        `json:"title,omitempty"`        // 职称
 	IDCardType  string        `json:"id_card_type,omitempty"` // 证件类型

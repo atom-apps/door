@@ -55,6 +55,6 @@ func (c *TokenController) List(
 //	@Success		200	{string}	TokenID
 //	@Failure		500	{string}	TokenID
 //	@Router			/v1/users/tokens/{id} [delete]
-func (c *TokenController) Delete(ctx *fiber.Ctx, id int64) error {
+func (c *TokenController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.tokenSvc.Delete(ctx.Context(), id)
 }

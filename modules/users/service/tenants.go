@@ -34,7 +34,7 @@ func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.Tenant
 	}
 }
 
-func (svc *TenantService) GetByID(ctx context.Context, id int64) (*models.Tenant, error) {
+func (svc *TenantService) GetByID(ctx context.Context, id uint64) (*models.Tenant, error) {
 	return svc.tenantDao.GetByID(ctx, id)
 }
 
@@ -68,7 +68,7 @@ func (svc *TenantService) Create(ctx context.Context, body *dto.TenantForm) erro
 }
 
 // Update
-func (svc *TenantService) Update(ctx context.Context, id int64, body *dto.TenantForm) error {
+func (svc *TenantService) Update(ctx context.Context, id uint64, body *dto.TenantForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (svc *TenantService) UpdateFromModel(ctx context.Context, model *models.Ten
 }
 
 // Delete
-func (svc *TenantService) Delete(ctx context.Context, id int64) error {
+func (svc *TenantService) Delete(ctx context.Context, id uint64) error {
 	return svc.tenantDao.Transaction(func() error {
 		if err := svc.tenantDao.Delete(ctx, id); err != nil {
 			return err

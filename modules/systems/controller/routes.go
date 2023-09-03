@@ -27,7 +27,7 @@ type RouteController struct {
 //	@Param			id	path		int	true	"RouteID"
 //	@Success		200	{object}	dto.RouteItem
 //	@Router			/v1/routes/{id} [get]
-func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id int64) (*dto.RouteItem, error) {
+func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) (*dto.RouteItem, error) {
 	if claim.IsAdmin() {
 		return nil, errorx.ErrForbidden
 	}
@@ -120,7 +120,7 @@ func (c *RouteController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto.Ro
 //	@Success		200		{string}	RouteID
 //	@Failure		500		{string}	RouteID
 //	@Router			/v1/routes/{id} [put]
-func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id int64, body *dto.RouteForm) error {
+func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, body *dto.RouteForm) error {
 	if claim.IsAdmin() {
 		return errorx.ErrForbidden
 	}
@@ -138,7 +138,7 @@ func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id int64, bo
 //	@Success		200	{string}	RouteID
 //	@Failure		500	{string}	RouteID
 //	@Router			/v1/routes/{id} [delete]
-func (c *RouteController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id int64) error {
+func (c *RouteController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) error {
 	if claim.IsAdmin() {
 		return errorx.ErrForbidden
 	}

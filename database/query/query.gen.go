@@ -19,6 +19,7 @@ var (
 	Q              = new(Query)
 	Location       *location
 	Migration      *migration
+	Permission     *permission
 	PermissionRule *permissionRule
 	Role           *role
 	Route          *route
@@ -27,12 +28,14 @@ var (
 	Token          *token
 	User           *user
 	UserInfo       *userInfo
+	UserTenantRole *userTenantRole
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Location = &Q.Location
 	Migration = &Q.Migration
+	Permission = &Q.Permission
 	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
 	Route = &Q.Route
@@ -41,6 +44,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Token = &Q.Token
 	User = &Q.User
 	UserInfo = &Q.UserInfo
+	UserTenantRole = &Q.UserTenantRole
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
@@ -48,6 +52,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		db:             db,
 		Location:       newLocation(db, opts...),
 		Migration:      newMigration(db, opts...),
+		Permission:     newPermission(db, opts...),
 		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
 		Route:          newRoute(db, opts...),
@@ -56,6 +61,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Token:          newToken(db, opts...),
 		User:           newUser(db, opts...),
 		UserInfo:       newUserInfo(db, opts...),
+		UserTenantRole: newUserTenantRole(db, opts...),
 	}
 }
 
@@ -64,6 +70,7 @@ type Query struct {
 
 	Location       location
 	Migration      migration
+	Permission     permission
 	PermissionRule permissionRule
 	Role           role
 	Route          route
@@ -72,6 +79,7 @@ type Query struct {
 	Token          token
 	User           user
 	UserInfo       userInfo
+	UserTenantRole userTenantRole
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -81,6 +89,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		db:             db,
 		Location:       q.Location.clone(db),
 		Migration:      q.Migration.clone(db),
+		Permission:     q.Permission.clone(db),
 		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
 		Route:          q.Route.clone(db),
@@ -89,6 +98,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Token:          q.Token.clone(db),
 		User:           q.User.clone(db),
 		UserInfo:       q.UserInfo.clone(db),
+		UserTenantRole: q.UserTenantRole.clone(db),
 	}
 }
 
@@ -105,6 +115,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		db:             db,
 		Location:       q.Location.replaceDB(db),
 		Migration:      q.Migration.replaceDB(db),
+		Permission:     q.Permission.replaceDB(db),
 		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
 		Route:          q.Route.replaceDB(db),
@@ -113,12 +124,14 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Token:          q.Token.replaceDB(db),
 		User:           q.User.replaceDB(db),
 		UserInfo:       q.UserInfo.replaceDB(db),
+		UserTenantRole: q.UserTenantRole.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
 	Location       ILocationDo
 	Migration      IMigrationDo
+	Permission     IPermissionDo
 	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
 	Route          IRouteDo
@@ -127,12 +140,14 @@ type queryCtx struct {
 	Token          ITokenDo
 	User           IUserDo
 	UserInfo       IUserInfoDo
+	UserTenantRole IUserTenantRoleDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		Location:       q.Location.WithContext(ctx),
 		Migration:      q.Migration.WithContext(ctx),
+		Permission:     q.Permission.WithContext(ctx),
 		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),
 		Route:          q.Route.WithContext(ctx),
@@ -141,6 +156,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Token:          q.Token.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 		UserInfo:       q.UserInfo.WithContext(ctx),
+		UserTenantRole: q.UserTenantRole.WithContext(ctx),
 	}
 }
 

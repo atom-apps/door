@@ -41,9 +41,9 @@ func (doc *SwaggerDoc) ToRoues() []*Route {
 }
 
 type RouteItem struct {
-	ID       int64                `json:"id,omitempty"`                //
+	ID       uint64               `json:"id,omitempty"`                //
 	Type     *consts.RouteType    `query:"type" json:"type,omitempty"` //
-	ParentID int64                `json:"parent_id,omitempty"`         //
+	ParentID uint64               `json:"parent_id,omitempty"`         //
 	Name     string               `json:"name,omitempty"`              //
 	Path     string               `json:"path,omitempty"`              //
 	Metadata common.RouteMetadata `json:"metadata,omitempty"`          //

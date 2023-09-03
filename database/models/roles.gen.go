@@ -14,12 +14,12 @@ const TableNameRole = "roles"
 
 // Role mapped from table <roles>
 type Role struct {
-	ID          int64     `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:ID" json:"id"`       // ID
-	CreatedAt   time.Time `gorm:"column:created_at;type:timestamp with time zone;comment:创建时间" json:"created_at"` // 创建时间
-	Name        string    `gorm:"column:name;type:character varying(128);not null;comment:名称" json:"name"`        // 名称
-	Slug        string    `gorm:"column:slug;type:character varying(128);not null;comment:唯一标识" json:"slug"`      // 唯一标识
-	Description string    `gorm:"column:description;type:character varying(256);comment:描述" json:"description"`   // 描述
-	ParentID    int64     `gorm:"column:parent_id;type:bigint;comment:父角色" json:"parent_id"`                      // 父角色
+	ID          uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt   time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
+	Name        string    `gorm:"column:name;type:varchar(128);not null;comment:名称" json:"name"`                     // 名称
+	Slug        string    `gorm:"column:slug;type:varchar(128);not null;comment:唯一标识" json:"slug"`                   // 唯一标识
+	Description string    `gorm:"column:description;type:varchar(256);comment:描述" json:"description"`                // 描述
+	ParentID    uint64    `gorm:"column:parent_id;type:bigint unsigned;comment:父角色" json:"parent_id"`                // 父角色
 }
 
 func (*Role) TableName(namer schema.Namer) string {

@@ -27,13 +27,13 @@ func newRoute(db *gorm.DB, opts ...gen.DOOption) route {
 
 	tableName := _route.routeDo.TableName()
 	_route.ALL = field.NewAsterisk(tableName)
-	_route.ID = field.NewInt64(tableName, "id")
+	_route.ID = field.NewUint64(tableName, "id")
 	_route.Type = field.NewField(tableName, "type")
-	_route.ParentID = field.NewInt64(tableName, "parent_id")
+	_route.ParentID = field.NewUint64(tableName, "parent_id")
 	_route.Name = field.NewString(tableName, "name")
 	_route.Path = field.NewString(tableName, "path")
 	_route.Metadata = field.NewField(tableName, "metadata")
-	_route.Order = field.NewInt64(tableName, "order")
+	_route.Order = field.NewUint64(tableName, "order")
 
 	_route.fillFieldMap()
 
@@ -44,13 +44,13 @@ type route struct {
 	routeDo routeDo
 
 	ALL      field.Asterisk
-	ID       field.Int64
+	ID       field.Uint64
 	Type     field.Field
-	ParentID field.Int64
+	ParentID field.Uint64
 	Name     field.String
 	Path     field.String
 	Metadata field.Field
-	Order    field.Int64
+	Order    field.Uint64
 
 	fieldMap map[string]field.Expr
 }
@@ -67,13 +67,13 @@ func (r route) As(alias string) *route {
 
 func (r *route) updateTableName(table string) *route {
 	r.ALL = field.NewAsterisk(table)
-	r.ID = field.NewInt64(table, "id")
+	r.ID = field.NewUint64(table, "id")
 	r.Type = field.NewField(table, "type")
-	r.ParentID = field.NewInt64(table, "parent_id")
+	r.ParentID = field.NewUint64(table, "parent_id")
 	r.Name = field.NewString(table, "name")
 	r.Path = field.NewString(table, "path")
 	r.Metadata = field.NewField(table, "metadata")
-	r.Order = field.NewInt64(table, "order")
+	r.Order = field.NewUint64(table, "order")
 
 	r.fillFieldMap()
 

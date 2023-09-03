@@ -59,7 +59,7 @@ func (dao *SessionDao) decorateQueryFilter(query query.ISessionDo, queryFilter *
 	return query
 }
 
-func (dao *SessionDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *SessionDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Session.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -69,12 +69,12 @@ func (dao *SessionDao) Update(ctx context.Context, model *models.Session) error 
 	return err
 }
 
-func (dao *SessionDao) Delete(ctx context.Context, id int64) error {
+func (dao *SessionDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Session.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *SessionDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *SessionDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Session.ID.Eq(id)).Delete()
 	return err
 }
@@ -83,11 +83,11 @@ func (dao *SessionDao) Create(ctx context.Context, model *models.Session) error 
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *SessionDao) GetByID(ctx context.Context, id int64) (*models.Session, error) {
+func (dao *SessionDao) GetByID(ctx context.Context, id uint64) (*models.Session, error) {
 	return dao.Context(ctx).Where(dao.query.Session.ID.Eq(id)).First()
 }
 
-func (dao *SessionDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Session, error) {
+func (dao *SessionDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Session, error) {
 	return dao.Context(ctx).Where(dao.query.Session.ID.In(ids...)).Find()
 }
 

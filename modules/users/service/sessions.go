@@ -48,7 +48,7 @@ func (svc *SessionService) DecorateItem(model *models.Session, id int) *dto.Sess
 	return dtoItem
 }
 
-func (svc *SessionService) GetByID(ctx context.Context, id int64) (*models.Session, error) {
+func (svc *SessionService) GetByID(ctx context.Context, id uint64) (*models.Session, error) {
 	return svc.sessionDao.GetByID(ctx, id)
 }
 
@@ -82,7 +82,7 @@ func (svc *SessionService) Create(ctx context.Context, body *dto.SessionForm) er
 }
 
 // CreateForUser
-func (svc *SessionService) CreateForUser(ctx context.Context, userID int64, sessionID string) (*models.Session, error) {
+func (svc *SessionService) CreateForUser(ctx context.Context, userID uint64, sessionID string) (*models.Session, error) {
 	sess, _ := svc.sessionDao.GetBySessionID(ctx, sessionID)
 	if sess != nil {
 		return sess, nil
@@ -109,7 +109,7 @@ func (svc *SessionService) GenerateSessionID() string {
 }
 
 // DeleteBySessionID
-func (svc *SessionService) DeleteBySessionID(ctx context.Context, sessID int64) error {
+func (svc *SessionService) DeleteBySessionID(ctx context.Context, sessID uint64) error {
 	return svc.sessionDao.Transaction(func() error {
 		if err := svc.sessionDao.DeletePermanently(ctx, sessID); err != nil {
 			return err

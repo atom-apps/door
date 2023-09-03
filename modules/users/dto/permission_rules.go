@@ -21,7 +21,7 @@ type PermissionRuleListQueryFilter struct {
 }
 
 type PermissionRuleItem struct {
-	ID    int64  `json:"id,omitempty"`    //
+	ID    uint64 `json:"id,omitempty"`    //
 	Ptype string `json:"ptype,omitempty"` //
 	V0    string `json:"v0,omitempty"`    //
 	V1    string `json:"v1,omitempty"`    //

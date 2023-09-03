@@ -16,5 +16,5 @@ import (
 func routeTokenController(engine fiber.Router, controller *controller.TokenController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/users/tokens", basePath), DataFunc3(controller.List, Query[dto.TokenListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/tokens/:id<int>", basePath), Func1(controller.Delete, Integer[int64]("id", PathParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/tokens/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
 }

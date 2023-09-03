@@ -12,7 +12,7 @@ const TableNameMigration = "migrations"
 
 // Migration mapped from table <migrations>
 type Migration struct {
-	ID string `gorm:"column:id;type:character varying(255);primaryKey" json:"id"`
+	ID string `gorm:"column:id;type:varchar(255);primaryKey" json:"id"`
 }
 
 func (*Migration) TableName(namer schema.Namer) string {

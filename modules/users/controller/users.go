@@ -44,7 +44,7 @@ func (c *UserController) Profile(ctx *fiber.Ctx, claim *jwt.Claims) (*dto.UserIt
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{object}	dto.UserItem
 //	@Router			/v1/users/{id} [get]
-func (c *UserController) Show(ctx *fiber.Ctx, id int64) (*dto.UserItem, error) {
+func (c *UserController) Show(ctx *fiber.Ctx, id uint64) (*dto.UserItem, error) {
 	item, err := c.userSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (c *UserController) List(
 // //	@Router			/v1/users/roles/{id} [get]
 // func (c *UserController) Role(
 // 	ctx *fiber.Ctx,
-// 	id int64,
+// 	id uint64,
 // 	queryFilter *dto.UserListQueryFilter,
 // 	pageFilter *common.PageQueryFilter,
 // 	sortFilter *common.SortQueryFilter,
@@ -134,7 +134,7 @@ func (c *UserController) List(
 // //	@Router			/v1/users/tenants/{id} [get]
 // func (c *UserController) Tenant(
 // 	ctx *fiber.Ctx,
-// 	id int64,
+// 	id uint64,
 // 	queryFilter *dto.UserListQueryFilter,
 // 	pageFilter *common.PageQueryFilter,
 // 	sortFilter *common.SortQueryFilter,
@@ -183,7 +183,7 @@ func (c *UserController) Create(ctx *fiber.Ctx, body *dto.UserForm) error {
 //	@Success		200		{string}	UserID
 //	@Failure		500		{string}	UserID
 //	@Router			/v1/users/{id} [put]
-func (c *UserController) Update(ctx *fiber.Ctx, id int64, body *dto.UserForm) error {
+func (c *UserController) Update(ctx *fiber.Ctx, id uint64, body *dto.UserForm) error {
 	return c.userSvc.Update(ctx.Context(), id, body)
 }
 
@@ -198,6 +198,6 @@ func (c *UserController) Update(ctx *fiber.Ctx, id int64, body *dto.UserForm) er
 //	@Success		200	{string}	UserID
 //	@Failure		500	{string}	UserID
 //	@Router			/v1/users/{id} [delete]
-func (c *UserController) Delete(ctx *fiber.Ctx, id int64) error {
+func (c *UserController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.userSvc.Delete(ctx.Context(), id)
 }

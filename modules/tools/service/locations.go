@@ -23,7 +23,7 @@ func (svc *LocationService) DecorateItem(model *models.Location, id int) *dto.Lo
 	return dtoItem
 }
 
-func (svc *LocationService) GetByID(ctx context.Context, id int64) (*models.Location, error) {
+func (svc *LocationService) GetByID(ctx context.Context, id uint64) (*models.Location, error) {
 	return svc.locationDao.GetByID(ctx, id)
 }
 
@@ -57,7 +57,7 @@ func (svc *LocationService) Create(ctx context.Context, body *dto.LocationForm) 
 }
 
 // Update
-func (svc *LocationService) Update(ctx context.Context, id int64, body *dto.LocationForm) error {
+func (svc *LocationService) Update(ctx context.Context, id uint64, body *dto.LocationForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -74,6 +74,6 @@ func (svc *LocationService) UpdateFromModel(ctx context.Context, model *models.L
 }
 
 // Delete
-func (svc *LocationService) Delete(ctx context.Context, id int64) error {
+func (svc *LocationService) Delete(ctx context.Context, id uint64) error {
 	return svc.locationDao.Delete(ctx, id)
 }

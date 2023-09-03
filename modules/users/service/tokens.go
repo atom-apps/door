@@ -57,7 +57,7 @@ func (svc *TokenService) DecorateItem(model *models.Token, id int) *dto.TokenIte
 	return item
 }
 
-func (svc *TokenService) GetByID(ctx context.Context, id int64) (*models.Token, error) {
+func (svc *TokenService) GetByID(ctx context.Context, id uint64) (*models.Token, error) {
 	return svc.tokenDao.GetByID(ctx, id)
 }
 
@@ -91,7 +91,7 @@ func (svc *TokenService) Create(ctx context.Context, body *dto.TokenForm) error 
 }
 
 // Update
-func (svc *TokenService) Update(ctx context.Context, id int64, body *dto.TokenForm) error {
+func (svc *TokenService) Update(ctx context.Context, id uint64, body *dto.TokenForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -108,12 +108,12 @@ func (svc *TokenService) UpdateFromModel(ctx context.Context, model *models.Toke
 }
 
 // Delete
-func (svc *TokenService) Delete(ctx context.Context, id int64) error {
+func (svc *TokenService) Delete(ctx context.Context, id uint64) error {
 	return svc.tokenDao.Delete(ctx, id)
 }
 
 // getClaims
-func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64, role string) *jwt.Claims {
+func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID uint64, role string) *jwt.Claims {
 	return svc.jwt.CreateClaims(jwt.BaseClaims{
 		UserID:   userID,
 		TenantID: tenantID,
@@ -122,7 +122,7 @@ func (svc *TokenService) getClaims(ctx context.Context, userID, tenantID int64, 
 }
 
 // CreateForUser
-func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, sessID int64) (*models.Token, error) {
+func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, sessID uint64) (*models.Token, error) {
 	m, _ := svc.tokenDao.GetBySessionID(ctx, sessID)
 	if m != nil {
 		return m, nil
@@ -180,7 +180,7 @@ func (svc *TokenService) GetByToken(ctx context.Context, token string) (*models.
 }
 
 // GetByUserID
-func (svc *TokenService) GetByUserID(ctx context.Context, userID int64) (*models.Token, error) {
+func (svc *TokenService) GetByUserID(ctx context.Context, userID uint64) (*models.Token, error) {
 	return svc.tokenDao.GetByUserID(ctx, userID)
 }
 
@@ -237,6 +237,6 @@ func (svc *TokenService) GetOAuthTokenByCode(ctx context.Context, code string) (
 }
 
 // GetBySessionID
-func (svc *TokenService) GetBySessionID(ctx context.Context, sessionID int64) (*models.Token, error) {
+func (svc *TokenService) GetBySessionID(ctx context.Context, sessionID uint64) (*models.Token, error) {
 	return svc.tokenDao.GetBySessionID(ctx, sessionID)
 }

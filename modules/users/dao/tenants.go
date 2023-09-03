@@ -62,7 +62,7 @@ func (dao *TenantDao) decorateQueryFilter(query query.ITenantDo, queryFilter *dt
 	return query
 }
 
-func (dao *TenantDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *TenantDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Tenant.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -72,12 +72,12 @@ func (dao *TenantDao) Update(ctx context.Context, model *models.Tenant) error {
 	return err
 }
 
-func (dao *TenantDao) Delete(ctx context.Context, id int64) error {
+func (dao *TenantDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Tenant.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *TenantDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *TenantDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Tenant.ID.Eq(id)).Delete()
 	return err
 }
@@ -86,11 +86,11 @@ func (dao *TenantDao) Create(ctx context.Context, model *models.Tenant) error {
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *TenantDao) GetByID(ctx context.Context, id int64) (*models.Tenant, error) {
+func (dao *TenantDao) GetByID(ctx context.Context, id uint64) (*models.Tenant, error) {
 	return dao.Context(ctx).Where(dao.query.Tenant.ID.Eq(id)).First()
 }
 
-func (dao *TenantDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Tenant, error) {
+func (dao *TenantDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Tenant, error) {
 	return dao.Context(ctx).Where(dao.query.Tenant.ID.In(ids...)).Find()
 }
 

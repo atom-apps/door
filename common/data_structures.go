@@ -61,7 +61,7 @@ func (filter *PageQueryFilter) Format() *PageQueryFilter {
 }
 
 type IDsForm struct {
-	IDs []int64 `json:"ids" form:"ids"`
+	IDs []uint64 `json:"ids" form:"ids"`
 }
 
 type LabelItem struct {

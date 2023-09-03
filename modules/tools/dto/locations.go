@@ -1,7 +1,7 @@
 package dto
 
 type LocationForm struct {
-	Code     int64  `form:"code" json:"code,omitempty"`         // 行政区划代码
+	Code     uint64 `form:"code" json:"code,omitempty"`         // 行政区划代码
 	Name     string `form:"name" json:"name,omitempty"`         //
 	Province string `form:"province" json:"province,omitempty"` //
 	City     string `form:"city" json:"city,omitempty"`         //
@@ -10,7 +10,7 @@ type LocationForm struct {
 }
 
 type LocationListQueryFilter struct {
-	Code     *int64  `query:"code" json:"code,omitempty"`         // 行政区划代码
+	Code     *uint64 `query:"code" json:"code,omitempty"`         // 行政区划代码
 	Name     *string `query:"name" json:"name,omitempty"`         //
 	Province *string `query:"province" json:"province,omitempty"` //
 	City     *string `query:"city" json:"city,omitempty"`         //
@@ -19,7 +19,7 @@ type LocationListQueryFilter struct {
 }
 
 type LocationItem struct {
-	ID       int64  `json:"id,omitempty"`       //
+	ID       uint64 `json:"id,omitempty"`       //
 	Code     int64  `json:"code,omitempty"`     // 行政区划代码
 	Name     string `json:"name,omitempty"`     //
 	Province string `json:"province,omitempty"` //

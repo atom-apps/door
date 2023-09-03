@@ -23,7 +23,7 @@ func (svc *UserInfoService) DecorateItem(model *models.UserInfo, id int) *dto.Us
 	return dtoItem
 }
 
-func (svc *UserInfoService) GetByID(ctx context.Context, id int64) (*models.UserInfo, error) {
+func (svc *UserInfoService) GetByID(ctx context.Context, id uint64) (*models.UserInfo, error) {
 	return svc.userInfoDao.GetByID(ctx, id)
 }
 
@@ -57,7 +57,7 @@ func (svc *UserInfoService) Create(ctx context.Context, body *dto.UserInfoForm) 
 }
 
 // Update
-func (svc *UserInfoService) Update(ctx context.Context, id int64, body *dto.UserInfoForm) error {
+func (svc *UserInfoService) Update(ctx context.Context, id uint64, body *dto.UserInfoForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -74,6 +74,6 @@ func (svc *UserInfoService) UpdateFromModel(ctx context.Context, model *models.U
 }
 
 // Delete
-func (svc *UserInfoService) Delete(ctx context.Context, id int64) error {
+func (svc *UserInfoService) Delete(ctx context.Context, id uint64) error {
 	return svc.userInfoDao.Delete(ctx, id)
 }

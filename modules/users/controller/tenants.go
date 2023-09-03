@@ -24,7 +24,7 @@ type TenantController struct {
 //	@Param			id	path		int	true	"TenantID"
 //	@Success		200	{object}	dto.TenantItem
 //	@Router			/v1/users/tenants/{id} [get]
-func (c *TenantController) Show(ctx *fiber.Ctx, id int64) (*dto.TenantItem, error) {
+func (c *TenantController) Show(ctx *fiber.Ctx, id uint64) (*dto.TenantItem, error) {
 	item, err := c.tenantSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (c *TenantController) Create(ctx *fiber.Ctx, body *dto.TenantForm) error {
 //	@Success		200		{string}	TenantID
 //	@Failure		500		{string}	TenantID
 //	@Router			/v1/users/tenants/{id} [put]
-func (c *TenantController) Update(ctx *fiber.Ctx, id int64, body *dto.TenantForm) error {
+func (c *TenantController) Update(ctx *fiber.Ctx, id uint64, body *dto.TenantForm) error {
 	return c.tenantSvc.Update(ctx.Context(), id, body)
 }
 
@@ -104,6 +104,6 @@ func (c *TenantController) Update(ctx *fiber.Ctx, id int64, body *dto.TenantForm
 //	@Success		200	{string}	TenantID
 //	@Failure		500	{string}	TenantID
 //	@Router			/v1/users/tenants/{id} [delete]
-func (c *TenantController) Delete(ctx *fiber.Ctx, id int64) error {
+func (c *TenantController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.tenantSvc.Delete(ctx.Context(), id)
 }

@@ -23,7 +23,7 @@ type PermissionRuleController struct {
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
 //	@Router		/v1/users/permissions/attach/{role_id}/{tenant_id} [put]
-func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID int64, users *common.IDsForm) error {
+func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *common.IDsForm) error {
 	return c.permissionRuleSvc.AddRoleUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }
 
@@ -39,6 +39,6 @@ func (c *PermissionRuleController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID 
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
 //	@Router		/v1/users/permissions/detach/{role_id}/{tenant_id} [put]
-func (c *PermissionRuleController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID int64, users *common.IDsForm) error {
+func (c *PermissionRuleController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *common.IDsForm) error {
 	return c.permissionRuleSvc.DeleteRoleUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }

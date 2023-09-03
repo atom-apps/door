@@ -27,7 +27,7 @@ func newTenant(db *gorm.DB, opts ...gen.DOOption) tenant {
 
 	tableName := _tenant.tenantDo.TableName()
 	_tenant.ALL = field.NewAsterisk(tableName)
-	_tenant.ID = field.NewInt64(tableName, "id")
+	_tenant.ID = field.NewUint64(tableName, "id")
 	_tenant.CreatedAt = field.NewTime(tableName, "created_at")
 	_tenant.Name = field.NewString(tableName, "name")
 	_tenant.Description = field.NewString(tableName, "description")
@@ -42,7 +42,7 @@ type tenant struct {
 	tenantDo tenantDo
 
 	ALL         field.Asterisk
-	ID          field.Int64  // ID
+	ID          field.Uint64 // ID
 	CreatedAt   field.Time   // 创建时间
 	Name        field.String // 名称
 	Description field.String // 描述
@@ -63,7 +63,7 @@ func (t tenant) As(alias string) *tenant {
 
 func (t *tenant) updateTableName(table string) *tenant {
 	t.ALL = field.NewAsterisk(table)
-	t.ID = field.NewInt64(table, "id")
+	t.ID = field.NewUint64(table, "id")
 	t.CreatedAt = field.NewTime(table, "created_at")
 	t.Name = field.NewString(table, "name")
 	t.Description = field.NewString(table, "description")

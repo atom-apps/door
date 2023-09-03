@@ -65,7 +65,7 @@ func (dao *RoleDao) decorateQueryFilter(query query.IRoleDo, queryFilter *dto.Ro
 	return query
 }
 
-func (dao *RoleDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *RoleDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Role.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -75,12 +75,12 @@ func (dao *RoleDao) Update(ctx context.Context, model *models.Role) error {
 	return err
 }
 
-func (dao *RoleDao) Delete(ctx context.Context, id int64) error {
+func (dao *RoleDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Role.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *RoleDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *RoleDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Role.ID.Eq(id)).Delete()
 	return err
 }
@@ -89,7 +89,7 @@ func (dao *RoleDao) Create(ctx context.Context, model *models.Role) error {
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *RoleDao) GetByID(ctx context.Context, id int64) (*models.Role, error) {
+func (dao *RoleDao) GetByID(ctx context.Context, id uint64) (*models.Role, error) {
 	return dao.Context(ctx).Where(dao.query.Role.ID.Eq(id)).First()
 }
 
@@ -97,7 +97,7 @@ func (dao *RoleDao) GetBySlug(ctx context.Context, slug string) (*models.Role, e
 	return dao.Context(ctx).Where(dao.query.Role.Slug.Eq(slug)).First()
 }
 
-func (dao *RoleDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Role, error) {
+func (dao *RoleDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Role, error) {
 	return dao.Context(ctx).Where(dao.query.Role.ID.In(ids...)).Find()
 }
 

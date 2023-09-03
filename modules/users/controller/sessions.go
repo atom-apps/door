@@ -24,7 +24,7 @@ type SessionController struct {
 //	@Param			id	path		int	true	"SessionID"
 //	@Success		200	{object}	dto.SessionItem
 //	@Router			/v1/users/sessions/{id} [get]
-func (c *SessionController) Show(ctx *fiber.Ctx, id int64) (*dto.SessionItem, error) {
+func (c *SessionController) Show(ctx *fiber.Ctx, id uint64) (*dto.SessionItem, error) {
 	item, err := c.sessionSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func (c *SessionController) Create(ctx *fiber.Ctx, body *dto.SessionForm) error 
 //	@Produce		json
 //	@Param			id	path	int	true	"SessionID"
 //	@Router			/v1/users/sessions/{id} [delete]
-func (c *SessionController) Delete(ctx *fiber.Ctx, id int64) error {
+func (c *SessionController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.sessionSvc.DeleteBySessionID(ctx.Context(), id)
 }
 

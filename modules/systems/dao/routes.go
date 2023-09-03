@@ -66,7 +66,7 @@ func (dao *RouteDao) decorateQueryFilter(query query.IRouteDo, queryFilter *dto.
 	return query
 }
 
-func (dao *RouteDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *RouteDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Route.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -76,12 +76,12 @@ func (dao *RouteDao) Update(ctx context.Context, model *models.Route) error {
 	return err
 }
 
-func (dao *RouteDao) Delete(ctx context.Context, id int64) error {
+func (dao *RouteDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Route.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *RouteDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *RouteDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Route.ID.Eq(id)).Delete()
 	return err
 }
@@ -90,11 +90,11 @@ func (dao *RouteDao) Create(ctx context.Context, model *models.Route) error {
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *RouteDao) GetByID(ctx context.Context, id int64) (*models.Route, error) {
+func (dao *RouteDao) GetByID(ctx context.Context, id uint64) (*models.Route, error) {
 	return dao.Context(ctx).Where(dao.query.Route.ID.Eq(id)).First()
 }
 
-func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.RouteType, parentID int64) ([]*models.Route, error) {
+func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.RouteType, parentID uint64) ([]*models.Route, error) {
 	return dao.Context(ctx).Where(
 		dao.query.Route.ParentID.Eq(parentID),
 		dao.query.Route.Type.Eq(mode),
@@ -104,7 +104,7 @@ func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.Route
 	).Find()
 }
 
-func (dao *RouteDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Route, error) {
+func (dao *RouteDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Route, error) {
 	return dao.Context(ctx).Where(dao.query.Route.ID.In(ids...)).Find()
 }
 

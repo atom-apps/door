@@ -16,22 +16,22 @@ const TableNameUserInfo = "user_infos"
 
 // UserInfo mapped from table <user_infos>
 type UserInfo struct {
-	ID          int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:ID" json:"id"`                            // ID
-	CreatedAt   time.Time      `gorm:"column:created_at;type:timestamp with time zone;comment:创建时间" json:"created_at"`                      // 创建时间
-	UpdatedAt   time.Time      `gorm:"column:updated_at;type:timestamp with time zone;comment:更新时间" json:"updated_at"`                      // 更新时间
-	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:timestamp with time zone;comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
-	UserID      int64          `gorm:"column:user_id;type:bigint;comment:用户ID" json:"user_id"`                                              // 用户ID
-	Affiliation string         `gorm:"column:affiliation;type:character varying(128);comment:工作单位" json:"affiliation"`                      // 工作单位
-	Title       string         `gorm:"column:title;type:character varying(128);comment:职称" json:"title"`                                    // 职称
-	IDCardType  string         `gorm:"column:id_card_type;type:character varying(128);not null;comment:证件类型" json:"id_card_type"`           // 证件类型
-	IDCard      string         `gorm:"column:id_card;type:character varying(128);not null;comment:证件号码" json:"id_card"`                     // 证件号码
-	Biography   string         `gorm:"column:biography;type:character varying(256);comment:自我介绍" json:"biography"`                          // 自我介绍
-	Tag         string         `gorm:"column:tag;type:character varying(128);comment:标签" json:"tag"`                                        // 标签
-	Language    string         `gorm:"column:language;type:character varying(128);comment:语言" json:"language"`                              // 语言
-	Gender      consts.Gender  `gorm:"column:gender;type:text;not null;comment:性别" json:"gender"`                                           // 性别
-	Birthday    time.Time      `gorm:"column:birthday;type:timestamp with time zone;comment:生日" json:"birthday"`                            // 生日
-	Education   string         `gorm:"column:education;type:character varying(128);comment:学历" json:"education"`                            // 学历
-	RealName    string         `gorm:"column:real_name;type:character varying(128);comment:真实姓名" json:"real_name"`                          // 真实姓名
+	ID          uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`      // ID
+	CreatedAt   time.Time      `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                      // 创建时间
+	UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                      // 更新时间
+	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
+	UserID      uint64         `gorm:"column:user_id;type:bigint unsigned;comment:用户ID" json:"user_id"`                        // 用户ID
+	Affiliation string         `gorm:"column:affiliation;type:varchar(128);comment:工作单位" json:"affiliation"`                   // 工作单位
+	Title       string         `gorm:"column:title;type:varchar(128);comment:职称" json:"title"`                                 // 职称
+	IDCardType  string         `gorm:"column:id_card_type;type:varchar(128);not null;comment:证件类型" json:"id_card_type"`        // 证件类型
+	IDCard      string         `gorm:"column:id_card;type:varchar(128);not null;comment:证件号码" json:"id_card"`                  // 证件号码
+	Biography   string         `gorm:"column:biography;type:varchar(256);comment:自我介绍" json:"biography"`                       // 自我介绍
+	Tag         string         `gorm:"column:tag;type:varchar(128);comment:标签" json:"tag"`                                     // 标签
+	Language    string         `gorm:"column:language;type:varchar(128);comment:语言" json:"language"`                           // 语言
+	Gender      consts.Gender  `gorm:"column:gender;type:varchar(191);not null;comment:性别" json:"gender"`                      // 性别
+	Birthday    time.Time      `gorm:"column:birthday;type:datetime(3);comment:生日" json:"birthday"`                            // 生日
+	Education   string         `gorm:"column:education;type:varchar(128);comment:学历" json:"education"`                         // 学历
+	RealName    string         `gorm:"column:real_name;type:varchar(128);comment:真实姓名" json:"real_name"`                       // 真实姓名
 }
 
 func (*UserInfo) TableName(namer schema.Namer) string {

@@ -14,6 +14,6 @@ import (
 
 func routePermissionRuleController(engine fiber.Router, controller *controller.PermissionRuleController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Put(strings.TrimPrefix("/v1/users/permissions/attach/:roleId<int>/:tenantId", basePath), Func3(controller.AttachUsers, Integer[int64]("roleID", PathParamError), Integer[int64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/permissions/detach/:roleId<int>/:tenantId", basePath), Func3(controller.DetachUsers, Integer[int64]("roleID", PathParamError), Integer[int64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/permissions/attach/:roleId<int>/:tenantId", basePath), Func3(controller.AttachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/permissions/detach/:roleId<int>/:tenantId", basePath), Func3(controller.DetachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
 }

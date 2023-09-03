@@ -80,7 +80,7 @@ func (dao *TokenDao) decorateQueryFilter(query query.ITokenDo, queryFilter *dto.
 	return query
 }
 
-func (dao *TokenDao) UpdateColumn(ctx context.Context, id int64, field field.Expr, value interface{}) error {
+func (dao *TokenDao) UpdateColumn(ctx context.Context, id uint64, field field.Expr, value interface{}) error {
 	_, err := dao.Context(ctx).Where(dao.query.Token.ID.Eq(id)).Update(field, value)
 	return err
 }
@@ -90,12 +90,12 @@ func (dao *TokenDao) Update(ctx context.Context, model *models.Token) error {
 	return err
 }
 
-func (dao *TokenDao) Delete(ctx context.Context, id int64) error {
+func (dao *TokenDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Token.ID.Eq(id)).Delete()
 	return err
 }
 
-func (dao *TokenDao) DeletePermanently(ctx context.Context, id int64) error {
+func (dao *TokenDao) DeletePermanently(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Unscoped().Where(dao.query.Token.ID.Eq(id)).Delete()
 	return err
 }
@@ -104,11 +104,11 @@ func (dao *TokenDao) Create(ctx context.Context, model *models.Token) error {
 	return dao.Context(ctx).Create(model)
 }
 
-func (dao *TokenDao) GetByID(ctx context.Context, id int64) (*models.Token, error) {
+func (dao *TokenDao) GetByID(ctx context.Context, id uint64) (*models.Token, error) {
 	return dao.Context(ctx).Where(dao.query.Token.ID.Eq(id)).First()
 }
 
-func (dao *TokenDao) GetByIDs(ctx context.Context, ids []int64) ([]*models.Token, error) {
+func (dao *TokenDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Token, error) {
 	return dao.Context(ctx).Where(dao.query.Token.ID.In(ids...)).Find()
 }
 
@@ -155,13 +155,13 @@ func (dao *TokenDao) GetByToken(ctx context.Context, token string) (*models.Toke
 	return query.Where(table.AccessToken.Eq(token)).First()
 }
 
-func (dao *TokenDao) GetByUserID(ctx context.Context, userID int64) (*models.Token, error) {
+func (dao *TokenDao) GetByUserID(ctx context.Context, userID uint64) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
 	return query.Where(table.UserID.Eq(userID)).First()
 }
 
 // DeleteBySessionID
-func (dao *TokenDao) DeleteBySessionID(ctx context.Context, sessionID int64) error {
+func (dao *TokenDao) DeleteBySessionID(ctx context.Context, sessionID uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Token.SessionID.Eq(sessionID)).Delete()
 	return err
 }
@@ -179,13 +179,13 @@ func (dao *TokenDao) GetByCode(ctx context.Context, code string) (*models.Token,
 }
 
 // GetBySessionID
-func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID int64) (*models.Token, error) {
+func (dao *TokenDao) GetBySessionID(ctx context.Context, sessionID uint64) (*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
 	return query.Where(table.SessionID.Eq(sessionID)).First()
 }
 
 // GetBySessionIDWithoutScope
-func (dao *TokenDao) GetBySessionIDWithoutScope(ctx context.Context, sessionID int64) ([]*models.Token, error) {
+func (dao *TokenDao) GetBySessionIDWithoutScope(ctx context.Context, sessionID uint64) ([]*models.Token, error) {
 	table, query := dao.query.Token, dao.Context(ctx)
 	return query.Where(table.SessionID.Eq(sessionID)).Find()
 }

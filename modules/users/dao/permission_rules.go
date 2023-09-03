@@ -29,6 +29,18 @@ func (dao *PermissionRuleDao) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
+func (dao *PermissionRuleDao) GetByModel(ctx context.Context, m *models.PermissionRule) (*models.PermissionRule, error) {
+	return dao.Context(ctx).Where(
+		dao.query.PermissionRule.Ptype.Eq(m.Ptype),
+		dao.query.PermissionRule.V0.Eq(m.V0),
+		dao.query.PermissionRule.V1.Eq(m.V1),
+		dao.query.PermissionRule.V2.Eq(m.V2),
+		dao.query.PermissionRule.V3.Eq(m.V3),
+		dao.query.PermissionRule.V4.Eq(m.V4),
+		dao.query.PermissionRule.V5.Eq(m.V5),
+	).First()
+}
+
 func (dao *PermissionRuleDao) DeleteByModel(ctx context.Context, m *models.PermissionRule) error {
 	_, err := dao.Context(ctx).Where(
 		dao.query.PermissionRule.Ptype.Eq(m.Ptype),

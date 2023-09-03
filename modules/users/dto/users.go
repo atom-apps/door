@@ -28,6 +28,7 @@ type UserListQueryFilter struct {
 	Phone         *string            `query:"phone" json:"phone,omitempty"`                   //
 	DisplayName   *string            `query:"display_name" json:"display_name,omitempty"`     //
 	Status        *consts.UserStatus `json:"status,omitempty"`                                //
+	Tenant        *int64             `json:"tenant,omitempty"`                                //
 }
 
 type UserItem struct {

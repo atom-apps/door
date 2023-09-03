@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/samber/lo"
@@ -30,9 +31,17 @@ func (svc *PermissionRuleService) genGroupModel(ctx context.Context, args ...str
 	return &models.PermissionRule{Ptype: "g", V0: args[0], V1: args[1], V2: args[2], V3: "", V4: "", V5: ""}
 }
 
+func (svc *PermissionRuleService) GetPolicy(ctx context.Context, tenantID, roleID int64, path, action string) (*models.PermissionRule, error) {
+	args := []string{strconv.Itoa(int(roleID)), strconv.Itoa(int(tenantID)), path, action}
+	return svc.dao.GetByModel(ctx, svc.genPolicyModel(ctx, args...))
+}
+
 // create policy
 func (svc *PermissionRuleService) CreatePolicy(ctx context.Context, tenantID, roleID int64, path, action string) error {
 	args := []string{strconv.Itoa(int(roleID)), strconv.Itoa(int(tenantID)), path, action}
+	if m, err := svc.GetPolicy(ctx, tenantID, roleID, path, action); err == nil && m != nil {
+		return errorx.ErrRecordExists
+	}
 	return svc.dao.Create(ctx, svc.genPolicyModel(ctx, args...))
 }
 
@@ -44,6 +53,9 @@ func (svc *PermissionRuleService) DeletePolicy(ctx context.Context, tenantID, ro
 // create role
 func (svc *PermissionRuleService) CreateGroup(ctx context.Context, userID, tenantID, roleID int64) error {
 	args := []string{strconv.Itoa(int(userID)), strconv.Itoa(int(tenantID)), strconv.Itoa(int(roleID))}
+	if m, err := svc.GetRoleOfTenantUser(ctx, tenantID, userID); err == nil && m != nil {
+		return errorx.ErrRecordExists
+	}
 	return svc.dao.Create(ctx, svc.genGroupModel(ctx, args...))
 }
 
@@ -74,7 +86,7 @@ func (svc *PermissionRuleService) AddRoleUsers(ctx context.Context, tenantID, ro
 		}
 		return nil, false
 	})
-	return lo.Validate(len(errs) == 0, "add group failed")
+	return lo.Validate(len(errs) == 0, "添加失败")
 }
 
 func (svc *PermissionRuleService) DeleteByRoleID(ctx context.Context, roleID int64) error {

@@ -74,6 +74,7 @@ func (dao *UserDao) decorateQueryFilter(query query.IUserDo, queryFilter *dto.Us
 	if queryFilter.Status != nil {
 		query = query.Where(dao.query.User.Status.Eq(*queryFilter.Status))
 	}
+
 	return query
 }
 

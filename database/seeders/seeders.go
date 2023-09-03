@@ -6,5 +6,6 @@ var Seeders = []contracts.SeederProvider{
 	NewUserSeeder,
 	NewTenantSeeder,
 	NewRoleSeeder,
-	NewPermissionRulesSeeder,
+	NewPermissionsSeeder,
+	NewUserTenantRoleSeeder,
 }

@@ -1,15 +1,22 @@
 package boot
 
 import (
+	"context"
+	"strconv"
+
+	"github.com/atom-apps/door/database/models"
+	"github.com/atom-apps/door/database/query"
 	userModule "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/jwt"
+	"github.com/atom-providers/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/rogeecn/atom"
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/contracts"
 	"github.com/rogeecn/atom/utils/opt"
+	"github.com/samber/lo"
 )
 
 var (
@@ -32,6 +39,7 @@ var (
 
 func Providers() container.Providers {
 	return container.Providers{
+		{Provider: providePermissionRules},
 		{Provider: provideHttpMiddleware},
 	}
 }
@@ -52,6 +60,48 @@ func provideHttpMiddleware(opts ...opt.Option) error {
 		})
 		engine.Use(httpMiddlewareJWT(jwt))
 		engine.Use(httpMiddlewareCasbin(casbin, roleSvc, tenantSvc))
+		return nil
+	}, atom.GroupInitial)
+}
+
+func providePermissionRules(opts ...opt.Option) error {
+	return container.Container.Provide(func(query *query.Query, casbin *casbin.Casbin) contracts.Initial {
+		// init groups
+		groupModels, err := query.UserTenantRole.WithContext(context.Background()).Find()
+		if err != nil {
+			log.Fatal(err)
+		}
+		groups := lo.Map(groupModels, func(item *models.UserTenantRole, _ int) []string {
+			return []string{
+				strconv.Itoa(int(item.UserID)),
+				strconv.Itoa(int(item.TenantID)),
+				strconv.Itoa(int(item.RoleID)),
+			}
+		})
+
+		if _, err := casbin.LoadGroups(groups); err != nil {
+			log.Fatal(err)
+		}
+		log.Infof("load groups: %d", len(groups))
+
+		// permissions
+		permissionModels, err := query.Permission.WithContext(context.Background()).Find()
+		if err != nil {
+			log.Fatal(err)
+		}
+		permissions := lo.Map(permissionModels, func(item *models.Permission, _ int) []string {
+			return []string{
+				strconv.Itoa(int(item.RoleID)),
+				strconv.Itoa(int(item.TenantID)),
+				item.Path,
+				item.Action,
+			}
+		})
+		if _, err := casbin.LoadPolicies(permissions); err != nil {
+			log.Fatal(err)
+		}
+		log.Infof("load policies: %d", len(groups))
+
 		return nil
 	}, atom.GroupInitial)
 }

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
 
@@ -105,5 +106,9 @@ func (c *RoleController) Update(ctx *fiber.Ctx, id uint64, body *dto.RoleForm) e
 //	@Failure		500	{string}	RoleID
 //	@Router			/v1/users/roles/{id} [delete]
 func (c *RoleController) Delete(ctx *fiber.Ctx, id uint64) error {
+	if id <= 4 {
+		return errorx.ErrForbidden
+	}
+
 	return c.roleSvc.Delete(ctx.Context(), id)
 }

@@ -153,6 +153,12 @@ func (svc *UserTenantRoleService) GetTenantsByUserID(ctx context.Context, userID
 		return item.TenantID
 	})
 
+	if len(ids) >= 0 && ids[0] == 0 {
+		return []*models.Tenant{
+			{ID: 0, Name: "Super Admin"},
+		}, nil
+	}
+
 	return svc.tenantDao.FindByIDs(ctx, ids)
 }
 

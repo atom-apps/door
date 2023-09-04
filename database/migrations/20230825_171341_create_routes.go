@@ -11,6 +11,7 @@ func (m *Migration20230825_171341CreateRoutes) table() interface{} {
 		Type     string `gorm:"size:64;not null;comment:类型"`
 		ParentID uint   `gorm:"not null;default 0;comment:父级ID"`
 		Name     string `gorm:"size:255;not null;comment:名称"`
+		Method   string `gorm:"size:24;not null;comment:请求方法"`
 		Path     string `gorm:"size:1024;not null; comment:路径"`
 		Metadata string `gorm:"default '{}'; comment:元数据"`
 		Order    uint   `gorm:"default 0; comment:排序"`

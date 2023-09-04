@@ -24,7 +24,7 @@ type UserController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{object}	dto.UserItem
-//	@Router			/v1/users/profile [get]
+//	@Router			/v1/users/users/profile [get]
 func (c *UserController) Profile(ctx *fiber.Ctx, claim *jwt.Claims) (*dto.UserItem, error) {
 	item, err := c.userSvc.GetByID(ctx.Context(), claim.UserID)
 	if err != nil {
@@ -43,7 +43,7 @@ func (c *UserController) Profile(ctx *fiber.Ctx, claim *jwt.Claims) (*dto.UserIt
 //	@Produce		json
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{object}	dto.UserItem
-//	@Router			/v1/users/{id} [get]
+//	@Router			/v1/users/users/{id} [get]
 func (c *UserController) Show(ctx *fiber.Ctx, id uint64) (*dto.UserItem, error) {
 	item, err := c.userSvc.GetByID(ctx.Context(), id)
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *UserController) Show(ctx *fiber.Ctx, id uint64) (*dto.UserItem, error) 
 //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-//	@Router			/v1/users [get]
+//	@Router			/v1/users/users [get]
 func (c *UserController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.UserListQueryFilter,
@@ -94,7 +94,7 @@ func (c *UserController) List(
 // //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 // //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 // //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-// //	@Router			/v1/users/roles/{id} [get]
+// //	@Router			/v1/users/users/roles/{id} [get]
 // func (c *UserController) Role(
 // 	ctx *fiber.Ctx,
 // 	id uint64,
@@ -131,7 +131,7 @@ func (c *UserController) List(
 // //	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 // //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 // //	@Success		200			{object}	common.PageDataResponse{list=dto.UserItem}
-// //	@Router			/v1/users/tenants/{id} [get]
+// //	@Router			/v1/users/users/tenants/{id} [get]
 // func (c *UserController) Tenant(
 // 	ctx *fiber.Ctx,
 // 	id uint64,
@@ -166,7 +166,7 @@ func (c *UserController) List(
 //	@Produce		json
 //	@Param			body	body		dto.UserForm	true	"UserForm"
 //	@Success		200		{string}	UserID
-//	@Router			/v1/users [post]
+//	@Router			/v1/users/users [post]
 func (c *UserController) Create(ctx *fiber.Ctx, body *dto.UserForm) error {
 	return c.userSvc.Create(ctx.Context(), body)
 }
@@ -182,7 +182,7 @@ func (c *UserController) Create(ctx *fiber.Ctx, body *dto.UserForm) error {
 //	@Param			body	body		dto.UserForm	true	"UserForm"
 //	@Success		200		{string}	UserID
 //	@Failure		500		{string}	UserID
-//	@Router			/v1/users/{id} [put]
+//	@Router			/v1/users/users/{id} [put]
 func (c *UserController) Update(ctx *fiber.Ctx, id uint64, body *dto.UserForm) error {
 	return c.userSvc.Update(ctx.Context(), id, body)
 }
@@ -197,7 +197,7 @@ func (c *UserController) Update(ctx *fiber.Ctx, id uint64, body *dto.UserForm) e
 //	@Param			id	path		int	true	"UserID"
 //	@Success		200	{string}	UserID
 //	@Failure		500	{string}	UserID
-//	@Router			/v1/users/{id} [delete]
+//	@Router			/v1/users/users/{id} [delete]
 func (c *UserController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.userSvc.Delete(ctx.Context(), id)
 }

@@ -20,7 +20,7 @@ type PermissionController struct {
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body	dto.PermissionCheckForm	true	"PermissionCheckForm"
-//	@Router			/v1/permission/check [post]
+//	@Router			/v1/auth/permission/check [post]
 func (c *PermissionController) Check(ctx *fiber.Ctx, check *dto.PermissionCheckForm) error {
 	claim, ok := ctx.Locals(jwt.CtxKey).(*jwt.Claims)
 	if !ok {

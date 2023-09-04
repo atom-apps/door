@@ -4,7 +4,55 @@
         "contact": {}
     },
     "paths": {
-        "/auth/check-reset-password-code": {
+        "/auth/reset-password": {
+            "get": {
+                "description": "ResetPassword",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "ResetPassword",
+                "responses": {}
+            }
+        },
+        "/auth/signin": {
+            "get": {
+                "description": "Login Page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login Page",
+                "responses": {}
+            }
+        },
+        "/auth/signup": {
+            "get": {
+                "description": "Signup Page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Signup page",
+                "responses": {}
+            }
+        },
+        "/v1/auth/check-reset-password-code": {
             "post": {
                 "description": "CheckResetPasswordCoe",
                 "consumes": [
@@ -38,7 +86,7 @@
                 }
             }
         },
-        "/auth/exchange-token-by-code": {
+        "/v1/auth/exchange-token-by-code": {
             "post": {
                 "description": "GetTokenByCode",
                 "consumes": [
@@ -72,7 +120,7 @@
                 }
             }
         },
-        "/auth/logout": {
+        "/v1/auth/logout": {
             "post": {
                 "description": "Logout",
                 "consumes": [
@@ -85,21 +133,10 @@
                     "Auth"
                 ],
                 "summary": "Logout",
-                "parameters": [
-                    {
-                        "description": "LogoutForm",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.LogoutForm"
-                        }
-                    }
-                ],
                 "responses": {}
             }
         },
-        "/auth/pages": {
+        "/v1/auth/pages": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -124,7 +161,34 @@
                 }
             }
         },
-        "/auth/refresh-token": {
+        "/v1/auth/permission/check": {
+            "post": {
+                "description": "CheckPermission",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "CheckPermission",
+                "parameters": [
+                    {
+                        "description": "PermissionCheckForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PermissionCheckForm"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/auth/refresh-token": {
             "post": {
                 "description": "RefreshToken",
                 "consumes": [
@@ -137,17 +201,6 @@
                     "Auth"
                 ],
                 "summary": "RefreshToken",
-                "parameters": [
-                    {
-                        "description": "RefreshTokenForm",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.RefreshTokenForm"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -158,7 +211,7 @@
                 }
             }
         },
-        "/auth/reset-password-by-token": {
+        "/v1/auth/reset-password-by-token": {
             "post": {
                 "description": "ResetPassword",
                 "consumes": [
@@ -192,23 +245,7 @@
                 }
             }
         },
-        "/auth/reset-password/{app_name}": {
-            "get": {
-                "description": "ResetPassword",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "ResetPassword",
-                "responses": {}
-            }
-        },
-        "/auth/routes": {
+        "/v1/auth/routes": {
             "get": {
                 "description": "Signup",
                 "consumes": [
@@ -231,7 +268,7 @@
                 }
             }
         },
-        "/auth/signin": {
+        "/v1/auth/signin": {
             "post": {
                 "description": "Signin",
                 "consumes": [
@@ -265,23 +302,7 @@
                 }
             }
         },
-        "/auth/signin/{app_name}": {
-            "get": {
-                "description": "Login Page",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Login Page",
-                "responses": {}
-            }
-        },
-        "/auth/signup": {
+        "/v1/auth/signup": {
             "post": {
                 "description": "Signup",
                 "consumes": [
@@ -315,9 +336,8 @@
                 }
             }
         },
-        "/auth/signup/{app_name}": {
+        "/v1/services/captcha/generate": {
             "get": {
-                "description": "Signup Page",
                 "consumes": [
                     "application/json"
                 ],
@@ -325,15 +345,21 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "Service"
                 ],
-                "summary": "Signup page",
-                "responses": {}
+                "summary": "captcha",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Captcha"
+                        }
+                    }
+                }
             }
         },
-        "/v1/permission/check": {
+        "/v1/services/send/email": {
             "post": {
-                "description": "CheckPermission",
                 "consumes": [
                     "application/json"
                 ],
@@ -341,25 +367,25 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "Service"
                 ],
-                "summary": "CheckPermission",
+                "summary": "send email code",
                 "parameters": [
                     {
-                        "description": "PermissionCheckForm",
+                        "description": "SendEmailVerifyCodeForm",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.PermissionCheckForm"
+                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
                         }
                     }
                 ],
                 "responses": {}
             }
         },
-        "/v1/permissions/attach/{role_id}/{tenant_id}": {
-            "put": {
+        "/v1/services/send/sms": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -367,104 +393,24 @@
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Service"
                 ],
-                "summary": "attach users",
+                "summary": "send sms code",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "RoleID",
-                        "name": "role_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "TenantID",
-                        "name": "tenant_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "IDsForm",
+                        "description": "SendSmsVerifyCodeForm",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/common.IDsForm"
+                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
-        "/v1/permissions/detach/{role_id}/{tenant_id}": {
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "detach users",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "RoleID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "TenantID",
-                        "name": "tenant_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "IDsForm",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/common.IDsForm"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/routes": {
+        "/v1/systems/routes": {
             "get": {
                 "description": "list by query filter",
                 "consumes": [
@@ -508,12 +454,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -581,7 +537,7 @@
                 }
             }
         },
-        "/v1/routes/type/{route_type}": {
+        "/v1/systems/routes/type/{route_type}": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -636,7 +592,7 @@
                 }
             }
         },
-        "/v1/routes/{id}": {
+        "/v1/systems/routes/{id}": {
             "get": {
                 "description": "get info by id",
                 "consumes": [
@@ -749,80 +705,6 @@
                 }
             }
         },
-        "/v1/services/captcha/generate": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Service"
-                ],
-                "summary": "captcha",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.Captcha"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/services/send/email": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Service"
-                ],
-                "summary": "send email code",
-                "parameters": [
-                    {
-                        "description": "SendEmailVerifyCodeForm",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/v1/services/send/sms": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Service"
-                ],
-                "summary": "send sms code",
-                "parameters": [
-                    {
-                        "description": "SendSmsVerifyCodeForm",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.SendVerifyCodeForm"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
         "/v1/tools/locations": {
             "get": {
                 "description": "list by query filter",
@@ -870,12 +752,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1056,9 +948,8 @@
                 }
             }
         },
-        "/v1/users": {
+        "/v1/users/permissions": {
             "get": {
-                "description": "list by query filter",
                 "consumes": [
                     "application/json"
                 ],
@@ -1068,55 +959,35 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "list by query filter",
+                "summary": "List",
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "avatar",
+                        "description": "请求方式",
+                        "name": "action",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "name": "display_name",
+                        "description": "路由",
+                        "name": "path",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "name": "email",
+                        "type": "integer",
+                        "description": "角色ID",
+                        "name": "role_id",
                         "in": "query"
                     },
                     {
-                        "type": "boolean",
-                        "name": "email_verified",
+                        "type": "integer",
+                        "description": "租户ID",
+                        "name": "tenant_id",
                         "in": "query"
                     },
                     {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "password",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "phone",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "username",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "uuid",
+                        "type": "integer",
+                        "name": "current",
                         "in": "query"
                     },
                     {
@@ -1127,6 +998,11 @@
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1152,7 +1028,7 @@
                                     "type": "object",
                                     "properties": {
                                         "list": {
-                                            "$ref": "#/definitions/dto.UserItem"
+                                            "$ref": "#/definitions/dto.PermissionItem"
                                         }
                                     }
                                 }
@@ -1162,7 +1038,6 @@
                 }
             },
             "post": {
-                "description": "create new item",
                 "consumes": [
                     "application/json"
                 ],
@@ -1172,16 +1047,242 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "create new item",
+                "summary": "Create",
                 "parameters": [
                     {
-                        "description": "UserForm",
+                        "description": "PermissionForm",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserForm"
+                            "$ref": "#/definitions/dto.PermissionForm"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/permissions/attach/{role_id}/{tenant_id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "attach users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RoleID",
+                        "name": "role_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "TenantID",
+                        "name": "tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "IDsForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/common.IDsForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/permissions/detach/{role_id}/{tenant_id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "detach users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RoleID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "TenantID",
+                        "name": "tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "IDsForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/common.IDsForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/permissions/tree": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Tree",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/permissions/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Show",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "PermissionID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PermissionItem"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "update by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "PermissionID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "PermissionForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PermissionForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "PermissionID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1230,12 +1331,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1416,112 +1527,6 @@
                 }
             }
         },
-        "/v1/users/roles/{role_id}": {
-            "get": {
-                "description": "list by query filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "list by query filter",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "avatar",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "display_name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "email",
-                        "in": "query"
-                    },
-                    {
-                        "type": "boolean",
-                        "name": "email_verified",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "password",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "phone",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "username",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "uuid",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "asc",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "desc",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.PageDataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "list": {
-                                            "$ref": "#/definitions/dto.UserItem"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
         "/v1/users/sessions": {
             "get": {
                 "description": "list by query filter",
@@ -1548,12 +1553,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1732,12 +1747,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1918,112 +1943,6 @@
                 }
             }
         },
-        "/v1/users/tenants/{tenant_id}": {
-            "get": {
-                "description": "list by query filter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "list by query filter",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "avatar",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "display_name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "email",
-                        "in": "query"
-                    },
-                    {
-                        "type": "boolean",
-                        "name": "email_verified",
-                        "in": "query"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "password",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "phone",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "username",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "uuid",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "asc",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "desc",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.PageDataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "list": {
-                                            "$ref": "#/definitions/dto.UserItem"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
         "/v1/users/tokens": {
             "get": {
                 "description": "list by query filter",
@@ -2096,12 +2015,22 @@
                     },
                     {
                         "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -2175,7 +2104,194 @@
                 }
             }
         },
-        "/v1/users/{id}": {
+        "/v1/users/users": {
+            "get": {
+                "description": "list by query filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "list by query filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "display_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "email_verified",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "phone",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "",
+                            "blocked"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "UserStatusDefault",
+                            "UserStatusBlocked"
+                        ],
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "tenant",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "uuid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "asc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.PageDataResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "$ref": "#/definitions/dto.UserItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create new item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "create new item",
+                "parameters": [
+                    {
+                        "description": "UserForm",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/users/profile": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "get current user info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "UserID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserItem"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/users/{id}": {
             "get": {
                 "description": "get info by id",
                 "consumes": [
@@ -2304,11 +2420,17 @@
         "common.PageDataResponse": {
             "type": "object",
             "properties": {
+                "current": {
+                    "type": "integer"
+                },
                 "items": {},
                 "limit": {
                     "type": "integer"
                 },
                 "page": {
+                    "type": "integer"
+                },
+                "page_size": {
                     "type": "integer"
                 },
                 "total": {
@@ -2464,14 +2586,6 @@
                 }
             }
         },
-        "dto.LogoutForm": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.PermissionCheckForm": {
             "type": "object",
             "properties": {
@@ -2483,11 +2597,65 @@
                 }
             }
         },
-        "dto.RefreshTokenForm": {
+        "dto.PermissionForm": {
             "type": "object",
             "properties": {
-                "token": {
+                "action": {
+                    "description": "请求方式",
                     "type": "string"
+                },
+                "path": {
+                    "description": "路由",
+                    "type": "string"
+                },
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer"
+                },
+                "tenant_id": {
+                    "description": "租户ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PermissionItem": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "请求方式",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路由",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "角色",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Role"
+                        }
+                    ]
+                },
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer"
+                },
+                "tenant": {
+                    "description": "租户",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Tenant"
+                        }
+                    ]
+                },
+                "tenant_id": {
+                    "description": "租户ID",
+                    "type": "integer"
                 }
             }
         },
@@ -2539,6 +2707,9 @@
                 },
                 "slug": {
                     "type": "string"
+                },
+                "user_amount": {
+                    "type": "integer"
                 }
             }
         },
@@ -2598,6 +2769,9 @@
             "type": "object",
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "expire_at": {
                     "type": "string"
                 },
                 "id": {
@@ -2710,8 +2884,8 @@
                 "name": {
                     "type": "string"
                 },
-                "updated_at": {
-                    "type": "string"
+                "user_amount": {
+                    "type": "integer"
                 }
             }
         },
@@ -2783,6 +2957,9 @@
                 "phone": {
                     "type": "string"
                 },
+                "status": {
+                    "$ref": "#/definitions/consts.UserStatus"
+                },
                 "username": {
                     "type": "string"
                 },
@@ -2812,11 +2989,17 @@
                 "id": {
                     "type": "integer"
                 },
-                "password": {
-                    "type": "string"
-                },
                 "phone": {
                     "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/consts.UserStatus"
+                },
+                "tenant_roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.UserItemTenantRole"
+                    }
                 },
                 "updated_at": {
                     "type": "string"
@@ -2826,6 +3009,17 @@
                 },
                 "uuid": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.UserItemTenantRole": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "$ref": "#/definitions/models.Role"
+                },
+                "tenant": {
+                    "$ref": "#/definitions/models.Tenant"
                 }
             }
         },
@@ -2887,26 +3081,86 @@
                 }
             }
         },
+        "models.Role": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父角色",
+                    "type": "integer"
+                },
+                "slug": {
+                    "description": "唯一标识",
+                    "type": "string"
+                }
+            }
+        },
         "models.Session": {
             "type": "object",
             "properties": {
                 "created_at": {
+                    "description": "创建时间",
                     "type": "string"
                 },
                 "expire_at": {
+                    "description": "过期时间",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ID",
                     "type": "integer"
                 },
                 "session_id": {
+                    "description": "会话ID",
                     "type": "string"
                 },
                 "updated_at": {
+                    "description": "更新时间",
                     "type": "string"
                 },
                 "user_id": {
+                    "description": "用户ID",
                     "type": "integer"
+                }
+            }
+        },
+        "models.Tenant": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "meta": {
+                    "description": "元数据",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
                 }
             }
         },
@@ -2914,15 +3168,19 @@
             "type": "object",
             "properties": {
                 "access_token": {
+                    "description": "访问令牌",
                     "type": "string"
                 },
                 "code": {
+                    "description": "Code",
                     "type": "string"
                 },
                 "code_challenge": {
+                    "description": "CodeChallenge",
                     "type": "string"
                 },
                 "code_expire_at": {
+                    "description": "Code过期时间",
                     "type": "string"
                 },
                 "created_at": {
@@ -2932,33 +3190,45 @@
                     "type": "string"
                 },
                 "expire_at": {
+                    "description": "过期时间",
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "refresh_token": {
+                    "description": "刷新令牌",
                     "type": "string"
                 },
                 "scope": {
+                    "description": "Scope",
                     "type": "string"
                 },
                 "session_id": {
+                    "description": "会话ID",
                     "type": "integer"
                 },
                 "tenant_id": {
+                    "description": "租户ID",
                     "type": "integer"
                 },
                 "token_type": {
-                    "$ref": "#/definitions/consts.TokenType"
+                    "description": "令牌类型",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/consts.TokenType"
+                        }
+                    ]
                 },
                 "updated_at": {
                     "type": "string"
                 },
                 "used": {
+                    "description": "是否已使用",
                     "type": "boolean"
                 },
                 "user_id": {
+                    "description": "用户ID",
                     "type": "integer"
                 }
             }
@@ -2967,42 +3237,59 @@
             "type": "object",
             "properties": {
                 "avatar": {
+                    "description": "头像",
                     "type": "string"
                 },
                 "created_at": {
+                    "description": "创建时间",
                     "type": "string"
                 },
                 "deleted_at": {
+                    "description": "删除时间",
                     "type": "string"
                 },
                 "display_name": {
+                    "description": "显示名称",
                     "type": "string"
                 },
                 "email": {
+                    "description": "邮箱",
                     "type": "string"
                 },
                 "email_verified": {
+                    "description": "邮箱是否验证",
                     "type": "boolean"
                 },
                 "id": {
+                    "description": "ID",
                     "type": "integer"
                 },
                 "password": {
+                    "description": "密码",
                     "type": "string"
                 },
                 "phone": {
+                    "description": "手机号",
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/consts.UserStatus"
+                    "description": "状态",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/consts.UserStatus"
+                        }
+                    ]
                 },
                 "updated_at": {
+                    "description": "更新时间",
                     "type": "string"
                 },
                 "username": {
+                    "description": "用户名",
                     "type": "string"
                 },
                 "uuid": {
+                    "description": "UUID",
                     "type": "string"
                 }
             }

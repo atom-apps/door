@@ -1,6 +1,7 @@
 package service
 
 import (
+	systemDao "github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/md5"
@@ -16,11 +17,13 @@ func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		permissionDao *dao.PermissionDao,
 		roleDao *dao.RoleDao,
+		routeDao *systemDao.RouteDao,
 		tenantDao *dao.TenantDao,
 	) (*PermissionService, error) {
 		obj := &PermissionService{
 			permissionDao: permissionDao,
 			roleDao:       roleDao,
+			routeDao:      routeDao,
 			tenantDao:     tenantDao,
 		}
 		return obj, nil

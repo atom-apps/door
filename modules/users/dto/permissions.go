@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/atom-apps/door/database/models"
+import (
+	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/database/models"
+	"gorm.io/datatypes"
+)
 
 type PermissionForm struct {
 	TenantID uint64 `form:"tenant_id" json:"tenant_id,omitempty"` // 租户ID
@@ -24,4 +28,14 @@ type PermissionItem struct {
 	Role     *models.Role   `json:"role,omitempty"`      // 角色
 	Path     string         `json:"path,omitempty"`      // 路由
 	Action   string         `json:"action,omitempty"`    // 请求方式
+}
+
+type PermissionTree struct {
+	ID       uint64                                   `json:"id"`
+	Name     string                                   `json:"name"`
+	Method   string                                   `json:"method"`
+	Path     string                                   `json:"path"`
+	ParentID uint64                                   `json:"parent_id"`
+	Metadata datatypes.JSONType[common.RouteMetadata] `json:"metadata"`
+	Children []*PermissionTree                        `json:"children,omitempty"`
 }

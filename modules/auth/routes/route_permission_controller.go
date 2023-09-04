@@ -14,5 +14,5 @@ import (
 
 func routePermissionController(engine fiber.Router, controller *controller.PermissionController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Post(strings.TrimPrefix("/v1/permission/check", basePath), Func1(controller.Check, Body[dto.PermissionCheckForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/permission/check", basePath), Func1(controller.Check, Body[dto.PermissionCheckForm](BodyParamError)))
 }

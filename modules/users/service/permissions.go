@@ -5,6 +5,7 @@ import (
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
+	systemDao "github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-providers/log"
@@ -17,6 +18,7 @@ type PermissionService struct {
 	permissionDao *dao.PermissionDao
 	tenantDao     *dao.TenantDao
 	roleDao       *dao.RoleDao
+	routeDao      *systemDao.RouteDao
 }
 
 func (svc *PermissionService) DecorateItem(model *models.Permission, id int) *dto.PermissionItem {
@@ -102,4 +104,31 @@ func (svc *PermissionService) DeleteByTenantID(ctx context.Context, tenantID uin
 
 func (svc *PermissionService) DeleteByRoleID(ctx context.Context, roleID uint64) error {
 	return svc.permissionDao.DeleteByRoleID(ctx, roleID)
+}
+
+func (svc *PermissionService) Tree(ctx context.Context) ([]*dto.PermissionTree, error) {
+	routes, err := svc.routeDao.FindAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.genTree(routes, 0), nil
+}
+
+func (svc *PermissionService) genTree(routes []*models.Route, parentID uint64) []*dto.PermissionTree {
+	genRoutes := []*dto.PermissionTree{}
+	for _, route := range routes {
+		if route.ParentID == parentID {
+			genRoutes = append(genRoutes, &dto.PermissionTree{
+				ID:       route.ID,
+				Name:     route.Name,
+				Method:   route.Method,
+				Path:     route.Path,
+				ParentID: route.ParentID,
+				Metadata: route.Metadata,
+				Children: svc.genTree(routes, route.ID),
+			})
+		}
+	}
+	return genRoutes
 }

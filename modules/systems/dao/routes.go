@@ -144,3 +144,8 @@ func (dao *RouteDao) FirstByQueryFilter(
 	routeQuery = dao.decorateSortQueryFilter(routeQuery, sortFilter)
 	return routeQuery.First()
 }
+
+func (dao *RouteDao) FindAll(ctx context.Context) ([]*models.Route, error) {
+	query := dao.query.Route
+	return query.WithContext(ctx).Find()
+}

@@ -16,12 +16,12 @@ const TableNameRoute = "routes"
 // Route mapped from table <routes>
 type Route struct {
 	ID       uint64                                   `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	Type     consts.RouteType                         `gorm:"column:type;type:varchar(64);not null" json:"type"`
-	ParentID uint64                                   `gorm:"column:parent_id;type:bigint unsigned;not null" json:"parent_id"`
-	Name     string                                   `gorm:"column:name;type:varchar(255);not null" json:"name"`
-	Path     string                                   `gorm:"column:path;type:varchar(1024);not null" json:"path"`
-	Metadata datatypes.JSONType[common.RouteMetadata] `gorm:"column:metadata;type:varchar(191)" json:"metadata"`
-	Order    uint64                                   `gorm:"column:order;type:bigint unsigned" json:"order"`
+	Type     consts.RouteType                         `gorm:"column:type;type:varchar(64);not null;comment:类型" json:"type"`                 // 类型
+	ParentID uint64                                   `gorm:"column:parent_id;type:bigint unsigned;not null;comment:父级ID" json:"parent_id"` // 父级ID
+	Name     string                                   `gorm:"column:name;type:varchar(255);not null;comment:名称" json:"name"`                // 名称
+	Path     string                                   `gorm:"column:path;type:varchar(1024);not null;comment:路径" json:"path"`               // 路径
+	Metadata datatypes.JSONType[common.RouteMetadata] `gorm:"column:metadata;type:varchar(191);comment:元数据" json:"metadata"`                // 元数据
+	Order    uint64                                   `gorm:"column:order;type:bigint unsigned;comment:排序" json:"order"`                    // 排序
 }
 
 func (*Route) TableName(namer schema.Namer) string {

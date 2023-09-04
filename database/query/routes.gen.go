@@ -45,12 +45,12 @@ type route struct {
 
 	ALL      field.Asterisk
 	ID       field.Uint64
-	Type     field.Field
-	ParentID field.Uint64
-	Name     field.String
-	Path     field.String
-	Metadata field.Field
-	Order    field.Uint64
+	Type     field.Field  // 类型
+	ParentID field.Uint64 // 父级ID
+	Name     field.String // 名称
+	Path     field.String // 路径
+	Metadata field.Field  // 元数据
+	Order    field.Uint64 // 排序
 
 	fieldMap map[string]field.Expr
 }

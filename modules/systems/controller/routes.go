@@ -26,7 +26,7 @@ type RouteController struct {
 //	@Produce		json
 //	@Param			id	path		int	true	"RouteID"
 //	@Success		200	{object}	dto.RouteItem
-//	@Router			/v1/routes/{id} [get]
+//	@Router			/v1/systems/routes/{id} [get]
 func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) (*dto.RouteItem, error) {
 	if claim.IsAdmin() {
 		return nil, errorx.ErrForbidden
@@ -50,7 +50,7 @@ func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) (*d
 //	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.RouteItem}
-//	@Router			/v1/routes [get]
+//	@Router			/v1/systems/routes [get]
 func (c *RouteController) List(
 	ctx *fiber.Ctx,
 	claim *jwt.Claims,
@@ -81,7 +81,7 @@ func (c *RouteController) List(
 //	@Produce	json
 //	@Param		queryFilter	query	dto.RouteListQueryFilter	true	"RouteListQueryFilter"
 //	@Success	200			{array}	dto.RouteItem
-//	@Router		/v1/routes/type/{route_type} [get]
+//	@Router		/v1/systems/routes/type/{route_type} [get]
 func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType string) ([]*dto.RouteItem, error) {
 	typ, err := consts.ParseRouteType(routeType)
 	if err != nil {
@@ -100,7 +100,7 @@ func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType str
 //	@Produce		json
 //	@Param			body	body		dto.RouteForm	true	"RouteForm"
 //	@Success		200		{string}	RouteID
-//	@Router			/v1/routes [post]
+//	@Router			/v1/systems/routes [post]
 func (c *RouteController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto.RouteForm) error {
 	if claim.IsAdmin() {
 		return errorx.ErrForbidden
@@ -119,7 +119,7 @@ func (c *RouteController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto.Ro
 //	@Param			body	body		dto.RouteForm	true	"RouteForm"
 //	@Success		200		{string}	RouteID
 //	@Failure		500		{string}	RouteID
-//	@Router			/v1/routes/{id} [put]
+//	@Router			/v1/systems/routes/{id} [put]
 func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, body *dto.RouteForm) error {
 	if claim.IsAdmin() {
 		return errorx.ErrForbidden
@@ -137,7 +137,7 @@ func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, b
 //	@Param			id	path		int	true	"RouteID"
 //	@Success		200	{string}	RouteID
 //	@Failure		500	{string}	RouteID
-//	@Router			/v1/routes/{id} [delete]
+//	@Router			/v1/systems/routes/{id} [delete]
 func (c *RouteController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) error {
 	if claim.IsAdmin() {
 		return errorx.ErrForbidden

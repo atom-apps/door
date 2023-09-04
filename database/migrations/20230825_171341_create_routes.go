@@ -7,13 +7,13 @@ import (
 
 func (m *Migration20230825_171341CreateRoutes) table() interface{} {
 	type Routes struct {
-		ID       uint   `gorm:"primarykey"`
-		Type     string `gorm:"size:64;not null"`
-		ParentID uint   `gorm:"not null;default 0"`
-		Name     string `gorm:"size:255;not null"`
-		Path     string `gorm:"size:1024;not null"`
-		Metadata string `gorm:"default '{}'"`
-		Order    uint   `gorm:"default 0"`
+		ModelOnlyID
+		Type     string `gorm:"size:64;not null;comment:类型"`
+		ParentID uint   `gorm:"not null;default 0;comment:父级ID"`
+		Name     string `gorm:"size:255;not null;comment:名称"`
+		Path     string `gorm:"size:1024;not null; comment:路径"`
+		Metadata string `gorm:"default '{}'; comment:元数据"`
+		Order    uint   `gorm:"default 0; comment:排序"`
 	}
 
 	return &Routes{}

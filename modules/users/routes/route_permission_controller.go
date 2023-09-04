@@ -22,4 +22,5 @@ func routePermissionController(engine fiber.Router, controller *controller.Permi
 	engine.Delete(strings.TrimPrefix("/v1/users/permissions/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
 	engine.Put(strings.TrimPrefix("/v1/users/permissions/attach/:roleId<int>/:tenantId", basePath), Func3(controller.AttachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
 	engine.Put(strings.TrimPrefix("/v1/users/permissions/detach/:roleId<int>/:tenantId", basePath), Func3(controller.DetachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/permissions/tree", basePath), DataFunc(controller.Tree))
 }

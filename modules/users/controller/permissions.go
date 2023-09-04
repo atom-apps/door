@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/consts"
+	systemDto "github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
 
@@ -132,4 +134,30 @@ func (c *PermissionController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID uint
 //	@Router		/v1/users/permissions/detach/{role_id}/{tenant_id} [put]
 func (c *PermissionController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *common.IDsForm) error {
 	return c.userTenantRoleSvc.DetachUsers(ctx.Context(), tenantID, roleID, users.IDs)
+}
+
+// Tree
+//
+//	@Summary	Tree
+//	@Tags		User
+//	@Accept		json
+//	@Produce	json
+//	@Success	200			{string}	RoleID
+//	@Router		/v1/users/permissions/tree [get]
+func (c *PermissionController) Tree(ctx *fiber.Ctx) ([]systemDto.RouteItem, error) {
+	return []systemDto.RouteItem{
+		{
+			ID:       0,
+			Type:     consts.RouteTypeApi,
+			ParentID: 0,
+			Name:     "",
+			Path:     "",
+			Metadata: common.RouteMetadata{
+				RequiresAuth: false,
+				Icon:         "",
+				Order:        0,
+			},
+			Children: []*systemDto.RouteItem{},
+		},
+	}, nil
 }

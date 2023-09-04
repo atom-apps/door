@@ -16,7 +16,7 @@ func Provide(opts ...opt.Option) error {
 
 func newRoute(svc contracts.HttpService, routeController *controller.RouteController) contracts.HttpRoute {
 	engine := svc.GetEngine().(*fiber.App)
-	group := engine.Group("systems")
+	group := engine.Group("v1/systems")
 	log.Infof("register route group: %s", group.(*fiber.Group).Prefix)
 
 	routeRouteController(group, routeController)

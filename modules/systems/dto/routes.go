@@ -23,7 +23,7 @@ type RouteListQueryFilter struct {
 
 type RouteItem struct {
 	ID       uint64               `json:"id,omitempty"`                //
-	Type     *consts.RouteType    `query:"type" json:"type,omitempty"` //
+	Type     consts.RouteType     `query:"type" json:"type,omitempty"` //
 	ParentID uint64               `json:"parent_id,omitempty"`         //
 	Name     string               `json:"name,omitempty"`              //
 	Path     string               `json:"path,omitempty"`              //

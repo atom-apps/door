@@ -21,7 +21,7 @@ type RouteService struct {
 func (svc *RouteService) DecorateItem(model *models.Route, id int) *dto.RouteItem {
 	dtoItem := &dto.RouteItem{
 		ID:       model.ID,
-		Type:     &model.Type,
+		Type:     model.Type,
 		ParentID: model.ParentID,
 		Name:     model.Name,
 		Path:     model.Path,
@@ -41,7 +41,7 @@ func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parent
 	return lo.Map(items, func(model *models.Route, index int) *dto.RouteItem {
 		dtoItem := &dto.RouteItem{
 			ID:       model.ID,
-			Type:     &model.Type,
+			Type:     model.Type,
 			ParentID: model.ParentID,
 			Name:     model.Name,
 			Path:     model.Path,

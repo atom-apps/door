@@ -240,62 +240,6 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "name": "权限",
-                    "path": "permissions",
-                    "children": [
-                        {
-                            "name": "列表",
-                            "path": "",
-                            "api": [
-                                "get#/v1/users/permissions"
-                            ]
-                        },
-                        {
-                            "name": "创建",
-                            "path": "create",
-                            "api": [
-                                "post#/v1/users/permissions"
-                            ]
-                        },
-                        {
-                            "name": "查看",
-                            "path": "view/:id",
-                            "api": [
-                                "get#/v1/users/permissions/:id"
-                            ]
-                        },
-                        {
-                            "name": "编辑",
-                            "path": "edit/:id",
-                            "api": [
-                                "put#/v1/users/permissions/:id",
-                                "get#/v1/users/permissions/:id"
-                            ]
-                        },
-                        {
-                            "name": "删除",
-                            "path": "delete/:id",
-                            "api": [
-                                "delete#/v1/users/permissions/:id"
-                            ]
-                        },
-                        {
-                            "name": "导入",
-                            "path": "import",
-                            "api": [
-                                "post#/v1/users/permissions/import"
-                            ]
-                        },
-                        {
-                            "name": "下载",
-                            "path": "download",
-                            "api": [
-                                "post#/v1/users/permissions/download"
-                            ]
-                        }
-                    ]
                 }
             ]
         },

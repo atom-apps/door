@@ -98,6 +98,10 @@ func (svc *RoleService) Update(ctx context.Context, id uint64, body *dto.RoleFor
 		return err
 	}
 
+	if body.ParentID == model.ID {
+		body.ParentID = 0
+	}
+
 	_ = copier.Copy(model, body)
 	model.ID = id
 	return svc.UpdateFromModel(ctx, model)

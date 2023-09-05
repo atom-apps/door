@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
 
@@ -90,6 +91,9 @@ func (c *TenantController) Create(ctx *fiber.Ctx, body *dto.TenantForm) error {
 //	@Failure		500		{string}	TenantID
 //	@Router			/v1/users/tenants/{id} [put]
 func (c *TenantController) Update(ctx *fiber.Ctx, id uint64, body *dto.TenantForm) error {
+	if id <= 2 {
+		return errorx.ErrForbidden
+	}
 	return c.tenantSvc.Update(ctx.Context(), id, body)
 }
 
@@ -105,5 +109,8 @@ func (c *TenantController) Update(ctx *fiber.Ctx, id uint64, body *dto.TenantFor
 //	@Failure		500	{string}	TenantID
 //	@Router			/v1/users/tenants/{id} [delete]
 func (c *TenantController) Delete(ctx *fiber.Ctx, id uint64) error {
+	if id <= 2 {
+		return errorx.ErrForbidden
+	}
 	return c.tenantSvc.Delete(ctx.Context(), id)
 }

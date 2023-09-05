@@ -21,5 +21,5 @@ type RoleItem struct {
 	Description string    `json:"description,omitempty"`      //
 	ParentID    uint64    `json:"parent_id,omitempty"`        //
 	Parent      *RoleItem `json:"parent,omitempty"`           //
-	UserAmount  int64     `json:"user_amount,omitempty"`      //
+	UserAmount  int64     `json:"user_amount"`                //
 }

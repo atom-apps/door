@@ -5,7 +5,6 @@ import (
 
 	"github.com/atom-apps/door/docs"
 	"github.com/atom-apps/door/modules/auth/dto"
-	systemDto "github.com/atom-apps/door/modules/systems/dto"
 	systemSvc "github.com/atom-apps/door/modules/systems/service"
 	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/jwt"
@@ -43,10 +42,10 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Tags		Systems
 //	@Accept		json
 //	@Produce	json
-//	@Success	200	{array}	dto.RouteItem
+//	@Success	200	{array}	[]string
 //	@Router		/v1/auth/pages [get]
-func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*systemDto.RouteItem, error) {
-	return c.routeSvc.Tree(ctx.Context(), 0)
+func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([][]string, error) {
+	return c.permissionSvc.CasbinPoliciesOfTenantRole(ctx.Context(), claim.TenantID, claim.RoleID)
 }
 
 // Test

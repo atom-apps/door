@@ -202,6 +202,40 @@ func (svc *PermissionService) CasbinPolicies(ctx context.Context) ([][]string, e
 	return svc.genCasbinPolicies(ctx, all, routes)
 }
 
+func (svc *PermissionService) CasbinPoliciesOfTenantRole(ctx context.Context, tenantID, roleID uint64) ([][]string, error) {
+	all, err := svc.permissionDao.FindByTenantRole(ctx, tenantID, roleID)
+	if err != nil {
+		return nil, err
+	}
+
+	routeIDs := lo.Map(all, func(item *models.Permission, _ int) uint64 { return item.RouteID })
+	routes, err := svc.routeDao.GetByIDs(ctx, routeIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.genCasbinPoliciesForPage(ctx, all, routes)
+}
+
+func (svc *PermissionService) genCasbinPoliciesForPage(ctx context.Context, ms []*models.Permission, routes []*models.Route) ([][]string, error) {
+	routeMap := lo.KeyBy(routes, func(item *models.Route) uint64 {
+		return item.ID
+	})
+
+	policies := [][]string{}
+	lo.ForEach(ms, func(item *models.Permission, _ int) {
+		if m, ok := routeMap[item.RouteID]; ok {
+			policies = append(policies, []string{
+				fmt.Sprintf("role:%d", item.RoleID),
+				fmt.Sprintf("tenant:%d", item.TenantID),
+				m.Path,
+				"ANY",
+			})
+		}
+	})
+	return policies, nil
+}
+
 func (svc *PermissionService) genCasbinPolicies(ctx context.Context, ms []*models.Permission, routes []*models.Route) ([][]string, error) {
 	routeMap := lo.KeyBy(routes, func(item *models.Route) uint64 {
 		return item.ID

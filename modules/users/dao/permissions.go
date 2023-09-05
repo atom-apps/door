@@ -169,3 +169,11 @@ func (dao *PermissionDao) GetRouteIDsByTenantIDAndRoleID(ctx context.Context, te
 func (dao *PermissionDao) FindALl(ctx context.Context) ([]*models.Permission, error) {
 	return dao.Context(ctx).Find()
 }
+
+func (dao *PermissionDao) FindByTenantRole(ctx context.Context, tenantID, roleID uint64) ([]*models.Permission, error) {
+	table, query := dao.query.Permission, dao.Context(ctx)
+	return query.Where(
+		table.RoleID.Eq(roleID),
+		table.TenantID.Eq(tenantID),
+	).Find()
+}

@@ -145,3 +145,15 @@ func (c *PermissionController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID uint
 func (c *PermissionController) Tree(ctx *fiber.Ctx) ([]*dto.PermissionTree, error) {
 	return c.permissionSvc.Tree(ctx.Context())
 }
+
+// TenantRoleSave
+//
+//	@Summary	Tree
+//	@Tags		User
+//	@Accept		json
+//	@Produce	json
+//	@Success	200			{array}	dto.PermissionTree
+//	@Router		/v1/users/permissions/save/{tenant_id}/{role_id} [post]
+func (c *PermissionController) TenantRoleSave(ctx *fiber.Ctx, tenantID, roleID uint64, body *common.IDsForm) error {
+	return c.permissionSvc.TenantRoleSave(ctx.Context(), tenantID, roleID, body.IDs)
+}

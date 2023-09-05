@@ -10,6 +10,7 @@ import (
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-providers/log"
+	"github.com/samber/lo"
 
 	"github.com/jinzhu/copier"
 )
@@ -27,6 +28,20 @@ func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
 		log.Warnf("get user amount of role %d failed: %v", model.ID, err)
 	}
 
+	tenants, err := svc.userTenantRoleSvc.GetTenantsByRoleID(context.Background(), model.ID)
+	if err != nil {
+		log.Warnf("get tenants of role %d failed: %v", model.ID, err)
+	}
+
+	permissions := make(map[uint64][]uint64)
+	lo.ForEach(tenants, func(item *models.Tenant, _ int) {
+		routes, err := svc.permissionSvc.permissionDao.GetRouteIDsByTenantIDAndRoleID(context.Background(), item.ID, model.ID)
+		if err != nil {
+			return
+		}
+		permissions[item.ID] = routes
+	})
+
 	dtoItem := &dto.RoleItem{
 		ID:          model.ID,
 		Name:        model.Name,
@@ -35,6 +50,8 @@ func (svc *RoleService) DecorateItem(model *models.Role, id int) *dto.RoleItem {
 		ParentID:    model.ParentID,
 		Parent:      nil,
 		UserAmount:  userAmount,
+		Tenants:     tenants,
+		Permissions: permissions,
 	}
 
 	if model.ParentID != 0 {

@@ -7,6 +7,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
+	"github.com/samber/lo"
 
 	"gorm.io/gen/field"
 )
@@ -55,12 +56,6 @@ func (dao *PermissionDao) decorateQueryFilter(query query.IPermissionDo, queryFi
 	if queryFilter.RoleID != nil {
 		query = query.Where(dao.query.Permission.RoleID.Eq(*queryFilter.RoleID))
 	}
-	if queryFilter.Path != nil {
-		query = query.Where(dao.query.Permission.Path.Eq(*queryFilter.Path))
-	}
-	if queryFilter.Action != nil {
-		query = query.Where(dao.query.Permission.Action.Eq(*queryFilter.Action))
-	}
 
 	return query
 }
@@ -77,6 +72,12 @@ func (dao *PermissionDao) Update(ctx context.Context, model *models.Permission) 
 
 func (dao *PermissionDao) Delete(ctx context.Context, id uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Permission.ID.Eq(id)).Delete()
+	return err
+}
+
+// DeleteByTenantRole
+func (dao *PermissionDao) DeleteByTenantRole(ctx context.Context, tenantID uint64, roleID uint64) error {
+	_, err := dao.Context(ctx).Where(dao.query.Permission.TenantID.Eq(tenantID), dao.query.Permission.RoleID.Eq(roleID)).Delete()
 	return err
 }
 
@@ -97,6 +98,10 @@ func (dao *PermissionDao) DeletePermanently(ctx context.Context, id uint64) erro
 
 func (dao *PermissionDao) Create(ctx context.Context, model *models.Permission) error {
 	return dao.Context(ctx).Create(model)
+}
+
+func (dao *PermissionDao) CreateBatch(ctx context.Context, model []*models.Permission, size int) error {
+	return dao.Context(ctx).CreateInBatches(model, size)
 }
 
 func (dao *PermissionDao) GetByID(ctx context.Context, id uint64) (*models.Permission, error) {
@@ -142,4 +147,21 @@ func (dao *PermissionDao) FirstByQueryFilter(
 	permissionQuery = dao.decorateQueryFilter(permissionQuery, queryFilter)
 	permissionQuery = dao.decorateSortQueryFilter(permissionQuery, sortFilter)
 	return permissionQuery.First()
+}
+
+// GetRouteIDsByTenantIDAndRoleID
+func (dao *PermissionDao) GetRouteIDsByTenantIDAndRoleID(ctx context.Context, tenantID, roleID uint64) ([]uint64, error) {
+	items, err := dao.Context(ctx).
+		Distinct(dao.query.Permission.RouteID).
+		Where(
+			dao.query.Permission.TenantID.Eq(tenantID),
+			dao.query.Permission.RoleID.Eq(roleID),
+		).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	return lo.Map(items, func(item *models.Permission, _ int) uint64 {
+		return item.RouteID
+	}), nil
 }

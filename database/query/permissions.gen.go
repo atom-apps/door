@@ -31,8 +31,7 @@ func newPermission(db *gorm.DB, opts ...gen.DOOption) permission {
 	_permission.CreatedAt = field.NewTime(tableName, "created_at")
 	_permission.TenantID = field.NewUint64(tableName, "tenant_id")
 	_permission.RoleID = field.NewUint64(tableName, "role_id")
-	_permission.Path = field.NewString(tableName, "path")
-	_permission.Action = field.NewString(tableName, "action")
+	_permission.RouteID = field.NewUint64(tableName, "route_id")
 
 	_permission.fillFieldMap()
 
@@ -47,8 +46,7 @@ type permission struct {
 	CreatedAt field.Time   // 创建时间
 	TenantID  field.Uint64 // 租户ID
 	RoleID    field.Uint64 // 角色ID
-	Path      field.String // 路由
-	Action    field.String // 请求方式
+	RouteID   field.Uint64 // 路由ID
 
 	fieldMap map[string]field.Expr
 }
@@ -69,8 +67,7 @@ func (p *permission) updateTableName(table string) *permission {
 	p.CreatedAt = field.NewTime(table, "created_at")
 	p.TenantID = field.NewUint64(table, "tenant_id")
 	p.RoleID = field.NewUint64(table, "role_id")
-	p.Path = field.NewString(table, "path")
-	p.Action = field.NewString(table, "action")
+	p.RouteID = field.NewUint64(table, "route_id")
 
 	p.fillFieldMap()
 
@@ -97,13 +94,12 @@ func (p *permission) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *permission) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 6)
+	p.fieldMap = make(map[string]field.Expr, 5)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["created_at"] = p.CreatedAt
 	p.fieldMap["tenant_id"] = p.TenantID
 	p.fieldMap["role_id"] = p.RoleID
-	p.fieldMap["path"] = p.Path
-	p.fieldMap["action"] = p.Action
+	p.fieldMap["route_id"] = p.RouteID
 }
 
 func (p permission) clone(db *gorm.DB) permission {

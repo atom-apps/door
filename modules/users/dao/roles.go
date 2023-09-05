@@ -149,3 +149,8 @@ func (dao *RoleDao) SlugExists(ctx context.Context, model *models.Role) bool {
 	}
 	return count > 0
 }
+
+func (dao *RoleDao) FindByIDs(ctx context.Context, ids []uint64) ([]*models.Role, error) {
+	table, query := dao.query.Role, dao.Context(ctx)
+	return query.Where(table.ID.In(ids...)).Find()
+}

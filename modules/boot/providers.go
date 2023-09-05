@@ -89,12 +89,13 @@ func providePermissionRules(opts ...opt.Option) error {
 		if err != nil {
 			log.Fatal(err)
 		}
+		// TODO: cal permissions
 		permissions := lo.Map(permissionModels, func(item *models.Permission, _ int) []string {
 			return []string{
 				strconv.Itoa(int(item.RoleID)),
 				strconv.Itoa(int(item.TenantID)),
-				item.Path,
-				item.Action,
+				"/*",
+				"GET",
 			}
 		})
 		if _, err := casbin.LoadPolicies(permissions); err != nil {

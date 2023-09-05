@@ -9,6 +9,7 @@ import (
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-providers/log"
+	"github.com/samber/lo"
 
 	"github.com/jinzhu/copier"
 )
@@ -38,8 +39,6 @@ func (svc *PermissionService) DecorateItem(model *models.Permission, id int) *dt
 		Tenant:   tenant,
 		RoleID:   model.RoleID,
 		Role:     role,
-		Path:     model.Path,
-		Action:   model.Action,
 	}
 }
 
@@ -130,4 +129,57 @@ func (svc *PermissionService) genTree(routes []*models.Route, parentID uint64) [
 		}
 	}
 	return genRoutes
+}
+
+func (svc *PermissionService) TenantRoleSave(ctx context.Context, tenantID, roleID uint64, routeIDs []uint64) error {
+	// 首先获取需要配置的所有路由，清理出来
+	routes, err := svc.routeDao.GetByIDs(ctx, routeIDs)
+	if err != nil {
+		return err
+	}
+
+	routes = lo.FilterMap(routes, func(route *models.Route, _ int) (*models.Route, bool) {
+		if route.ParentID == 0 {
+			return route, true
+		}
+
+		parentID := route.ParentID
+		for parentID != 0 {
+			parentRoute, err := svc.routeDao.GetByID(ctx, parentID)
+			if err != nil {
+				return nil, false
+			}
+			parentID = parentRoute.ParentID
+
+			if lo.Contains(routeIDs, parentRoute.ID) {
+				return nil, false
+			}
+
+			if parentID != 0 {
+				continue
+			}
+			break
+		}
+
+		return route, true
+	})
+
+	permissions := []*models.Permission{}
+	lo.ForEach(routes, func(route *models.Route, _ int) {
+		permissions = append(permissions, &models.Permission{TenantID: tenantID, RoleID: roleID, RouteID: route.ID})
+	})
+
+	return svc.permissionDao.Transaction(func() error {
+		// 删除所有存在的路由
+		if err := svc.permissionDao.DeleteByTenantRole(ctx, tenantID, roleID); err != nil {
+			return err
+		}
+		// 创建新的路由
+		return svc.permissionDao.CreateBatch(ctx, permissions, 100)
+	})
+}
+
+// GetPermissionIDsByRoleID
+func (svc *PermissionService) GetPermissionIDsByRoleID(ctx context.Context, tenantID, roleID uint64) ([]uint64, error) {
+	return svc.permissionDao.GetRouteIDsByTenantIDAndRoleID(ctx, tenantID, roleID)
 }

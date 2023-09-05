@@ -8,10 +8,9 @@ import (
 func (m *Migration20230903_141101CreatePermissions) table() interface{} {
 	type Permissions struct {
 		ModelOnlyID
-		TenantID uint   `gorm:"not null;comment:租户ID"`
-		RoleId   uint   `gorm:"not null;comment:角色ID"`
-		Path     string `gorm:"varchar(256);not null;comment:路由"`
-		Action   string `gorm:"varchar(24);not null;comment:请求方式"`
+		TenantID uint `gorm:"not null;comment:租户ID"`
+		RoleId   uint `gorm:"not null;comment:角色ID"`
+		RouteID  uint `gorm:"not null;comment:路由ID"`
 	}
 
 	return &Permissions{}

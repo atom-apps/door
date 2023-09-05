@@ -18,8 +18,7 @@ type Permission struct {
 	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
 	TenantID  uint64    `gorm:"column:tenant_id;type:bigint unsigned;not null;comment:租户ID" json:"tenant_id"`      // 租户ID
 	RoleID    uint64    `gorm:"column:role_id;type:bigint unsigned;not null;comment:角色ID" json:"role_id"`          // 角色ID
-	Path      string    `gorm:"column:path;type:varchar(191);not null;comment:路由" json:"path"`                     // 路由
-	Action    string    `gorm:"column:action;type:varchar(191);not null;comment:请求方式" json:"action"`               // 请求方式
+	RouteID   uint64    `gorm:"column:route_id;type:bigint unsigned;not null;comment:路由ID" json:"route_id"`        // 路由ID
 }
 
 func (*Permission) TableName(namer schema.Namer) string {

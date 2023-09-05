@@ -142,6 +142,28 @@ func (svc *UserTenantRoleService) DeleteByTenantID(ctx context.Context, tenantID
 	return svc.userTenantRoleDao.DeleteByTenantID(ctx, tenantID)
 }
 
+// GetRolesByTenantID
+func (svc *UserTenantRoleService) GetRolesByTenantID(ctx context.Context, tenantID uint64) ([]*models.Role, error) {
+	ms, err := svc.userTenantRoleDao.GetRolesByTenantID(ctx, tenantID)
+	if err != nil {
+		return nil, err
+	}
+	ids := lo.Map(ms, func(item *models.UserTenantRole, _ int) uint64 { return item.RoleID })
+
+	return svc.roleDao.FindByIDs(ctx, ids)
+}
+
+// GetTenantsByRoleID
+func (svc *UserTenantRoleService) GetTenantsByRoleID(ctx context.Context, roleID uint64) ([]*models.Tenant, error) {
+	ms, err := svc.userTenantRoleDao.GetTenantsByRoleID(ctx, roleID)
+	if err != nil {
+		return nil, err
+	}
+	ids := lo.Map(ms, func(item *models.UserTenantRole, _ int) uint64 { return item.TenantID })
+
+	return svc.tenantDao.FindByIDs(ctx, ids)
+}
+
 // GetTenantsByUserID
 func (svc *UserTenantRoleService) GetTenantsByUserID(ctx context.Context, userID uint64) ([]*models.Tenant, error) {
 	ms, err := svc.userTenantRoleDao.GetTenantsByUserID(ctx, userID)

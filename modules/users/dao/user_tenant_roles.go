@@ -200,3 +200,15 @@ func (dao *UserTenantRoleDao) TenantHasRole(ctx context.Context, tenantID, userI
 
 	return count > 0, nil
 }
+
+// GetTenantsByRoleID
+func (dao *UserTenantRoleDao) GetTenantsByRoleID(ctx context.Context, roleID uint64) ([]*models.UserTenantRole, error) {
+	table, query := dao.query.UserTenantRole, dao.Context(ctx)
+	return query.Distinct(table.TenantID).Select(table.TenantID).Where(table.RoleID.Eq(roleID)).Find()
+}
+
+// GetRolesByTenantID
+func (dao *UserTenantRoleDao) GetRolesByTenantID(ctx context.Context, tenantID uint64) ([]*models.UserTenantRole, error) {
+	table, query := dao.query.UserTenantRole, dao.Context(ctx)
+	return query.Distinct(table.RoleID).Select(table.RoleID).Where(table.TenantID.Eq(tenantID)).Find()
+}

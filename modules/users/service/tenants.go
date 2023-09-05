@@ -25,6 +25,11 @@ func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.Tenant
 		log.Warnf("get user amount of tenant %d failed: %v", model.ID, err)
 	}
 
+	roles, err := svc.userTenantRoleSvc.GetRolesByTenantID(context.Background(), model.ID)
+	if err != nil {
+		log.Warnf("get roles of tenant %d failed: %v", model.ID, err)
+	}
+
 	return &dto.TenantItem{
 		ID:          model.ID,
 		CreatedAt:   model.CreatedAt,
@@ -32,6 +37,7 @@ func (svc *TenantService) DecorateItem(model *models.Tenant, id int) *dto.Tenant
 		Description: model.Description,
 		Meta:        model.Meta,
 		UserAmount:  userAmount,
+		Roles:       roles,
 	}
 }
 

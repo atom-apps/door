@@ -122,7 +122,6 @@ func (svc *PermissionService) genTree(routes []*models.Route, parentID uint64) [
 			genRoutes = append(genRoutes, &dto.PermissionTree{
 				ID:       route.ID,
 				Name:     route.Name,
-				Method:   route.Method,
 				Path:     route.Path,
 				ParentID: route.ParentID,
 				Metadata: route.Metadata,

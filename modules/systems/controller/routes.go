@@ -2,7 +2,6 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-apps/door/modules/systems/service"
@@ -81,14 +80,9 @@ func (c *RouteController) List(
 //	@Produce	json
 //	@Param		queryFilter	query	dto.RouteListQueryFilter	true	"RouteListQueryFilter"
 //	@Success	200			{array}	dto.RouteItem
-//	@Router		/v1/systems/routes/type/{route_type} [get]
+//	@Router		/v1/systems/routes/pages [get]
 func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType string) ([]*dto.RouteItem, error) {
-	typ, err := consts.ParseRouteType(routeType)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.routeSvc.Tree(ctx.Context(), typ, 0)
+	return c.routeSvc.Tree(ctx.Context(), 0)
 }
 
 // Create a new item

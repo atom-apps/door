@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -50,9 +49,6 @@ func (dao *RouteDao) decorateQueryFilter(query query.IRouteDo, queryFilter *dto.
 	if queryFilter == nil {
 		return query
 	}
-	if queryFilter.Type != nil {
-		query = query.Where(dao.query.Route.Type.Eq(*queryFilter.Type))
-	}
 	if queryFilter.ParentID != nil {
 		query = query.Where(dao.query.Route.ParentID.Eq(*queryFilter.ParentID))
 	}
@@ -94,14 +90,8 @@ func (dao *RouteDao) GetByID(ctx context.Context, id uint64) (*models.Route, err
 	return dao.Context(ctx).Where(dao.query.Route.ID.Eq(id)).First()
 }
 
-func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, mode consts.RouteType, parentID uint64) ([]*models.Route, error) {
-	return dao.Context(ctx).Where(
-		dao.query.Route.ParentID.Eq(parentID),
-		dao.query.Route.Type.Eq(mode),
-	).Order(
-		dao.query.Route.Order,
-		dao.query.Route.ID,
-	).Find()
+func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, parentID uint64) ([]*models.Route, error) {
+	return dao.Context(ctx).Where(dao.query.Route.ParentID.Eq(parentID)).Order(dao.query.Route.Order, dao.query.Route.ID).Find()
 }
 
 func (dao *RouteDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Route, error) {

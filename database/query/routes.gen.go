@@ -29,12 +29,11 @@ func newRoute(db *gorm.DB, opts ...gen.DOOption) route {
 	_route.ALL = field.NewAsterisk(tableName)
 	_route.ID = field.NewUint64(tableName, "id")
 	_route.CreatedAt = field.NewTime(tableName, "created_at")
-	_route.Type = field.NewField(tableName, "type")
 	_route.ParentID = field.NewUint64(tableName, "parent_id")
 	_route.Name = field.NewString(tableName, "name")
-	_route.Method = field.NewString(tableName, "method")
 	_route.Path = field.NewString(tableName, "path")
 	_route.Metadata = field.NewField(tableName, "metadata")
+	_route.API = field.NewField(tableName, "api")
 	_route.Order = field.NewUint64(tableName, "order")
 
 	_route.fillFieldMap()
@@ -48,12 +47,11 @@ type route struct {
 	ALL       field.Asterisk
 	ID        field.Uint64 // ID
 	CreatedAt field.Time   // 创建时间
-	Type      field.Field  // 类型
 	ParentID  field.Uint64 // 父级ID
 	Name      field.String // 名称
-	Method    field.String // 请求方法
 	Path      field.String // 路径
 	Metadata  field.Field  // 元数据
+	API       field.Field  // 后端路由
 	Order     field.Uint64 // 排序
 
 	fieldMap map[string]field.Expr
@@ -73,12 +71,11 @@ func (r *route) updateTableName(table string) *route {
 	r.ALL = field.NewAsterisk(table)
 	r.ID = field.NewUint64(table, "id")
 	r.CreatedAt = field.NewTime(table, "created_at")
-	r.Type = field.NewField(table, "type")
 	r.ParentID = field.NewUint64(table, "parent_id")
 	r.Name = field.NewString(table, "name")
-	r.Method = field.NewString(table, "method")
 	r.Path = field.NewString(table, "path")
 	r.Metadata = field.NewField(table, "metadata")
+	r.API = field.NewField(table, "api")
 	r.Order = field.NewUint64(table, "order")
 
 	r.fillFieldMap()
@@ -104,15 +101,14 @@ func (r *route) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *route) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 9)
+	r.fieldMap = make(map[string]field.Expr, 8)
 	r.fieldMap["id"] = r.ID
 	r.fieldMap["created_at"] = r.CreatedAt
-	r.fieldMap["type"] = r.Type
 	r.fieldMap["parent_id"] = r.ParentID
 	r.fieldMap["name"] = r.Name
-	r.fieldMap["method"] = r.Method
 	r.fieldMap["path"] = r.Path
 	r.fieldMap["metadata"] = r.Metadata
+	r.fieldMap["api"] = r.API
 	r.fieldMap["order"] = r.Order
 }
 

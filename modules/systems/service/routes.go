@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -21,7 +20,6 @@ type RouteService struct {
 func (svc *RouteService) DecorateItem(model *models.Route, id int) *dto.RouteItem {
 	dtoItem := &dto.RouteItem{
 		ID:       model.ID,
-		Type:     model.Type,
 		ParentID: model.ParentID,
 		Name:     model.Name,
 		Path:     model.Path,
@@ -32,8 +30,8 @@ func (svc *RouteService) DecorateItem(model *models.Route, id int) *dto.RouteIte
 	return dtoItem
 }
 
-func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parentID uint64) ([]*dto.RouteItem, error) {
-	items, err := svc.routeDao.FindByParentIDOfMode(ctx, mode, parentID)
+func (svc *RouteService) Tree(ctx context.Context, parentID uint64) ([]*dto.RouteItem, error) {
+	items, err := svc.routeDao.FindByParentIDOfMode(ctx, parentID)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +39,6 @@ func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parent
 	return lo.Map(items, func(model *models.Route, index int) *dto.RouteItem {
 		dtoItem := &dto.RouteItem{
 			ID:       model.ID,
-			Type:     model.Type,
 			ParentID: model.ParentID,
 			Name:     model.Name,
 			Path:     model.Path,
@@ -49,7 +46,7 @@ func (svc *RouteService) Tree(ctx context.Context, mode consts.RouteType, parent
 			Children: []*dto.RouteItem{},
 		}
 
-		item, err := svc.Tree(ctx, mode, model.ID)
+		item, err := svc.Tree(ctx, model.ID)
 		if err == nil {
 			dtoItem.Children = item
 		}

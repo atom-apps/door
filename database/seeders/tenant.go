@@ -18,16 +18,8 @@ func NewTenantSeeder() contracts.Seeder {
 func (s *TenantSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.Tenant{}).TableName(nil))
 	tenants := []models.Tenant{
-		{
-			Name:        "租户1",
-			Description: "租户1",
-			Meta:        "",
-		},
-		{
-			Name:        "租户2",
-			Description: "租户2",
-			Meta:        "",
-		},
+		{Name: "管理组", Description: "后台管理用户组", Meta: ""},
+		{Name: "用户组", Description: "普通注册用户", Meta: ""},
 	}
 
 	db.CreateInBatches(tenants, len(tenants))

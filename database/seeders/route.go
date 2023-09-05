@@ -2,17 +2,16 @@ package seeders
 
 import (
 	"encoding/json"
+	"os"
 	"strings"
 
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
-	"github.com/atom-apps/door/docs"
-	"github.com/atom-apps/door/modules/auth/dto"
-	"github.com/samber/lo"
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/rogeecn/atom/contracts"
 	dbUtil "github.com/rogeecn/atom/utils/db"
+	"github.com/rogeecn/fabfile"
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
@@ -29,63 +28,58 @@ func (s *RouteSeeder) getID() uint64 {
 	return s.id
 }
 
+type routeDefinition struct {
+	Whitelist     []string `json:"whitelist,omitempty"`
+	Authorization []*routeItem
+}
+type routeItem struct {
+	Name     string       `json:"name,omitempty"`
+	Path     string       `json:"path,omitempty"`
+	Api      []string     `json:"api,omitempty"`
+	Children []*routeItem `json:"children,omitempty"`
+}
+
 func (s *RouteSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.Route{}).TableName(nil))
 
-	var doc *dto.SwaggerDoc
-	err := json.Unmarshal([]byte(docs.SwaggerSpec), &doc)
+	var routes []*models.Route
+	jsonSpec, err := os.ReadFile(fabfile.MustFind("routes.json"))
 	if err != nil {
-		return
+		panic(err)
 	}
-	ignores := []string{
-		"/auth/",
-		"/v1/auth/",
-		"/v1/services/",
-		"/v1/tools/",
-		"/v1/users/tokens",
+	var routesSpec *routeDefinition
+	if err := json.Unmarshal(jsonSpec, &routesSpec); err != nil {
+		panic(err)
 	}
 
-	routes := []models.Route{
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "用户管理", Method: "ANY", Path: "/v1/users/"},
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "系统管理", Method: "ANY", Path: "/v1/systems/"},
+	routes = s.Generate(routesSpec.Authorization, 0, "/")
 
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "用户", Method: "ANY", Path: "/v1/users/users", ParentID: 1},
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "租户", Method: "ANY", Path: "/v1/users/tenants", ParentID: 1},
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "角色", Method: "ANY", Path: "/v1/users/roles", ParentID: 1},
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "在线", Method: "ANY", Path: "/v1/users/sessions", ParentID: 1},
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "权限", Method: "ANY", Path: "/v1/users/permissions", ParentID: 1},
-
-		{ID: s.getID(), Type: consts.RouteTypeApi, Name: "路由", Method: "ANY", Path: "/v1/systems/routes", ParentID: 2},
-	}
-
-	genRoutes := lo.FilterMap(doc.ToRoues(), func(item *dto.Route, _ int) (models.Route, bool) {
-		ignore := false
-		lo.ForEach(ignores, func(i string, _ int) {
-			if strings.HasPrefix(item.Path, i) {
-				ignore = true
-			}
-		})
-
-		if ignore {
-			return models.Route{}, false
-		}
-
-		parentID := uint64(0)
-		for _, route := range routes {
-			if route.ParentID > 0 && strings.HasPrefix(item.Path, route.Path) {
-				parentID = route.ID
-			}
-		}
-
-		return models.Route{Type: consts.RouteTypeApi, Name: item.Summary, Method: item.Method, Path: item.Path, ParentID: parentID}, true
-	})
-
-	routes = append(routes, genRoutes...)
 	db.CreateInBatches(&routes, 100)
 }
 
-func (s *RouteSeeder) Generate(faker *gofakeit.Faker, idx int) models.Route {
-	return models.Route{
-		// fill model fields
+func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix string) []*models.Route {
+	routes := []*models.Route{}
+	for _, item := range items {
+		path := strings.Join([]string{strings.Trim(prefix, "/"), strings.Trim(item.Path, "/")}, "/")
+		path = "/" + strings.TrimLeft(path, "/")
+
+		api := []string{}
+		if len(item.Api) > 0 {
+			api = append(api, item.Api...)
+		}
+
+		route := &models.Route{
+			ID:       s.getID(),
+			Name:     item.Name,
+			Path:     path,
+			ParentID: parentID,
+			API:      datatypes.JSONType[[]string]{Data: api},
+		}
+		routes = append(routes, route)
+
+		if len(item.Children) > 0 {
+			routes = append(routes, s.Generate(item.Children, route.ID, route.Path)...)
+		}
 	}
+	return routes
 }

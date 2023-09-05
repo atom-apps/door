@@ -3,7 +3,6 @@ package controller
 import (
 	"encoding/json"
 
-	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/docs"
 	"github.com/atom-apps/door/modules/auth/dto"
 	systemDto "github.com/atom-apps/door/modules/systems/dto"
@@ -44,5 +43,5 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Success	200	{array}	dto.RouteItem
 //	@Router		/v1/auth/pages [get]
 func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*systemDto.RouteItem, error) {
-	return c.routeSvc.Tree(ctx.Context(), consts.RouteTypePage, 0)
+	return c.routeSvc.Tree(ctx.Context(), 0)
 }

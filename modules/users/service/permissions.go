@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
@@ -182,4 +184,45 @@ func (svc *PermissionService) TenantRoleSave(ctx context.Context, tenantID, role
 // GetPermissionIDsByRoleID
 func (svc *PermissionService) GetPermissionIDsByRoleID(ctx context.Context, tenantID, roleID uint64) ([]uint64, error) {
 	return svc.permissionDao.GetRouteIDsByTenantIDAndRoleID(ctx, tenantID, roleID)
+}
+
+// CasbinPolicies
+func (svc *PermissionService) CasbinPolicies(ctx context.Context) ([][]string, error) {
+	all, err := svc.permissionDao.FindALl(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	routeIDs := lo.Map(all, func(item *models.Permission, _ int) uint64 { return item.RouteID })
+	routes, err := svc.routeDao.GetByIDs(ctx, routeIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.genCasbinPolicies(ctx, all, routes)
+}
+
+func (svc *PermissionService) genCasbinPolicies(ctx context.Context, ms []*models.Permission, routes []*models.Route) ([][]string, error) {
+	routeMap := lo.KeyBy(routes, func(item *models.Route) uint64 {
+		return item.ID
+	})
+
+	policies := [][]string{}
+	lo.ForEach(ms, func(item *models.Permission, _ int) {
+		if m, ok := routeMap[item.RouteID]; ok {
+			lo.ForEach(m.API.Data, func(api string, _ int) {
+				apis := strings.Split(api, "#")
+
+				method, path := strings.ToUpper(apis[0]), apis[1]
+
+				policies = append(policies, []string{
+					fmt.Sprintf("role:%d", item.RoleID),
+					fmt.Sprintf("tenant:%d", item.TenantID),
+					path,
+					method,
+				})
+			})
+		}
+	})
+	return policies, nil
 }

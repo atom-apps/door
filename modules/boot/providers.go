@@ -2,11 +2,8 @@ package boot
 
 import (
 	"context"
-	"strconv"
 
-	"github.com/atom-apps/door/database/models"
-	"github.com/atom-apps/door/database/query"
-	userModule "github.com/atom-apps/door/modules/users/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/jwt"
 	"github.com/atom-providers/log"
@@ -16,7 +13,6 @@ import (
 	"github.com/rogeecn/atom/container"
 	"github.com/rogeecn/atom/contracts"
 	"github.com/rogeecn/atom/utils/opt"
-	"github.com/samber/lo"
 )
 
 var (
@@ -29,6 +25,7 @@ var (
 		"/v1/auth/exchange-token-by-code",
 		"/v1/auth/signin",
 		"/v1/auth/signup",
+		"/v1/auth/test",
 
 		"/v1/services/captcha/generate",
 		"/v1/services/send/sms",
@@ -49,8 +46,8 @@ func provideHttpMiddleware(opts ...opt.Option) error {
 		httpsvc contracts.HttpService,
 		jwt *jwt.JWT,
 		casbin *casbin.Casbin,
-		roleSvc *userModule.RoleService,
-		tenantSvc *userModule.TenantService,
+		roleSvc *userSvc.RoleService,
+		tenantSvc *userSvc.TenantService,
 	) contracts.Initial {
 		engine := httpsvc.GetEngine().(*fiber.App)
 		// Initialize default config
@@ -65,19 +62,15 @@ func provideHttpMiddleware(opts ...opt.Option) error {
 }
 
 func providePermissionRules(opts ...opt.Option) error {
-	return container.Container.Provide(func(query *query.Query, casbin *casbin.Casbin) contracts.Initial {
-		// init groups
-		groupModels, err := query.UserTenantRole.WithContext(context.Background()).Find()
+	return container.Container.Provide(func(
+		permissionSvc *userSvc.PermissionService,
+		userTenantRoleSvc *userSvc.UserTenantRoleService,
+		casbin *casbin.Casbin,
+	) contracts.Initial {
+		groups, err := userTenantRoleSvc.CasbinGroups(context.Background())
 		if err != nil {
 			log.Fatal(err)
 		}
-		groups := lo.Map(groupModels, func(item *models.UserTenantRole, _ int) []string {
-			return []string{
-				strconv.Itoa(int(item.UserID)),
-				strconv.Itoa(int(item.TenantID)),
-				strconv.Itoa(int(item.RoleID)),
-			}
-		})
 
 		if _, err := casbin.LoadGroups(groups); err != nil {
 			log.Fatal(err)
@@ -85,23 +78,14 @@ func providePermissionRules(opts ...opt.Option) error {
 		log.Infof("load groups: %d", len(groups))
 
 		// permissions
-		permissionModels, err := query.Permission.WithContext(context.Background()).Find()
+		policies, err := permissionSvc.CasbinPolicies(context.Background())
 		if err != nil {
 			log.Fatal(err)
 		}
-		// TODO: cal permissions
-		permissions := lo.Map(permissionModels, func(item *models.Permission, _ int) []string {
-			return []string{
-				strconv.Itoa(int(item.RoleID)),
-				strconv.Itoa(int(item.TenantID)),
-				"/*",
-				"GET",
-			}
-		})
-		if _, err := casbin.LoadPolicies(permissions); err != nil {
+		if _, err := casbin.LoadPolicies(policies); err != nil {
 			log.Fatal(err)
 		}
-		log.Infof("load policies: %d", len(groups))
+		log.Infof("load policies: %d", len(policies))
 
 		return nil
 	}, atom.GroupInitial)

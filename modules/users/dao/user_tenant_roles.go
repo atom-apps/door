@@ -212,3 +212,14 @@ func (dao *UserTenantRoleDao) GetRolesByTenantID(ctx context.Context, tenantID u
 	table, query := dao.query.UserTenantRole, dao.Context(ctx)
 	return query.Distinct(table.RoleID).Select(table.RoleID).Where(table.TenantID.Eq(tenantID)).Find()
 }
+
+// FindAll
+func (dao *UserTenantRoleDao) FindAll(ctx context.Context) ([]*models.UserTenantRole, error) {
+	return dao.Context(ctx).Find()
+}
+
+// FindAll
+func (dao *UserTenantRoleDao) FindByUserID(ctx context.Context, userID uint64) ([]*models.UserTenantRole, error) {
+	table, query := dao.query.UserTenantRole, dao.Context(ctx)
+	return query.Where(table.UserID.Eq(userID)).Find()
+}

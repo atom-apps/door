@@ -71,10 +71,14 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		permissionSvc *userSvc.PermissionService,
 		routeSvc *systemSvc.RouteService,
+		userTenantRoleService *userSvc.UserTenantRoleService,
 	) (*RoutesController, error) {
 		obj := &RoutesController{
-			routeSvc: routeSvc,
+			permissionSvc:         permissionSvc,
+			routeSvc:              routeSvc,
+			userTenantRoleService: userTenantRoleService,
 		}
 		return obj, nil
 	}); err != nil {

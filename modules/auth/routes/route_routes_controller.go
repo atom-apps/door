@@ -16,4 +16,5 @@ func routeRoutesController(engine fiber.Router, controller *controller.RoutesCon
 	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/auth/routes", basePath), DataFunc(controller.List))
 	engine.Get(strings.TrimPrefix("/v1/auth/pages", basePath), DataFunc1(controller.Pages, JwtClaim[jwt.Claims](ClaimParamError)))
+	engine.Get(strings.TrimPrefix("/v1/auth/test", basePath), DataFunc(controller.Test))
 }

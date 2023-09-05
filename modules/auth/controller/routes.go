@@ -7,13 +7,16 @@ import (
 	"github.com/atom-apps/door/modules/auth/dto"
 	systemDto "github.com/atom-apps/door/modules/systems/dto"
 	systemSvc "github.com/atom-apps/door/modules/systems/service"
+	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 
 // @provider
 type RoutesController struct {
-	routeSvc *systemSvc.RouteService
+	routeSvc              *systemSvc.RouteService
+	permissionSvc         *userSvc.PermissionService
+	userTenantRoleService *userSvc.UserTenantRoleService
 }
 
 // List
@@ -44,4 +47,17 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Router		/v1/auth/pages [get]
 func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*systemDto.RouteItem, error) {
 	return c.routeSvc.Tree(ctx.Context(), 0)
+}
+
+// Test
+//
+//	@Summary	获取页面路由
+//	@Tags		Systems
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{array}	dto.RouteItem
+//	@Router		/v1/auth/test [get]
+func (c *RoutesController) Test(ctx *fiber.Ctx) ([][]string, error) {
+	// return c.permissionSvc.CasbinPolicies(ctx.Context())
+	return c.userTenantRoleService.CasbinGroups(ctx.Context())
 }

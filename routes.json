@@ -22,10 +22,17 @@
                     "path": "users",
                     "children": [
                         {
+                            "name": "列表",
+                            "path": "",
+                            "api": [
+                                "get#/v1/users/users"
+                            ]
+                        },
+                        {
                             "name": "创建",
                             "path": "create",
                             "api": [
-                                "get#/v1/users/users"
+                                "post#/v1/users/users"
                             ]
                         },
                         {
@@ -71,10 +78,17 @@
                     "path": "roles",
                     "children": [
                         {
+                            "name": "列表",
+                            "path": "",
+                            "api": [
+                                "get#/v1/users/roles"
+                            ]
+                        },
+                        {
                             "name": "创建",
                             "path": "create",
                             "api": [
-                                "get#/v1/users/roles"
+                                "post#/v1/users/roles"
                             ]
                         },
                         {
@@ -120,10 +134,17 @@
                     "path": "tenants",
                     "children": [
                         {
+                            "name": "列表",
+                            "path": "",
+                            "api": [
+                                "get#/v1/users/tenants"
+                            ]
+                        },
+                        {
                             "name": "创建",
                             "path": "create",
                             "api": [
-                                "get#/v1/users/tenants"
+                                "post#/v1/users/tenants"
                             ]
                         },
                         {
@@ -169,10 +190,17 @@
                     "path": "sessions",
                     "children": [
                         {
+                            "name": "列表",
+                            "path": "",
+                            "api": [
+                                "get#/v1/users/sessions"
+                            ]
+                        },
+                        {
                             "name": "创建",
                             "path": "create",
                             "api": [
-                                "get#/v1/users/sessions"
+                                "post#/v1/users/sessions"
                             ]
                         },
                         {
@@ -218,10 +246,17 @@
                     "path": "permissions",
                     "children": [
                         {
+                            "name": "列表",
+                            "path": "",
+                            "api": [
+                                "get#/v1/users/permissions"
+                            ]
+                        },
+                        {
                             "name": "创建",
                             "path": "create",
                             "api": [
-                                "get#/v1/users/permissions"
+                                "post#/v1/users/permissions"
                             ]
                         },
                         {

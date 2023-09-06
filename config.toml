@@ -11,17 +11,28 @@ Description = "Api Docs"
 BasePath = "/v1"
 Version = "1.0.0"
 
+# [Redis]
+# Addresses = ["10.58.144.6:36379"]
+# Password = "xixi@0202"
+# DB = 0
 [Redis]
-Addresses = ["10.58.144.6:36379"]
-Password = "xixi@0202"
+Addresses = ["localhost:6379"]
+Password = ""
 DB = 0
+
+# [MySQL]
+# Username = "root"
+# Password = "xixi@0202"
+# Database = "atom"
+# Host = "10.58.144.6"
+# Port = 33306
 
 [MySQL]
 Username = "root"
-Password = "xixi@0202"
+Password = "admin"
 Database = "atom"
-Host = "10.58.144.6"
-Port = 33306
+Host = "localhost"
+Port = 3306
 
 [OAuth]
 [OAuth.App]
@@ -44,7 +55,7 @@ p = sub, dom, obj, act
 g = _, _, _
 
 [matchers]
-m = is_white(r.obj, r.act) || g(r.sub, p.sub, r.dom) && r.dom == p.dom && keyMatch3(r.obj, p.obj) && r.act == p.act
+m = is_white(r.obj, r.act) || g(r.sub, p.sub, r.dom) && r.dom == p.dom && ( keyMatch3(r.obj, p.obj) || keyMatch2(r.obj, p.obj) ) && r.act == p.act
 
 [policy_effect]
 e = some(where (p.eft == allow))

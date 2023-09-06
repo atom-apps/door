@@ -3,6 +3,8 @@ whitelist:
   - /v1/users/users/profile
   - /v1/auth/pages
   - /v1/auth/logout
+  - /v1/users/tenants
+  - /v1/users/roles
 
 authorization:
   - title: 仪表台
@@ -31,6 +33,13 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/users
+      - title: 角色分配
+        name: UserTenantRole
+        path: users/:id/tenant-role
+        api:
+          - get#/v1/users/users/:id
+          - put#/v1/users/permissions/attach/{role}/{tenant}
+          - put#/v1/users/permissions/detach/{role}/{tenant}
       - title: 用户创建
         name: UserCreate
         path: users/create

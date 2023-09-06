@@ -17,7 +17,11 @@ func NewPermissionsSeeder() contracts.Seeder {
 
 func (s *PermissionsSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.Permission{}).TableName(nil))
-	items := []models.Permission{}
+	items := []models.Permission{
+		{TenantID: 1, RoleID: 3, RouteID: 2},
+		{TenantID: 1, RoleID: 3, RouteID: 4},
+		{TenantID: 1, RoleID: 3, RouteID: 29},
+	}
 	db.CreateInBatches(&items, 10)
 }
 

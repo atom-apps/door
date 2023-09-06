@@ -20,6 +20,7 @@ var (
 	Location       *location
 	Migration      *migration
 	Permission     *permission
+	PermissionRule *permissionRule
 	Role           *role
 	Route          *route
 	RouteWhitelist *routeWhitelist
@@ -36,6 +37,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Location = &Q.Location
 	Migration = &Q.Migration
 	Permission = &Q.Permission
+	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
 	Route = &Q.Route
 	RouteWhitelist = &Q.RouteWhitelist
@@ -53,6 +55,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Location:       newLocation(db, opts...),
 		Migration:      newMigration(db, opts...),
 		Permission:     newPermission(db, opts...),
+		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
 		Route:          newRoute(db, opts...),
 		RouteWhitelist: newRouteWhitelist(db, opts...),
@@ -71,6 +74,7 @@ type Query struct {
 	Location       location
 	Migration      migration
 	Permission     permission
+	PermissionRule permissionRule
 	Role           role
 	Route          route
 	RouteWhitelist routeWhitelist
@@ -90,6 +94,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Location:       q.Location.clone(db),
 		Migration:      q.Migration.clone(db),
 		Permission:     q.Permission.clone(db),
+		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
 		Route:          q.Route.clone(db),
 		RouteWhitelist: q.RouteWhitelist.clone(db),
@@ -116,6 +121,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Location:       q.Location.replaceDB(db),
 		Migration:      q.Migration.replaceDB(db),
 		Permission:     q.Permission.replaceDB(db),
+		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
 		Route:          q.Route.replaceDB(db),
 		RouteWhitelist: q.RouteWhitelist.replaceDB(db),
@@ -132,6 +138,7 @@ type queryCtx struct {
 	Location       ILocationDo
 	Migration      IMigrationDo
 	Permission     IPermissionDo
+	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
 	Route          IRouteDo
 	RouteWhitelist IRouteWhitelistDo
@@ -148,6 +155,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Location:       q.Location.WithContext(ctx),
 		Migration:      q.Migration.WithContext(ctx),
 		Permission:     q.Permission.WithContext(ctx),
+		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),
 		Route:          q.Route.WithContext(ctx),
 		RouteWhitelist: q.RouteWhitelist.WithContext(ctx),

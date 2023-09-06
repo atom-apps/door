@@ -19,10 +19,10 @@ func NewUserTenantRoleSeeder() contracts.Seeder {
 func (s *UserTenantRoleSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.UserTenantRole{}).TableName(nil))
 	items := []models.UserTenantRole{
-		{UserID: 1, TenantID: 0, RoleID: 1},
+		{UserID: 1, TenantID: 1, RoleID: 1},
 		{UserID: 2, TenantID: 1, RoleID: 2},
-		{UserID: 3, TenantID: 2, RoleID: 2},
-		{UserID: 3, TenantID: 2, RoleID: 3},
+		{UserID: 3, TenantID: 1, RoleID: 3},
+		{UserID: 4, TenantID: 1, RoleID: 4},
 	}
 	lo.ForEach(items, func(m models.UserTenantRole, _ int) {
 		db.Create(&m)

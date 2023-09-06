@@ -7,3 +7,8 @@ Authorization: {{token}}
 # 获取用户列表
 GET {{host}}/users/users
 Authorization: {{token}}
+
+###
+# 获取用户Profile
+GET {{host}}/users/users/profile
+Authorization: {{token}}

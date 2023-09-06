@@ -2,7 +2,6 @@ package controller
 
 import (
 	"github.com/atom-apps/door/common"
-	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-apps/door/modules/systems/service"
 	"github.com/atom-providers/jwt"
@@ -27,9 +26,6 @@ type RouteController struct {
 //	@Success		200	{object}	dto.RouteItem
 //	@Router			/v1/systems/routes/{id} [get]
 func (c *RouteController) Show(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) (*dto.RouteItem, error) {
-	if claim.IsAdmin() {
-		return nil, errorx.ErrForbidden
-	}
 	item, err := c.routeSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -57,9 +53,6 @@ func (c *RouteController) List(
 	pageFilter *common.PageQueryFilter,
 	sortFilter *common.SortQueryFilter,
 ) (*common.PageDataResponse, error) {
-	if !claim.IsAdmin() {
-		return nil, errorx.ErrForbidden
-	}
 	items, total, err := c.routeSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
 	if err != nil {
 		return nil, err
@@ -96,9 +89,6 @@ func (c *RouteController) Pages(ctx *fiber.Ctx, claim *jwt.Claims, routeType str
 //	@Success		200		{string}	RouteID
 //	@Router			/v1/systems/routes [post]
 func (c *RouteController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto.RouteForm) error {
-	if claim.IsAdmin() {
-		return errorx.ErrForbidden
-	}
 	return c.routeSvc.Create(ctx.Context(), body)
 }
 
@@ -115,9 +105,6 @@ func (c *RouteController) Create(ctx *fiber.Ctx, claim *jwt.Claims, body *dto.Ro
 //	@Failure		500		{string}	RouteID
 //	@Router			/v1/systems/routes/{id} [put]
 func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, body *dto.RouteForm) error {
-	if claim.IsAdmin() {
-		return errorx.ErrForbidden
-	}
 	return c.routeSvc.Update(ctx.Context(), id, body)
 }
 
@@ -133,8 +120,5 @@ func (c *RouteController) Update(ctx *fiber.Ctx, claim *jwt.Claims, id uint64, b
 //	@Failure		500	{string}	RouteID
 //	@Router			/v1/systems/routes/{id} [delete]
 func (c *RouteController) Delete(ctx *fiber.Ctx, claim *jwt.Claims, id uint64) error {
-	if claim.IsAdmin() {
-		return errorx.ErrForbidden
-	}
 	return c.routeSvc.Delete(ctx.Context(), id)
 }

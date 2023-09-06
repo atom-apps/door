@@ -105,29 +105,6 @@ func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*
 	finalRoutes := []*models.Route{}
 	// 如果当前ID是父级ID，那么他的子级权限也应该包含在内
 	allIDs := []uint64{}
-	parentIDs := ids
-	for len(parentIDs) > 0 {
-		routes, err := query.Where(table.ID.In(parentIDs...)).Find()
-		if err != nil {
-			return nil, err
-		}
-		finalRoutes = append(finalRoutes, routes...)
-
-		parentIDs = lo.FilterMap(routes, func(item *models.Route, index int) (uint64, bool) {
-			if !lo.Contains(allIDs, item.ID) {
-				allIDs = append(allIDs, item.ID)
-			}
-
-			if item.ParentID != 0 {
-				return item.ParentID, true
-			}
-			return 0, false
-		})
-
-		parentIDs = lo.Filter(parentIDs, func(item uint64, index int) bool {
-			return !lo.Contains(allIDs, item)
-		})
-	}
 
 	// find children
 	childrenIds := append([]uint64{}, allIDs...)
@@ -149,6 +126,30 @@ func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*
 			allIDs = append(allIDs, item.ID)
 			childrenIds = append(childrenIds, item.ID)
 			finalRoutes = append(finalRoutes, item)
+		})
+	}
+
+	parentIDs := ids
+	for len(parentIDs) > 0 {
+		routes, err := query.Where(table.ID.In(parentIDs...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		finalRoutes = append(finalRoutes, routes...)
+
+		parentIDs = lo.FilterMap(routes, func(item *models.Route, index int) (uint64, bool) {
+			if !lo.Contains(allIDs, item.ID) {
+				allIDs = append(allIDs, item.ID)
+			}
+
+			if item.ParentID != 0 {
+				return item.ParentID, true
+			}
+			return 0, false
+		})
+
+		parentIDs = lo.Filter(parentIDs, func(item uint64, index int) bool {
+			return !lo.Contains(allIDs, item)
 		})
 	}
 

@@ -3,7 +3,6 @@ package dto
 import (
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
-	"gorm.io/datatypes"
 )
 
 type PermissionForm struct {
@@ -31,11 +30,11 @@ type PermissionItem struct {
 }
 
 type PermissionTree struct {
-	ID       uint64                                   `json:"id"`
-	Name     string                                   `json:"name"`
-	Method   string                                   `json:"method"`
-	Path     string                                   `json:"path"`
-	ParentID uint64                                   `json:"parent_id"`
-	Metadata datatypes.JSONType[common.RouteMetadata] `json:"metadata"`
-	Children []*PermissionTree                        `json:"children,omitempty"`
+	ID       uint64               `json:"id"`
+	Name     string               `json:"name"`
+	Method   string               `json:"method"`
+	Path     string               `json:"path"`
+	ParentID uint64               `json:"parent_id"`
+	Metadata common.RouteMetadata `json:"metadata"`
+	Children []*PermissionTree    `json:"children,omitempty"`
 }

@@ -1,17 +1,17 @@
 package seeders
 
 import (
-	"encoding/json"
 	"os"
 	"strings"
 
+	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
-
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/rogeecn/atom/contracts"
 	dbUtil "github.com/rogeecn/atom/utils/db"
 	"github.com/rogeecn/fabfile"
-	"gorm.io/datatypes"
+	"github.com/samber/lo"
+	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 )
 
@@ -33,28 +33,37 @@ type routeDefinition struct {
 	Authorization []*routeItem
 }
 type routeItem struct {
-	Name     string       `json:"name,omitempty"`
-	Path     string       `json:"path,omitempty"`
-	Api      []string     `json:"api,omitempty"`
-	Children []*routeItem `json:"children,omitempty"`
+	Name     string               `json:"name"`
+	Path     string               `json:"path"`
+	Api      []string             `json:"api"`
+	Meta     common.RouteMetadata `json:"meta"`
+	Order    int                  `json:"order"`
+	Children []*routeItem         `json:"children,omitempty"`
 }
 
 func (s *RouteSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 	dbUtil.TruncateTable(db, (&models.Route{}).TableName(nil))
+	dbUtil.TruncateTable(db, (&models.RouteWhitelist{}).TableName(nil))
 
 	var routes []*models.Route
-	jsonSpec, err := os.ReadFile(fabfile.MustFind("routes.json"))
+	yamlSpec, err := os.ReadFile(fabfile.MustFind("routes.yaml"))
 	if err != nil {
 		panic(err)
 	}
 	var routesSpec *routeDefinition
-	if err := json.Unmarshal(jsonSpec, &routesSpec); err != nil {
+	if err := yaml.Unmarshal(yamlSpec, &routesSpec); err != nil {
 		panic(err)
 	}
 
 	routes = s.Generate(routesSpec.Authorization, 0, "/")
-
 	db.CreateInBatches(&routes, 100)
+
+	whitelistRoutes := lo.Map(routesSpec.Whitelist, func(item string, _ int) *models.RouteWhitelist {
+		return &models.RouteWhitelist{
+			Route: item,
+		}
+	})
+	db.CreateInBatches(&whitelistRoutes, 100)
 }
 
 func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix string) []*models.Route {
@@ -62,6 +71,20 @@ func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix strin
 	for _, item := range items {
 		path := strings.Join([]string{strings.Trim(prefix, "/"), strings.Trim(item.Path, "/")}, "/")
 		path = "/" + strings.TrimLeft(path, "/")
+
+		if item.Meta.Title == "" {
+			item.Meta.Title = item.Name
+		}
+
+		if item.Meta.RequiresAuth == nil {
+			item.Meta.RequiresAuth = lo.ToPtr(true)
+		}
+
+		if item.Meta.HideInMenu == nil {
+			item.Meta.HideInMenu = lo.ToPtr(true)
+		}
+
+		item.Meta.Order = item.Order
 
 		api := []string{}
 		if len(item.Api) > 0 {
@@ -73,7 +96,8 @@ func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix strin
 			Name:     item.Name,
 			Path:     path,
 			ParentID: parentID,
-			API:      datatypes.JSONType[[]string]{Data: api},
+			Metadata: item.Meta,
+			API:      api,
 		}
 		routes = append(routes, route)
 

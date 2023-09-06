@@ -3,14 +3,13 @@
         "$shared": {
             "version": "v1",
         },
-        "local": {
+        "superadmin": {
             "host": "http://localhost:9800/v1",
-            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoi6LaF57qn566h55CG5ZGYIiwiZXhwIjoxNjkzNzMwNTM4LCJuYmYiOjE2OTMxMjU2Nzh9.WkySeAGZyDaOJm_07HROLzs6B8sEnyOx_ZHQV-X8NWg",
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoi6LaF57qn566h55CG5ZGYIiwiZXhwIjoxNjk0NTEzOTEyLCJuYmYiOjE2OTM5MDkwNTJ9.iHEcFdbKiwkmQUFK01wlApT5v72KSyt_mUhaK9LVM_w",
         },
-        "production": {
-            "schema": "http",
-            "host": "localhost:9800",
-            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoi6LaF57qn566h55CG5ZGYIiwiZXhwIjoxNjkzNzMwNTM4LCJuYmYiOjE2OTMxMjU2Nzh9.WkySeAGZyDaOJm_07HROLzs6B8sEnyOx_ZHQV-X8NWg"
+        "tenant_admin": {
+            "host": "http://localhost:9800/v1",
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ0ZW5hbnRfaWQiOjIsInJvbGVfaWQiOjMsInJvbGUiOiLnp5_miLfnrqHnkIblkZgiLCJleHAiOjE2OTQ1ODczOTgsIm5iZiI6MTY5Mzk4MjUzOH0.jflwi2weG44O-rb5svTwmq78IjgWlJ50wP_X5Um_Yq4"
         }
     }
 }

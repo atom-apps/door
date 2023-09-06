@@ -1,4 +1,9 @@
-# users 
-# get users
-GET {{host}}/users
+###
+# 获取前端路由列表
+GET {{host}}/auth/pages
+Authorization: {{token}}
+
+###
+# 获取用户列表
+GET {{host}}/users/users
 Authorization: {{token}}

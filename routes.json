@@ -16,6 +16,11 @@
         {
             "name": "用户管理",
             "path": "users",
+            "meta":{
+                "title":"用户管理",
+                "requireAuth":true,
+                "icon":"el-icon-user"
+            },
             "children": [
                 {
                     "name": "用户",

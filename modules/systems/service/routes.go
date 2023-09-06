@@ -23,7 +23,7 @@ func (svc *RouteService) DecorateItem(model *models.Route, id int) *dto.RouteIte
 		ParentID: model.ParentID,
 		Name:     model.Name,
 		Path:     model.Path,
-		Metadata: model.Metadata.Data,
+		Metadata: model.Metadata,
 		Children: []*dto.RouteItem{},
 	}
 
@@ -42,7 +42,7 @@ func (svc *RouteService) Tree(ctx context.Context, parentID uint64) ([]*dto.Rout
 			ParentID: model.ParentID,
 			Name:     model.Name,
 			Path:     model.Path,
-			Metadata: model.Metadata.Data,
+			Metadata: model.Metadata,
 			Children: []*dto.RouteItem{},
 		}
 

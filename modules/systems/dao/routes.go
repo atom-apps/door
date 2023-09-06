@@ -7,6 +7,7 @@ import (
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
+	"github.com/samber/lo"
 
 	"gorm.io/gen/field"
 )
@@ -96,6 +97,62 @@ func (dao *RouteDao) FindByParentIDOfMode(ctx context.Context, parentID uint64) 
 
 func (dao *RouteDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Route, error) {
 	return dao.Context(ctx).Where(dao.query.Route.ID.In(ids...)).Find()
+}
+
+func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*models.Route, error) {
+	table, query := dao.query.Route, dao.Context(ctx)
+
+	finalRoutes := []*models.Route{}
+	// 如果当前ID是父级ID，那么他的子级权限也应该包含在内
+	allIDs := []uint64{}
+	parentIDs := ids
+	for len(parentIDs) > 0 {
+		routes, err := query.Where(table.ID.In(parentIDs...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		finalRoutes = append(finalRoutes, routes...)
+
+		parentIDs = lo.FilterMap(routes, func(item *models.Route, index int) (uint64, bool) {
+			if !lo.Contains(allIDs, item.ID) {
+				allIDs = append(allIDs, item.ID)
+			}
+
+			if item.ParentID != 0 {
+				return item.ParentID, true
+			}
+			return 0, false
+		})
+
+		parentIDs = lo.Filter(parentIDs, func(item uint64, index int) bool {
+			return !lo.Contains(allIDs, item)
+		})
+	}
+
+	// find children
+	childrenIds := append([]uint64{}, allIDs...)
+	for {
+		children, err := query.Where(table.ParentID.In(childrenIds...)).Find()
+		if err != nil {
+			return nil, err
+		}
+
+		if len(children) == 0 {
+			break
+		}
+
+		childrenIds = []uint64{}
+		lo.ForEach(children, func(item *models.Route, _ int) {
+			if lo.Contains(allIDs, item.ID) {
+				return
+			}
+			allIDs = append(allIDs, item.ID)
+			childrenIds = append(childrenIds, item.ID)
+			finalRoutes = append(finalRoutes, item)
+		})
+	}
+
+	return finalRoutes, nil
 }
 
 func (dao *RouteDao) PageByQueryFilter(

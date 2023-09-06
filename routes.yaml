@@ -1,0 +1,166 @@
+---
+whitelist:
+- /v1/users/users/profile
+- /v1/auth/pages
+authorization:
+- name: 仪表台
+  path: dashboard
+  meta:
+    hideInMenu: false
+    icon: icon-dashboard
+  children:
+  - name: 工作空间
+    path: workspace
+    meta:
+      hideInMenu: false
+- name: 用户管理
+  path: users
+  meta:
+    icon: icon-user
+    hideInMenu: false
+  children:
+  - name: 用户
+    path: users
+    children:
+    - name: 列表
+      path: ''
+      meta:
+        hideInMenu: false
+      api:
+      - get#/v1/users/users
+    - name: 创建
+      path: create
+      api:
+      - post#/v1/users/users
+    - name: 查看
+      path: view/:id
+      api:
+      - get#/v1/users/users/:id
+    - name: 编辑
+      path: edit/:id
+      api:
+      - put#/v1/users/users/:id
+      - get#/v1/users/users/:id
+    - name: 删除
+      path: delete/:id
+      api:
+      - delete#/v1/users/users/:id
+    - name: 导入
+      path: import
+      api:
+      - post#/v1/users/users/import
+    - name: 下载
+      path: download
+      api:
+      - post#/v1/users/users/download
+  - name: 角色
+    path: roles
+    children:
+    - name: 列表
+      path: ''
+      meta:
+        hideInMenu: false
+      api:
+      - get#/v1/users/roles
+    - name: 创建
+      path: create
+      api:
+      - post#/v1/users/roles
+    - name: 查看
+      path: view/:id
+      api:
+      - get#/v1/users/roles/:id
+    - name: 编辑
+      path: edit/:id
+      api:
+      - put#/v1/users/roles/:id
+      - get#/v1/users/roles/:id
+    - name: 删除
+      path: delete/:id
+      api:
+      - delete#/v1/users/roles/:id
+    - name: 导入
+      path: import
+      api:
+      - post#/v1/users/roles/import
+    - name: 下载
+      path: download
+      api:
+      - post#/v1/users/roles/download
+  - name: 租户
+    path: tenants
+    children:
+    - name: 列表
+      path: ''
+      meta:
+        hideInMenu: false
+      api:
+      - get#/v1/users/tenants
+    - name: 创建
+      path: create
+      api:
+      - post#/v1/users/tenants
+    - name: 查看
+      path: view/:id
+      api:
+      - get#/v1/users/tenants/:id
+    - name: 编辑
+      path: edit/:id
+      api:
+      - put#/v1/users/tenants/:id
+      - get#/v1/users/tenants/:id
+    - name: 删除
+      path: delete/:id
+      api:
+      - delete#/v1/users/tenants/:id
+    - name: 导入
+      path: import
+      api:
+      - post#/v1/users/tenants/import
+    - name: 下载
+      path: download
+      api:
+      - post#/v1/users/tenants/download
+  - name: 在线
+    path: sessions
+    children:
+    - name: 列表
+      path: ''
+      meta:
+        hideInMenu: false
+      api:
+      - get#/v1/users/sessions
+    - name: 创建
+      path: create
+      api:
+      - post#/v1/users/sessions
+    - name: 查看
+      path: view/:id
+      api:
+      - get#/v1/users/sessions/:id
+    - name: 编辑
+      path: edit/:id
+      api:
+      - put#/v1/users/sessions/:id
+      - get#/v1/users/sessions/:id
+    - name: 删除
+      path: delete/:id
+      api:
+      - delete#/v1/users/sessions/:id
+    - name: 导入
+      path: import
+      api:
+      - post#/v1/users/sessions/import
+    - name: 下载
+      path: download
+      api:
+      - post#/v1/users/sessions/download
+- name: 系统管理
+  path: "/systems"
+  meta:
+    icon: icon-computer
+  children:
+  - name: 路由
+    path: "/systems/routes"
+    meta:
+      hideInMenu: false

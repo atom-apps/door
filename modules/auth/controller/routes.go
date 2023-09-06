@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 
+	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/docs"
 	"github.com/atom-apps/door/modules/auth/dto"
 	systemSvc "github.com/atom-apps/door/modules/systems/service"
@@ -42,10 +43,10 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Tags		Systems
 //	@Accept		json
 //	@Produce	json
-//	@Success	200	{array}	[]string
+//	@Success	200	{array}	common.RouteItem
 //	@Router		/v1/auth/pages [get]
-func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([][]string, error) {
-	return c.permissionSvc.CasbinPoliciesOfTenantRole(ctx.Context(), claim.TenantID, claim.RoleID)
+func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*common.RouteItem, error) {
+	return c.permissionSvc.PagesOfTenantRole(ctx.Context(), claim.TenantID, claim.RoleID)
 }
 
 // Test

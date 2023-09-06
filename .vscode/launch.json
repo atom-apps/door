@@ -11,5 +11,12 @@
             "mode": "auto",
             "program": "${workspaceFolder}/main.go"
         },
+        {
+            "name": "Seeder",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/database/main.go"
+        },
     ]
 }

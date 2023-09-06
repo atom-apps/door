@@ -15,24 +15,21 @@ import (
 	"github.com/rogeecn/atom/utils/opt"
 )
 
-var (
-	skipJwt = []string{
-		"/auth/signin",
-		"/auth/signup",
-		"/auth/reset-password",
+var skipJwt = []string{
+	"/auth/signin",
+	"/auth/signup",
+	"/auth/reset-password",
 
-		"/v1/auth/check-reset-password-code",
-		"/v1/auth/exchange-token-by-code",
-		"/v1/auth/signin",
-		"/v1/auth/signup",
-		"/v1/auth/test",
+	"/v1/auth/check-reset-password-code",
+	"/v1/auth/exchange-token-by-code",
+	"/v1/auth/signin",
+	"/v1/auth/signup",
+	"/v1/auth/test",
 
-		"/v1/services/captcha/generate",
-		"/v1/services/send/sms",
-		"/v1/services/send/email",
-	}
-	skipAuth = []string{"/v1/permission/check"}
-)
+	"/v1/services/captcha/generate",
+	"/v1/services/send/sms",
+	"/v1/services/send/email",
+}
 
 func Providers() container.Providers {
 	return container.Providers{

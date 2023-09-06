@@ -55,7 +55,7 @@ p = sub, dom, obj, act
 g = _, _, _
 
 [matchers]
-m = is_white(r.obj, r.act) || g(r.sub, p.sub, r.dom) && r.dom == p.dom && ( keyMatch3(r.obj, p.obj) || keyMatch2(r.obj, p.obj) ) && r.act == p.act
+m = is_white(r.obj, r.act) || g(r.sub, p.sub, r.dom) && r.dom == p.dom && keyMatch3(r.obj, p.obj) && r.act == p.act
 
 [policy_effect]
 e = some(where (p.eft == allow))

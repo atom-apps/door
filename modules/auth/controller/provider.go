@@ -71,14 +71,14 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		casbinSvc *userSvc.CasbinService,
 		permissionSvc *userSvc.PermissionService,
 		routeSvc *systemSvc.RouteService,
-		userTenantRoleService *userSvc.UserTenantRoleService,
 	) (*RoutesController, error) {
 		obj := &RoutesController{
-			permissionSvc:         permissionSvc,
-			routeSvc:              routeSvc,
-			userTenantRoleService: userTenantRoleService,
+			casbinSvc:     casbinSvc,
+			permissionSvc: permissionSvc,
+			routeSvc:      routeSvc,
 		}
 		return obj, nil
 	}); err != nil {

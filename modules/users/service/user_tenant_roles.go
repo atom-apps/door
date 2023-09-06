@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
@@ -15,6 +14,7 @@ import (
 
 // @provider
 type UserTenantRoleService struct {
+	casbinSvc         *CasbinService
 	userTenantRoleDao *dao.UserTenantRoleDao
 	roleDao           *dao.RoleDao
 	tenantDao         *dao.TenantDao
@@ -94,7 +94,11 @@ func (svc *UserTenantRoleService) AttachUsers(ctx context.Context, tenantID, rol
 		return nil
 	}
 
-	return svc.userTenantRoleDao.CreateInBatch(ctx, ms)
+	if err := svc.userTenantRoleDao.CreateInBatch(ctx, ms); err != nil {
+		return err
+	}
+	go svc.casbinSvc.Reload()
+	return nil
 }
 
 func (svc *UserTenantRoleService) DetachUsers(ctx context.Context, tenantID, roleID uint64, users []uint64) error {
@@ -102,7 +106,11 @@ func (svc *UserTenantRoleService) DetachUsers(ctx context.Context, tenantID, rol
 		return &models.UserTenantRole{UserID: item, TenantID: tenantID, RoleID: roleID}
 	})
 
-	return svc.userTenantRoleDao.DeleteInBatch(ctx, ms)
+	if err := svc.userTenantRoleDao.DeleteInBatch(ctx, ms); err != nil {
+		return err
+	}
+	go svc.casbinSvc.Reload()
+	return nil
 }
 
 func (svc *UserTenantRoleService) DeleteTenant(ctx context.Context, tenantID uint64) error {
@@ -187,38 +195,4 @@ func (svc *UserTenantRoleService) DeleteByUserID(ctx context.Context, userID uin
 // TenantHasRole
 func (svc *UserTenantRoleService) TenantHasRole(ctx context.Context, tenantID, userID uint64) (bool, error) {
 	return svc.userTenantRoleDao.TenantHasRole(ctx, tenantID, userID)
-}
-
-// GroupPolicy
-func (svc *UserTenantRoleService) CasbinGroups(ctx context.Context) ([][]string, error) {
-	all, err := svc.userTenantRoleDao.FindAll(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return svc.genCasbinGroups(ctx, all)
-}
-
-// GroupPolicy
-func (svc *UserTenantRoleService) CasbinUserGroups(ctx context.Context, userID uint64) ([][]string, error) {
-	all, err := svc.userTenantRoleDao.FindByUserID(ctx, userID)
-	if err != nil {
-		return nil, err
-	}
-	return svc.genCasbinGroups(ctx, all)
-}
-
-func (svc *UserTenantRoleService) genCasbinGroups(ctx context.Context, ms []*models.UserTenantRole) ([][]string, error) {
-	policies := [][]string{}
-
-	// g, user, role, tenant
-	for _, item := range ms {
-		policies = append(policies, []string{
-			fmt.Sprintf("%d", item.UserID),
-			fmt.Sprintf("role:%d", item.RoleID),
-			fmt.Sprintf("tenant:%d", item.TenantID),
-		})
-	}
-
-	return policies, nil
 }

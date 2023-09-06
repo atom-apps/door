@@ -107,7 +107,7 @@ func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*
 	allIDs := []uint64{}
 
 	// find children
-	childrenIds := append([]uint64{}, allIDs...)
+	childrenIds := append([]uint64{}, ids...)
 	for {
 		children, err := query.Where(table.ParentID.In(childrenIds...)).Find()
 		if err != nil {
@@ -129,7 +129,7 @@ func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*
 		})
 	}
 
-	parentIDs := ids
+	parentIDs := append([]uint64{}, ids...)
 	for len(parentIDs) > 0 {
 		routes, err := query.Where(table.ID.In(parentIDs...)).Find()
 		if err != nil {

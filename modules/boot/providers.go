@@ -1,8 +1,6 @@
 package boot
 
 import (
-	"context"
-
 	userSvc "github.com/atom-apps/door/modules/users/service"
 	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/jwt"
@@ -59,31 +57,10 @@ func provideHttpMiddleware(opts ...opt.Option) error {
 }
 
 func providePermissionRules(opts ...opt.Option) error {
-	return container.Container.Provide(func(
-		permissionSvc *userSvc.PermissionService,
-		userTenantRoleSvc *userSvc.UserTenantRoleService,
-		casbin *casbin.Casbin,
-	) contracts.Initial {
-		groups, err := userTenantRoleSvc.CasbinGroups(context.Background())
-		if err != nil {
+	return container.Container.Provide(func(casbinSvc *userSvc.CasbinService) contracts.Initial {
+		if err := casbinSvc.Reload(); err != nil {
 			log.Fatal(err)
 		}
-
-		if _, err := casbin.LoadGroups(groups); err != nil {
-			log.Fatal(err)
-		}
-		log.Infof("load groups: %d", len(groups))
-
-		// permissions
-		policies, err := permissionSvc.CasbinPolicies(context.Background())
-		if err != nil {
-			log.Fatal(err)
-		}
-		if _, err := casbin.LoadPolicies(policies); err != nil {
-			log.Fatal(err)
-		}
-		log.Infof("load policies: %d", len(policies))
-
 		return nil
 	}, atom.GroupInitial)
 }

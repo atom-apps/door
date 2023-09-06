@@ -14,9 +14,9 @@ import (
 
 // @provider
 type RoutesController struct {
-	routeSvc              *systemSvc.RouteService
-	permissionSvc         *userSvc.PermissionService
-	userTenantRoleService *userSvc.UserTenantRoleService
+	routeSvc      *systemSvc.RouteService
+	permissionSvc *userSvc.PermissionService
+	casbinSvc     *userSvc.CasbinService
 }
 
 // List
@@ -62,5 +62,5 @@ func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*common.R
 //	@Router		/v1/auth/test [get]
 func (c *RoutesController) Test(ctx *fiber.Ctx) ([][]string, error) {
 	// return c.permissionSvc.CasbinPolicies(ctx.Context())
-	return c.userTenantRoleService.CasbinGroups(ctx.Context())
+	return c.casbinSvc.CasbinGroups(ctx.Context())
 }

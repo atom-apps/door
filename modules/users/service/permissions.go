@@ -18,10 +18,12 @@ import (
 
 // @provider
 type PermissionService struct {
-	permissionDao *dao.PermissionDao
-	tenantDao     *dao.TenantDao
-	roleDao       *dao.RoleDao
-	routeDao      *systemDao.RouteDao
+	userTenantRoleSvc *UserTenantRoleService
+	casbinSvc         *CasbinService
+	permissionDao     *dao.PermissionDao
+	tenantDao         *dao.TenantDao
+	roleDao           *dao.RoleDao
+	routeDao          *systemDao.RouteDao
 }
 
 func (svc *PermissionService) DecorateItem(model *models.Permission, id int) *dto.PermissionItem {
@@ -177,7 +179,12 @@ func (svc *PermissionService) TenantRoleSave(ctx context.Context, tenantID, role
 			return err
 		}
 		// 创建新的路由
-		return svc.permissionDao.CreateBatch(ctx, permissions, 100)
+		if err := svc.permissionDao.CreateBatch(ctx, permissions, 100); err != nil {
+			return err
+		}
+
+		go svc.casbinSvc.Reload()
+		return nil
 	})
 }
 
@@ -194,7 +201,7 @@ func (svc *PermissionService) CasbinPolicies(ctx context.Context) ([][]string, e
 	}
 
 	routeIDs := lo.Map(all, func(item *models.Permission, _ int) uint64 { return item.RouteID })
-	routes, err := svc.routeDao.GetByIDs(ctx, routeIDs)
+	routes, err := svc.routeDao.GetByIDsWithParents(ctx, routeIDs)
 	if err != nil {
 		return nil, err
 	}

@@ -33,44 +33,45 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/users
-      - title: 角色分配
-        name: UserTenantRole
-        path: users/:id/tenant-role
-        api:
-          - get#/v1/users/users/:id
-          - put#/v1/users/permissions/attach/{role}/{tenant}
-          - put#/v1/users/permissions/detach/{role}/{tenant}
-      - title: 用户创建
-        name: UserCreate
-        path: users/create
-        api:
-          - post#/v1/users/users
-      - title: 用户查看
-        name: UserView
-        path: users/view/:id
-        api:
-          - get#/v1/users/users/:id
-      - title: 用户编辑
-        name: UserEdit
-        path: users/edit/:id
-        api:
-          - put#/v1/users/users/:id
-          - get#/v1/users/users/:id
-      - title: 用户删除
-        name: UserDelete
-        path: users/delete/:id
-        api:
-          - delete#/v1/users/users/:id
-      - title: 用户导入
-        name: UserImport
-        path: users/import
-        api:
-          - post#/v1/users/users/import
-      - title: 用户下载
-        name: UserDownload
-        path: users/download
-        api:
-          - post#/v1/users/users/download
+        children:
+          - title: 角色分配
+            name: UserTenantRole
+            path: users/{id}/tenant-role
+            api:
+              - get#/v1/users/users/{id}
+              - put#/v1/users/permissions/attach/{role}/{tenant}
+              - put#/v1/users/permissions/detach/{role}/{tenant}
+          - title: 用户创建
+            name: UserCreate
+            path: users/create
+            api:
+              - post#/v1/users/users
+          - title: 用户查看
+            name: UserView
+            path: users/view/{id}
+            api:
+              - get#/v1/users/users/{id}
+          - title: 用户编辑
+            name: UserEdit
+            path: users/edit/{id}
+            api:
+              - put#/v1/users/users/{id}
+              - get#/v1/users/users/{id}
+          - title: 用户删除
+            name: UserDelete
+            path: users/delete/{id}
+            api:
+              - delete#/v1/users/users/{id}
+          - title: 用户导入
+            name: UserImport
+            path: users/import
+            api:
+              - post#/v1/users/users/import
+          - title: 用户下载
+            name: UserDownload
+            path: users/download
+            api:
+              - post#/v1/users/users/download
       - title: 角色
         name: RoleList
         path: roles
@@ -85,20 +86,20 @@ authorization:
           - post#/v1/users/roles
       - title: 角色查看
         name: RoleView
-        path: roles/view/:id
+        path: roles/view/{id}
         api:
-          - get#/v1/users/roles/:id
+          - get#/v1/users/roles/{id}
       - title: 角色编辑
         name: RoleEdit
-        path: roles/edit/:id
+        path: roles/edit/{id}
         api:
-          - put#/v1/users/roles/:id
-          - get#/v1/users/roles/:id
+          - put#/v1/users/roles/{id}
+          - get#/v1/users/roles/{id}
       - title: 角色删除
         name: RoleDelete
-        path: roles/delete/:id
+        path: roles/delete/{id}
         api:
-          - delete#/v1/users/roles/:id
+          - delete#/v1/users/roles/{id}
       - title: 角色导入
         name: RoleImport
         path: roles/import
@@ -123,20 +124,20 @@ authorization:
           - post#/v1/users/tenants
       - title: 租户查看
         name: TenantView
-        path: tenants/view/:id
+        path: tenants/view/{id}
         api:
-          - get#/v1/users/tenants/:id
+          - get#/v1/users/tenants/{id}
       - title: 租户编辑
         name: TenantEdit
-        path: tenants/edit/:id
+        path: tenants/edit/{id}
         api:
-          - put#/v1/users/tenants/:id
-          - get#/v1/users/tenants/:id
+          - put#/v1/users/tenants/{id}
+          - get#/v1/users/tenants/{id}
       - title: 租户删除
         name: TenantDelete
-        path: tenants/delete/:id
+        path: tenants/delete/{id}
         api:
-          - delete#/v1/users/tenants/:id
+          - delete#/v1/users/tenants/{id}
       - title: 租户导入
         name: TenantImport
         path: tenants/import
@@ -156,9 +157,9 @@ authorization:
           - get#/v1/users/sessions
       - title: 在线查看
         name: SessionView
-        path: sessions/view/:id
+        path: sessions/view/{id}
         api:
-          - get#/v1/users/sessions/:id
+          - get#/v1/users/sessions/{id}
   - title: 系统管理
     name: systems
     path: systems
@@ -180,20 +181,20 @@ authorization:
           - post#/v1/systems/routes
       - title: 路由查看
         name: RouteView
-        path: routes/view/:id
+        path: routes/view/{id}
         api:
-          - get#/v1/systems/routes/:id
+          - get#/v1/systems/routes/{id}
       - title: 路由编辑
         name: RouteEdit
-        path: routes/edit/:id
+        path: routes/edit/{id}
         api:
-          - put#/v1/systems/routes/:id
-          - get#/v1/systems/routes/:id
+          - put#/v1/systems/routes/{id}
+          - get#/v1/systems/routes/{id}
       - title: 路由删除
         name: RouteDelete
-        path: routes/delete/:id
+        path: routes/delete/{id}
         api:
-          - delete#/v1/systems/routes/:id
+          - delete#/v1/systems/routes/{id}
       - title: 路由导入
         name: RouteImport
         path: routes/import

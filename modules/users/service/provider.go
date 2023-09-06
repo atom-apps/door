@@ -6,6 +6,7 @@ import (
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-apps/door/providers/md5"
 	"github.com/atom-apps/door/providers/oauth"
+	"github.com/atom-providers/casbin"
 	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/jwt"
 	"github.com/atom-providers/uuid"
@@ -15,16 +16,41 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
+		casbin *casbin.Casbin,
 		permissionDao *dao.PermissionDao,
 		roleDao *dao.RoleDao,
 		routeDao *systemDao.RouteDao,
 		tenantDao *dao.TenantDao,
+		userTenantRoleDao *dao.UserTenantRoleDao,
+	) (*CasbinService, error) {
+		obj := &CasbinService{
+			casbin:            casbin,
+			permissionDao:     permissionDao,
+			roleDao:           roleDao,
+			routeDao:          routeDao,
+			tenantDao:         tenantDao,
+			userTenantRoleDao: userTenantRoleDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		casbinSvc *CasbinService,
+		permissionDao *dao.PermissionDao,
+		roleDao *dao.RoleDao,
+		routeDao *systemDao.RouteDao,
+		tenantDao *dao.TenantDao,
+		userTenantRoleSvc *UserTenantRoleService,
 	) (*PermissionService, error) {
 		obj := &PermissionService{
-			permissionDao: permissionDao,
-			roleDao:       roleDao,
-			routeDao:      routeDao,
-			tenantDao:     tenantDao,
+			casbinSvc:         casbinSvc,
+			permissionDao:     permissionDao,
+			roleDao:           roleDao,
+			routeDao:          routeDao,
+			tenantDao:         tenantDao,
+			userTenantRoleSvc: userTenantRoleSvc,
 		}
 		return obj, nil
 	}); err != nil {
@@ -119,11 +145,13 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		casbinSvc *CasbinService,
 		roleDao *dao.RoleDao,
 		tenantDao *dao.TenantDao,
 		userTenantRoleDao *dao.UserTenantRoleDao,
 	) (*UserTenantRoleService, error) {
 		obj := &UserTenantRoleService{
+			casbinSvc:         casbinSvc,
 			roleDao:           roleDao,
 			tenantDao:         tenantDao,
 			userTenantRoleDao: userTenantRoleDao,

@@ -2,7 +2,6 @@ package seeders
 
 import (
 	"os"
-	"strings"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
@@ -33,6 +32,7 @@ type routeDefinition struct {
 	Authorization []*routeItem
 }
 type routeItem struct {
+	Title    string               `json:"name"`
 	Name     string               `json:"name"`
 	Path     string               `json:"path"`
 	Api      []string             `json:"api"`
@@ -69,11 +69,11 @@ func (s *RouteSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix string) []*models.Route {
 	routes := []*models.Route{}
 	for _, item := range items {
-		path := strings.Join([]string{strings.Trim(prefix, "/"), strings.Trim(item.Path, "/")}, "/")
-		path = "/" + strings.TrimLeft(path, "/")
+		// path := strings.Join([]string{strings.Trim(prefix, "/"), strings.Trim(item.Path, "/")}, "/")
+		// path = "/" + strings.TrimLeft(path, "/")
 
 		if item.Meta.Title == "" {
-			item.Meta.Title = item.Name
+			item.Meta.Title = item.Title
 		}
 
 		if item.Meta.RequiresAuth == nil {
@@ -94,7 +94,7 @@ func (s *RouteSeeder) Generate(items []*routeItem, parentID uint64, prefix strin
 		route := &models.Route{
 			ID:       s.getID(),
 			Name:     item.Name,
-			Path:     path,
+			Path:     item.Path,
 			ParentID: parentID,
 			Metadata: item.Meta,
 			API:      api,

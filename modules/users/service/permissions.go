@@ -202,6 +202,15 @@ func (svc *PermissionService) CasbinPolicies(ctx context.Context) ([][]string, e
 	return svc.genCasbinPolicies(ctx, all, routes)
 }
 
+func (svc *PermissionService) Pages(ctx context.Context) ([]*common.RouteItem, error) {
+	routes, err := svc.routeDao.FindAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.buildPages(routes, 0), nil
+}
+
 func (svc *PermissionService) PagesOfTenantRole(ctx context.Context, tenantID, roleID uint64) ([]*common.RouteItem, error) {
 	all, err := svc.permissionDao.FindByTenantRole(ctx, tenantID, roleID)
 	if err != nil {

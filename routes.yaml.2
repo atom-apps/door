@@ -13,8 +13,8 @@ authorization:
       icon: icon-dashboard
     children:
       - title: 工作空间
-        name: workplace
-        path: workplace
+        name: Workspace
+        path: workspace
         meta:
           hideInMenu: false
   - title: 用户管理
@@ -31,33 +31,33 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/users
-      - title: 用户创建
+      - title: 创建
         name: UserCreate
         path: users/create
         api:
           - post#/v1/users/users
-      - title: 用户查看
+      - title: 查看
         name: UserView
         path: users/view/:id
         api:
           - get#/v1/users/users/:id
-      - title: 用户编辑
+      - title: 编辑
         name: UserEdit
         path: users/edit/:id
         api:
           - put#/v1/users/users/:id
           - get#/v1/users/users/:id
-      - title: 用户删除
+      - title: 删除
         name: UserDelete
         path: users/delete/:id
         api:
           - delete#/v1/users/users/:id
-      - title: 用户导入
+      - title: 导入
         name: UserImport
         path: users/import
         api:
           - post#/v1/users/users/import
-      - title: 用户下载
+      - title: 下载
         name: UserDownload
         path: users/download
         api:
@@ -69,33 +69,33 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/roles
-      - title: 角色创建
+      - title: 创建
         name: RoleCreate
         path: roles/create
         api:
           - post#/v1/users/roles
-      - title: 角色查看
+      - title: 查看
         name: RoleView
         path: roles/view/:id
         api:
           - get#/v1/users/roles/:id
-      - title: 角色编辑
+      - title: 编辑
         name: RoleEdit
         path: roles/edit/:id
         api:
           - put#/v1/users/roles/:id
           - get#/v1/users/roles/:id
-      - title: 角色删除
+      - title: 删除
         name: RoleDelete
         path: roles/delete/:id
         api:
           - delete#/v1/users/roles/:id
-      - title: 角色导入
+      - title: 导入
         name: RoleImport
         path: roles/import
         api:
           - post#/v1/users/roles/import
-      - title: 角色下载
+      - title: 下载
         name: RoleDownload
         path: roles/download
         api:
@@ -107,33 +107,33 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/tenants
-      - title: 租户创建
+      - title: 创建
         name: TenantCreate
         path: tenants/create
         api:
           - post#/v1/users/tenants
-      - title: 租户查看
+      - title: 查看
         name: TenantView
         path: tenants/view/:id
         api:
           - get#/v1/users/tenants/:id
-      - title: 租户编辑
+      - title: 编辑
         name: TenantEdit
         path: tenants/edit/:id
         api:
           - put#/v1/users/tenants/:id
           - get#/v1/users/tenants/:id
-      - title: 租户删除
+      - title: 删除
         name: TenantDelete
         path: tenants/delete/:id
         api:
           - delete#/v1/users/tenants/:id
-      - title: 租户导入
+      - title: 导入
         name: TenantImport
         path: tenants/import
         api:
           - post#/v1/users/tenants/import
-      - title: 租户下载
+      - title: 下载
         name: TenantDownload
         path: tenants/download
         api:
@@ -145,11 +145,37 @@ authorization:
           hideInMenu: false
         api:
           - get#/v1/users/sessions
-      - title: 在线查看
+      - title: 创建
+        name: SessionCreate
+        path: sessions/create
+        api:
+          - post#/v1/users/sessions
+      - title: 查看
         name: SessionView
         path: sessions/view/:id
         api:
           - get#/v1/users/sessions/:id
+      - title: 编辑
+        name: SessionEdit
+        path: sessions/edit/:id
+        api:
+          - put#/v1/users/sessions/:id
+          - get#/v1/users/sessions/:id
+      - title: 删除
+        name: SessionDelete
+        path: sessions/delete/:id
+        api:
+          - delete#/v1/users/sessions/:id
+      - title: 导入
+        name: SessionImport
+        path: sessions/import
+        api:
+          - post#/v1/users/sessions/import
+      - title: 下载
+        name: SessionDownload
+        path: sessions/download
+        api:
+          - post#/v1/users/sessions/download
   - title: 系统管理
     name: systems
     path: systems
@@ -162,35 +188,33 @@ authorization:
         path: routes
         meta:
           hideInMenu: false
-        api:
-          - get#/v1/systems/routes
-      - title: 路由创建
+      - title: 创建
         name: RouteCreate
         path: routes/create
         api:
           - post#/v1/systems/routes
-      - title: 路由查看
+      - title: 查看
         name: RouteView
         path: routes/view/:id
         api:
           - get#/v1/systems/routes/:id
-      - title: 路由编辑
+      - title: 编辑
         name: RouteEdit
         path: routes/edit/:id
         api:
           - put#/v1/systems/routes/:id
           - get#/v1/systems/routes/:id
-      - title: 路由删除
+      - title: 删除
         name: RouteDelete
         path: routes/delete/:id
         api:
           - delete#/v1/systems/routes/:id
-      - title: 路由导入
+      - title: 导入
         name: RouteImport
         path: routes/import
         api:
           - post#/v1/systems/routes/import
-      - title: 路由下载
+      - title: 下载
         name: RouteDownload
         path: routes/download
         api:

@@ -46,6 +46,9 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Success	200	{array}	common.RouteItem
 //	@Router		/v1/auth/pages [get]
 func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*common.RouteItem, error) {
+	if claim.IsSuperAdmin() {
+		return c.permissionSvc.Pages(ctx.Context())
+	}
 	return c.permissionSvc.PagesOfTenantRole(ctx.Context(), claim.TenantID, claim.RoleID)
 }
 

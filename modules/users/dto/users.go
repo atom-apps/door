@@ -5,6 +5,7 @@ import (
 
 	"github.com/atom-apps/door/common/consts"
 	"github.com/atom-apps/door/database/models"
+	"github.com/atom-providers/jwt"
 )
 
 type UserForm struct {
@@ -44,6 +45,7 @@ type UserItem struct {
 	Avatar        string                `json:"avatar,omitempty"`         //
 	Status        consts.UserStatus     `json:"status,omitempty"`         //
 	TenantRoles   []*UserItemTenantRole `json:"tenant_roles,omitempty"`
+	Claims        *jwt.BaseClaims       `json:"claims,omitempty"`
 }
 
 type UserItemTenantRole struct {

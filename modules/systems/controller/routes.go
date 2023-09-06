@@ -57,7 +57,7 @@ func (c *RouteController) List(
 	pageFilter *common.PageQueryFilter,
 	sortFilter *common.SortQueryFilter,
 ) (*common.PageDataResponse, error) {
-	if claim.IsAdmin() {
+	if !claim.IsAdmin() {
 		return nil, errorx.ErrForbidden
 	}
 	items, total, err := c.routeSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)

@@ -31,7 +31,9 @@ func (c *UserController) Profile(ctx *fiber.Ctx, claim *jwt.Claims) (*dto.UserIt
 		return nil, err
 	}
 
-	return c.userSvc.DecorateItem(item, 0), nil
+	userItem := c.userSvc.DecorateItem(item, 0)
+	userItem.Claims = &claim.BaseClaims
+	return userItem, nil
 }
 
 // Show get single item info

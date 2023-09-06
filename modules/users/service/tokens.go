@@ -143,7 +143,7 @@ func (svc *TokenService) CreateForUser(ctx context.Context, userID, tenantID, se
 		}
 	}
 
-	claim := svc.getClaims(ctx, userID, tenantID, role.ID, role.Name)
+	claim := svc.getClaims(ctx, userID, tenantID, role.ID, role.Slug)
 	token, err := svc.jwt.WithExpireTime(svc.auth.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func (svc *TokenService) RefreshToken(ctx context.Context, token *models.Token) 
 		return nil, err
 	}
 
-	claim := svc.getClaims(ctx, token.UserID, token.TenantID, role.ID, role.Name)
+	claim := svc.getClaims(ctx, token.UserID, token.TenantID, role.ID, role.Slug)
 	accessToken, err := svc.jwt.WithExpireTime(svc.auth.TokenDuration).CreateToken(claim)
 	if err != nil {
 		return nil, err

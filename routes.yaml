@@ -214,3 +214,42 @@ authorization:
             path: routes/download
             api:
               - post#/v1/systems/routes/download
+      - title:  字典
+        name: DictionaryList
+        path: dictionaries
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/systems/dictionaries
+        children:
+          - title: 字典创建
+            name: DictionaryCreate
+            path: create
+            api:
+              - post#/v1/systems/dictionaries
+          - title: 字典查看
+            name: DictionaryView
+            path: view/{id}
+            api:
+              - get#/v1/systems/dictionaries/{id}
+          - title: 字典编辑
+            name: DictionaryEdit
+            path: edit/{id}
+            api:
+              - put#/v1/systems/dictionaries/{id}
+              - get#/v1/systems/dictionaries/{id}
+          - title: 字典删除
+            name: DictionaryDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/systems/dictionaries/{id}
+          - title: 字典导入
+            name: DictionaryImport
+            path: import
+            api:
+              - post#/v1/systems/dictionaries/import
+          - title: 字典下载
+            name: DictionaryDownload
+            path: download
+            api:
+              - post#/v1/systems/dictionaries/download

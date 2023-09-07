@@ -17,10 +17,10 @@ import (
 
 var (
 	Q              = new(Query)
+	Dictionary     *dictionary
 	Location       *location
 	Migration      *migration
 	Permission     *permission
-	PermissionRule *permissionRule
 	Role           *role
 	Route          *route
 	RouteWhitelist *routeWhitelist
@@ -34,10 +34,10 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Dictionary = &Q.Dictionary
 	Location = &Q.Location
 	Migration = &Q.Migration
 	Permission = &Q.Permission
-	PermissionRule = &Q.PermissionRule
 	Role = &Q.Role
 	Route = &Q.Route
 	RouteWhitelist = &Q.RouteWhitelist
@@ -52,10 +52,10 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:             db,
+		Dictionary:     newDictionary(db, opts...),
 		Location:       newLocation(db, opts...),
 		Migration:      newMigration(db, opts...),
 		Permission:     newPermission(db, opts...),
-		PermissionRule: newPermissionRule(db, opts...),
 		Role:           newRole(db, opts...),
 		Route:          newRoute(db, opts...),
 		RouteWhitelist: newRouteWhitelist(db, opts...),
@@ -71,10 +71,10 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	Dictionary     dictionary
 	Location       location
 	Migration      migration
 	Permission     permission
-	PermissionRule permissionRule
 	Role           role
 	Route          route
 	RouteWhitelist routeWhitelist
@@ -91,10 +91,10 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		Dictionary:     q.Dictionary.clone(db),
 		Location:       q.Location.clone(db),
 		Migration:      q.Migration.clone(db),
 		Permission:     q.Permission.clone(db),
-		PermissionRule: q.PermissionRule.clone(db),
 		Role:           q.Role.clone(db),
 		Route:          q.Route.clone(db),
 		RouteWhitelist: q.RouteWhitelist.clone(db),
@@ -118,10 +118,10 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		Dictionary:     q.Dictionary.replaceDB(db),
 		Location:       q.Location.replaceDB(db),
 		Migration:      q.Migration.replaceDB(db),
 		Permission:     q.Permission.replaceDB(db),
-		PermissionRule: q.PermissionRule.replaceDB(db),
 		Role:           q.Role.replaceDB(db),
 		Route:          q.Route.replaceDB(db),
 		RouteWhitelist: q.RouteWhitelist.replaceDB(db),
@@ -135,10 +135,10 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	Dictionary     IDictionaryDo
 	Location       ILocationDo
 	Migration      IMigrationDo
 	Permission     IPermissionDo
-	PermissionRule IPermissionRuleDo
 	Role           IRoleDo
 	Route          IRouteDo
 	RouteWhitelist IRouteWhitelistDo
@@ -152,10 +152,10 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		Dictionary:     q.Dictionary.WithContext(ctx),
 		Location:       q.Location.WithContext(ctx),
 		Migration:      q.Migration.WithContext(ctx),
 		Permission:     q.Permission.WithContext(ctx),
-		PermissionRule: q.PermissionRule.WithContext(ctx),
 		Role:           q.Role.WithContext(ctx),
 		Route:          q.Route.WithContext(ctx),
 		RouteWhitelist: q.RouteWhitelist.WithContext(ctx),

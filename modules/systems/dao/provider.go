@@ -9,6 +9,17 @@ import (
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
 		query *query.Query,
+	) (*DictionaryDao, error) {
+		obj := &DictionaryDao{
+			query: query,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		query *query.Query,
 	) (*RouteDao, error) {
 		obj := &RouteDao{
 			query: query,

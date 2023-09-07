@@ -1,6 +1,10 @@
 package common
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -65,6 +69,27 @@ type IDsForm struct {
 }
 
 type LabelItem struct {
-	Label string `json:"label"`
-	Value string `json:"value"`
+	Label    string `json:"label"`
+	Value    string `json:"value"`
+	Disabled *bool  `json:"enabled,omitempty"`
+}
+
+type LabelItems []LabelItem
+
+func (j LabelItems) Value() (driver.Value, error) {
+	return json.Marshal(j)
+}
+
+// Scan scan value into JSONType[T], implements sql.Scanner interface
+func (j *LabelItems) Scan(value interface{}) error {
+	var bytes []byte
+	switch v := value.(type) {
+	case []byte:
+		bytes = v
+	case string:
+		bytes = []byte(v)
+	default:
+		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+	}
+	return json.Unmarshal(bytes, &j)
 }

@@ -9,4 +9,5 @@ var Seeders = []contracts.SeederProvider{
 	NewPermissionsSeeder,
 	NewUserTenantRoleSeeder,
 	NewRouteSeeder,
+	NewDictionarySeeder,
 }

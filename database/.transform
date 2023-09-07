@@ -7,3 +7,5 @@ tokens.token_type => consts.TokenType
 routes.metadata => common.RouteMetadata
 routes.api => common.RouteAPI
 
+dictionaries.items => common.LabelItems
+

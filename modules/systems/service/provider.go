@@ -8,6 +8,17 @@ import (
 
 func Provide(opts ...opt.Option) error {
 	if err := container.Container.Provide(func(
+		dictionaryDao *dao.DictionaryDao,
+	) (*DictionaryService, error) {
+		obj := &DictionaryService{
+			dictionaryDao: dictionaryDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		routeDao *dao.RouteDao,
 	) (*RouteService, error) {
 		obj := &RouteService{

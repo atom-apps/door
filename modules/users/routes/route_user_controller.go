@@ -22,4 +22,5 @@ func routeUserController(engine fiber.Router, controller *controller.UserControl
 	engine.Post(strings.TrimPrefix("/v1/users/users", basePath), Func1(controller.Create, Body[dto.UserForm](BodyParamError)))
 	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.UserForm](BodyParamError)))
 	engine.Delete(strings.TrimPrefix("/v1/users/users/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>/reset-password", basePath), DataFunc1(controller.ResetPassword, Integer[uint64]("id", PathParamError)))
 }

@@ -14,13 +14,13 @@ import (
 	"github.com/atom-apps/door/providers/bcrypt"
 	"github.com/atom-providers/hashids"
 	"github.com/atom-providers/log"
+	"github.com/atom-providers/uuid"
 	"github.com/samber/lo"
-
-	"github.com/jinzhu/copier"
 )
 
 // @provider
 type UserService struct {
+	uuid              *uuid.Generator
 	userDao           *dao.UserDao
 	hashID            *hashids.HashID
 	hash              *bcrypt.Hash
@@ -88,9 +88,28 @@ func (svc *UserService) CreateFromModel(ctx context.Context, model *models.User)
 
 // Create
 func (svc *UserService) Create(ctx context.Context, body *dto.UserForm) error {
-	model := &models.User{}
-	_ = copier.Copy(model, body)
+	model := &models.User{
+		UUID:          svc.uuid.MustGenerate(),
+		Username:      body.Username,
+		Password:      svc.hash.Hash(body.Password),
+		Email:         body.Email,
+		EmailVerified: body.EmailVerified,
+		Phone:         body.Phone,
+		DisplayName:   body.DisplayName,
+		Avatar:        body.Avatar,
+		Status:        body.Status,
+	}
 	return svc.userDao.Create(ctx, model)
+}
+
+func (svc *UserService) SetUserPassword(ctx context.Context, id uint64, password string) error {
+	model, err := svc.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	model.Password = svc.hash.Hash(password)
+	return svc.userDao.Update(ctx, model)
 }
 
 // Update
@@ -100,8 +119,13 @@ func (svc *UserService) Update(ctx context.Context, id uint64, body *dto.UserFor
 		return err
 	}
 
-	_ = copier.Copy(model, body)
-	model.ID = id
+	model.Avatar = body.Avatar
+	body.DisplayName = body.DisplayName
+	body.Email = body.Email
+	body.EmailVerified = body.EmailVerified
+	body.Phone = body.Phone
+	body.Status = body.Status
+
 	return svc.userDao.Update(ctx, model)
 }
 
@@ -208,7 +232,12 @@ func (svc *UserService) GetUserFromHashToken(ctx context.Context, token string) 
 	return svc.userDao.GetByID(ctx, uint64(ids[0]))
 }
 
-func (svc *UserService) ResetPassword(ctx context.Context, user *models.User, password string) error {
+func (svc *UserService) ResetPassword(ctx context.Context, id uint64, password string) error {
+	user, err := svc.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
 	user.Password = svc.hash.Hash(password)
 	return svc.UpdateFromModel(ctx, user)
 }

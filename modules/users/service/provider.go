@@ -167,6 +167,7 @@ func Provide(opts ...opt.Option) error {
 		permissionSvc *PermissionService,
 		userDao *dao.UserDao,
 		userTenantRoleSvc *UserTenantRoleService,
+		uuid *uuid.Generator,
 	) (*UserService, error) {
 		obj := &UserService{
 			hash:              hash,
@@ -174,6 +175,7 @@ func Provide(opts ...opt.Option) error {
 			permissionSvc:     permissionSvc,
 			userDao:           userDao,
 			userTenantRoleSvc: userTenantRoleSvc,
+			uuid:              uuid,
 		}
 		return obj, nil
 	}); err != nil {

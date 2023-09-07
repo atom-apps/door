@@ -236,5 +236,5 @@ func (c *AuthController) ResetPassword(ctx *fiber.Ctx, form *dto.ResetPasswordFo
 		return err
 	}
 
-	return c.userSvc.ResetPassword(ctx.Context(), user, form.Password)
+	return c.userSvc.ResetPassword(ctx.Context(), user.ID, form.Password)
 }

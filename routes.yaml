@@ -41,6 +41,11 @@ authorization:
               - get#/v1/users/users/{id}
               - put#/v1/users/permissions/attach/{role}/{tenant}
               - put#/v1/users/permissions/detach/{role}/{tenant}
+          - title: 重置密码
+            name: UserResetPassword
+            path: users/{id}/reset-password
+            api:
+              - put#/v1/users/users/{id}/reset-password
           - title: 用户创建
             name: UserCreate
             path: users/create

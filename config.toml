@@ -11,28 +11,28 @@ Description = "Api Docs"
 BasePath = "/v1"
 Version = "1.0.0"
 
-# [Redis]
-# Addresses = ["10.58.144.6:36379"]
-# Password = "xixi@0202"
-# DB = 0
 [Redis]
-Addresses = ["localhost:6379"]
-Password = ""
+Addresses = ["10.58.144.6:36379"]
+Password = "xixi@0202"
 DB = 0
-
-# [MySQL]
-# Username = "root"
-# Password = "xixi@0202"
-# Database = "atom"
-# Host = "10.58.144.6"
-# Port = 33306
+# [Redis]
+# Addresses = ["localhost:6379"]
+# Password = ""
+# DB = 0
 
 [MySQL]
 Username = "root"
-Password = "admin"
+Password = "xixi@0202"
 Database = "atom"
-Host = "localhost"
-Port = 3306
+Host = "10.58.144.6"
+Port = 33306
+
+# [MySQL]
+# Username = "root"
+# Password = "admin"
+# Database = "atom"
+# Host = "localhost"
+# Port = 3306
 
 [OAuth]
 [OAuth.App]

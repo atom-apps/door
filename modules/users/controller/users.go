@@ -129,3 +129,17 @@ func (c *UserController) Update(ctx *fiber.Ctx, id uint64, body *dto.UserForm) e
 func (c *UserController) Delete(ctx *fiber.Ctx, id uint64) error {
 	return c.userSvc.Delete(ctx.Context(), id)
 }
+
+// ResetPassword
+//
+//	@Summary		ResetPassword
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int				true	"UserID"
+//	@Success		200		{string}	UserID
+//	@Router			/v1/users/users/{id}/reset-password [put]
+func (c *UserController) ResetPassword(ctx *fiber.Ctx, id uint64) (string, error) {
+	newPassword := common.RandomString(16)
+	return newPassword, c.userSvc.ResetPassword(ctx.Context(), id, newPassword)
+}

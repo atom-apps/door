@@ -12,8 +12,8 @@ BasePath = "/v1"
 Version = "1.0.0"
 
 [Redis]
-Addresses = ["10.58.144.6:36379"]
-Password = "xixi@0202"
+Addresses = ["localhost:6379"]
+Password = ""
 DB = 0
 # [Redis]
 # Addresses = ["localhost:6379"]
@@ -22,10 +22,10 @@ DB = 0
 
 [MySQL]
 Username = "root"
-Password = "xixi@0202"
+Password = "admin"
 Database = "atom"
-Host = "10.58.144.6"
-Port = 33306
+Host = "localhost"
+Port = 3306
 
 # [MySQL]
 # Username = "root"

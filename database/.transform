@@ -9,3 +9,5 @@ routes.api => common.RouteAPI
 
 dictionaries.items => common.LabelItems
 
+menus.metadata => common.MenuMetadata
+

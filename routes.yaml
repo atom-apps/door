@@ -253,3 +253,42 @@ authorization:
             path: download
             api:
               - post#/v1/systems/dictionaries/download
+      - title:  菜单
+        name: MenuList
+        path: menus
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/systems/menus
+        children:
+          - title: 菜单创建
+            name: MenuCreate
+            path: create
+            api:
+              - post#/v1/systems/menus
+          - title: 菜单查看
+            name: MenuView
+            path: view/{id}
+            api:
+              - get#/v1/systems/menus/{id}
+          - title: 菜单编辑
+            name: MenuEdit
+            path: edit/{id}
+            api:
+              - put#/v1/systems/menus/{id}
+              - get#/v1/systems/menus/{id}
+          - title: 菜单删除
+            name: MenuDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/systems/menus/{id}
+          - title: 菜单导入
+            name: MenuImport
+            path: import
+            api:
+              - post#/v1/systems/menus/import
+          - title: 菜单下载
+            name: MenuDownload
+            path: download
+            api:
+              - post#/v1/systems/menus/download

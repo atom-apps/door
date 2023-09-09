@@ -19,6 +19,17 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		menuSvc *service.MenuService,
+	) (*MenuController, error) {
+		obj := &MenuController{
+			menuSvc: menuSvc,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		routeSvc *service.RouteService,
 	) (*RouteController, error) {
 		obj := &RouteController{

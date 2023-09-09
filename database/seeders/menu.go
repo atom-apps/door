@@ -23,7 +23,7 @@ func NewMenuSeeder() contracts.Seeder {
 }
 
 func (s *MenuSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
-	dbUtil.TruncateTable(db, (&models.PermissionRule{}).TableName(nil))
+	dbUtil.TruncateTable(db, (&models.Menu{}).TableName(nil))
 
 	models := []models.Menu{
 		{ID: s.getID(), Name: "GroupMenu-1", Slug: "group_menu", GroupID: 0, ParentID: 0},

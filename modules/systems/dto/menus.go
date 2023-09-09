@@ -29,4 +29,11 @@ type MenuItem struct {
 	GroupID   uint64              `json:"group_id,omitempty"`   // 组
 	ParentID  uint64              `json:"parent_id,omitempty"`  // 父ID
 	Metadata  common.MenuMetadata `json:"metadata,omitempty"`   // 元数据
+	Children  []MenuItem          `json:"children,omitempty"`   //
+}
+
+type MenuTreeItem struct {
+	Key      string          `json:"key,omitempty"`      // ID
+	Title    string          `json:"title,omitempty"`    // 名称
+	Children []*MenuTreeItem `json:"children,omitempty"` //
 }

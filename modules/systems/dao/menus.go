@@ -76,8 +76,8 @@ func (dao *MenuDao) Update(ctx context.Context, model *models.Menu) error {
 	return err
 }
 
-func (dao *MenuDao) Delete(ctx context.Context, id uint64) error {
-	_, err := dao.Context(ctx).Where(dao.query.Menu.ID.Eq(id)).Delete()
+func (dao *MenuDao) Delete(ctx context.Context, id ...uint64) error {
+	_, err := dao.Context(ctx).Where(dao.query.Menu.ID.In(id...)).Delete()
 	return err
 }
 
@@ -112,6 +112,29 @@ func (dao *MenuDao) GetGroupByID(ctx context.Context, groupID uint64) (*models.M
 // GetGroupItemsByID
 func (dao *MenuDao) GetGroupItemsByID(ctx context.Context, groupID uint64) ([]*models.Menu, error) {
 	ids := []uint64{groupID}
+
+	var items []*models.Menu
+	for {
+		menus, err := dao.Context(ctx).Where(dao.query.Menu.GroupID.Eq(groupID), dao.query.Menu.ParentID.In(ids...)).Find()
+		if err != nil {
+			return nil, err
+		}
+
+		if len(menus) == 0 {
+			break
+		}
+
+		ids = lo.Map(menus, func(item *models.Menu, _ int) uint64 {
+			return item.ID
+		})
+
+		items = append(items, menus...)
+	}
+	return items, nil
+}
+
+func (dao *MenuDao) GetGroupSubItemsByID(ctx context.Context, groupID, subItemID uint64) ([]*models.Menu, error) {
+	ids := []uint64{subItemID}
 
 	var items []*models.Menu
 	for {

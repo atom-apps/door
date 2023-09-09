@@ -266,11 +266,23 @@ authorization:
             path: create
             api:
               - post#/v1/systems/menus
+          - title: 子菜单创建
+            name: MenuSubCreate
+            path: create/{id}/sub
+            api:
+              - get#/v1/systems/menus/{id}
+              - post#/v1/systems/menus/{id}/sub
           - title: 菜单查看
             name: MenuView
             path: view/{id}
             api:
               - get#/v1/systems/menus/{id}
+          - title: 子菜单树
+            name: MenuSubList
+            path: "{id}/tree"
+            api:
+              - get#/v1/systems/menus/{id}
+              - get#/v1/systems/menus/{id}/tree
           - title: 菜单编辑
             name: MenuEdit
             path: edit/{id}

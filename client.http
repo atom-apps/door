@@ -12,3 +12,8 @@ Authorization: {{token}}
 # 获取用户Profile
 GET {{host}}/users/users/profile
 Authorization: {{token}}
+
+###
+# menu.GroupTree
+GET {{host}}/systems/menus/1/tree
+Authorization: {{token}}

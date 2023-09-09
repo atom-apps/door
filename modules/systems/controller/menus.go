@@ -32,6 +32,19 @@ func (c *MenuController) Show(ctx *fiber.Ctx, id uint64) (*dto.MenuItem, error) 
 	return c.menuSvc.DecorateItem(item, 0), nil
 }
 
+// Tree
+//
+//	@Summary		Tree
+//	@Tags			Menu
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"MenuID"
+//	@Success		200	{object}	dto.MenuItem
+//	@Router			/v1/systems/menus/{id}/tree [get]
+func (c *MenuController) ShowTree(ctx *fiber.Ctx, id uint64) ([]*dto.MenuTreeItem, error) {
+	return c.menuSvc.GetGroupTree(ctx.Context(), id)
+}
+
 // List list by query filter
 //
 //	@Summary		List
@@ -39,21 +52,16 @@ func (c *MenuController) Show(ctx *fiber.Ctx, id uint64) (*dto.MenuItem, error) 
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.MenuListQueryFilter	true	"MenuListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
 //	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
 //	@Success		200			{object}	common.PageDataResponse{list=dto.MenuItem}
 //	@Router			/v1/systems/menus [get]
-func (c *MenuController) List(ctx *fiber.Ctx, queryFilter *dto.MenuListQueryFilter, pageFilter *common.PageQueryFilter, sortFilter *common.SortQueryFilter) (*common.PageDataResponse, error) {
-	items, total, err := c.menuSvc.PageGroupByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
+func (c *MenuController) List(ctx *fiber.Ctx, queryFilter *dto.MenuListQueryFilter, sortFilter *common.SortQueryFilter) ([]*dto.MenuItem, error) {
+	items, err := c.menuSvc.FindGroupByQueryFilter(ctx.Context(), queryFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
-		PageQueryFilter: *pageFilter,
-		Total:           total,
-		Items:           lo.Map(items, c.menuSvc.DecorateItem),
-	}, nil
+	return lo.Map(items, c.menuSvc.DecorateItem), nil
 }
 
 // Create a new item

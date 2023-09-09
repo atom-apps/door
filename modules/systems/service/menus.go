@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/database/models"
@@ -35,14 +36,37 @@ func (svc *MenuService) GetGroupByID(ctx context.Context, groupID uint64) (*mode
 	return svc.menuDao.GetGroupByID(ctx, groupID)
 }
 
-func (svc *MenuService) GetGroupTree(ctx context.Context, groupID uint64) ([]*models.Menu, error) {
-	// TODO: make tree
-	return svc.menuDao.GetGroupItemsByID(ctx, groupID)
+func (svc *MenuService) GetGroupTree(ctx context.Context, groupID uint64) ([]*dto.MenuTreeItem, error) {
+	items, err := svc.menuDao.GetGroupItemsByID(ctx, groupID)
+	if err != nil {
+		return nil, err
+	}
+
+	return svc.genTree(items, groupID), nil
+}
+
+func (svc *MenuService) genTree(items []*models.Menu, parentID uint64) []*dto.MenuTreeItem {
+	var tree []*dto.MenuTreeItem
+	for _, item := range items {
+		if item.ParentID == parentID {
+			tree = append(tree, &dto.MenuTreeItem{
+				Key:      fmt.Sprintf("%d", item.ID),
+				Title:    item.Name,
+				Children: svc.genTree(items, item.ID),
+			})
+		}
+	}
+	return tree
 }
 
 func (svc *MenuService) PageGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, pageFilter *common.PageQueryFilter, sortFilter *common.SortQueryFilter) ([]*models.Menu, int64, error) {
 	queryFilter.GroupID = lo.ToPtr[uint64](0)
 	return svc.menuDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
+}
+
+func (svc *MenuService) FindGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, sortFilter *common.SortQueryFilter) ([]*models.Menu, error) {
+	queryFilter.GroupID = lo.ToPtr[uint64](0)
+	return svc.menuDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
 
 // CreateFromModel
@@ -71,6 +95,7 @@ func (svc *MenuService) Update(ctx context.Context, id uint64, body *dto.MenuFor
 
 	model.Name = body.Name
 	model.Slug = body.Slug
+	model.ParentID = body.ParentID
 	model.Metadata = body.Metadata
 
 	return svc.menuDao.Update(ctx, model)
@@ -87,14 +112,18 @@ func (svc *MenuService) Delete(ctx context.Context, id uint64) error {
 	if err != nil {
 		return err
 	}
-	if item.GroupID == 0 {
-		return svc.menuDao.Transaction(func() error {
-			if err := svc.menuDao.Delete(ctx, id); err != nil {
-				return err
-			}
-			return svc.menuDao.DeleteAll(ctx, id, item.GroupID)
-		})
-	}
 
-	return svc.menuDao.Delete(ctx, id)
+	return svc.menuDao.Transaction(func() error {
+		if err := svc.menuDao.Delete(ctx, id); err != nil {
+			return err
+		}
+		items, err := svc.menuDao.GetGroupSubItemsByID(ctx, item.GroupID, id)
+		if err != nil {
+			return err
+		}
+
+		return svc.menuDao.Delete(ctx, lo.Map(items, func(item *models.Menu, _ int) uint64 {
+			return item.ID
+		})...)
+	})
 }

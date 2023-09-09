@@ -16,7 +16,8 @@ import (
 func routeMenuController(engine fiber.Router, controller *controller.MenuController) {
 	basePath := "/"+engine.(*fiber.Group).Prefix
 	engine.Get(strings.TrimPrefix("/v1/systems/menus/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/menus", basePath), DataFunc3(controller.List, Query[dto.MenuListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/menus/:id<int>/tree", basePath), DataFunc1(controller.ShowTree, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/menus", basePath), DataFunc2(controller.List, Query[dto.MenuListQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
 	engine.Post(strings.TrimPrefix("/v1/systems/menus", basePath), Func1(controller.Create, Body[dto.MenuForm](BodyParamError)))
 	engine.Post(strings.TrimPrefix("/v1/systems/menus/:menuId<int>/sub", basePath), Func2(controller.CreateSub, Integer[uint64]("menuID", PathParamError), Body[dto.MenuForm](BodyParamError)))
 	engine.Put(strings.TrimPrefix("/v1/systems/menus/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.MenuForm](BodyParamError)))

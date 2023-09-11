@@ -77,6 +77,45 @@ authorization:
             path: users/download
             api:
               - post#/v1/users/users/download
+      - title:  用户地址
+        name: UserAddressList
+        path: users/{id}/addresses
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/users/users/{user_id}/addresses
+        children:
+          - title: 用户地址创建
+            name: UserAddressCreate
+            path: create
+            api:
+              - post#/v1/users/users/{user_id}/addresses
+          - title: 用户地址查看
+            name: UserAddressView
+            path: view/{id}
+            api:
+              - get#/v1/users/users/{user_id}/addresses/{id}
+          - title: 用户地址编辑
+            name: UserAddressEdit
+            path: edit/{id}
+            api:
+              - put#/v1/users/users/{user_id}/addresses/{id}
+              - get#/v1/users/users/{user_id}/addresses/{id}
+          - title: 用户地址删除
+            name: UserAddressDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/users/users/{user_id}/addresses/{id}
+          - title: 用户地址导入
+            name: UserAddressImport
+            path: import
+            api:
+              - post#/v1/users/users/{user_id}/addresses/import
+          - title: 用户地址下载
+            name: UserAddressDownload
+            path: download
+            api:
+              - post#/v1/users/users/{user_id}/addresses/download
       - title: 角色
         name: RoleList
         path: roles

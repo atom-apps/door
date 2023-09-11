@@ -159,7 +159,7 @@ func (c *LocationController) Areas(ctx *fiber.Ctx, province, city string) ([]*dt
 //	@Accept			json
 //	@Produce		json
 //	@Success		200			{array}	dto.LocationItem
-//	@Router			/v1/systems/locations/provinces/{province}/cities/{city}/areas/{area}/town [get]
+//	@Router			/v1/systems/locations/provinces/{province}/cities/{city}/areas/{area}/towns [get]
 func (c *LocationController) Towns(ctx *fiber.Ctx, province, city, area string) ([]*dto.LocationItem, error) {
 	items, err := c.locationSvc.Towns(ctx.Context(), province, city, area)
 	if err != nil {

@@ -64,6 +64,17 @@ func Provide(opts ...opt.Option) error {
 
 	if err := container.Container.Provide(func(
 		query *query.Query,
+	) (*UserAddressDao, error) {
+		obj := &UserAddressDao{
+			query: query,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		query *query.Query,
 	) (*UserInfoDao, error) {
 		obj := &UserInfoDao{
 			query: query,

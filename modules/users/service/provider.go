@@ -134,6 +134,17 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		userAddressDao *dao.UserAddressDao,
+	) (*UserAddressService, error) {
+		obj := &UserAddressService{
+			userAddressDao: userAddressDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		userInfoDao *dao.UserInfoDao,
 	) (*UserInfoService, error) {
 		obj := &UserInfoService{

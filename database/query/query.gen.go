@@ -30,6 +30,7 @@ var (
 	Tenant         *tenant
 	Token          *token
 	User           *user
+	UserAddress    *userAddress
 	UserInfo       *userInfo
 	UserTenantRole *userTenantRole
 )
@@ -49,6 +50,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Tenant = &Q.Tenant
 	Token = &Q.Token
 	User = &Q.User
+	UserAddress = &Q.UserAddress
 	UserInfo = &Q.UserInfo
 	UserTenantRole = &Q.UserTenantRole
 }
@@ -69,6 +71,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Tenant:         newTenant(db, opts...),
 		Token:          newToken(db, opts...),
 		User:           newUser(db, opts...),
+		UserAddress:    newUserAddress(db, opts...),
 		UserInfo:       newUserInfo(db, opts...),
 		UserTenantRole: newUserTenantRole(db, opts...),
 	}
@@ -90,6 +93,7 @@ type Query struct {
 	Tenant         tenant
 	Token          token
 	User           user
+	UserAddress    userAddress
 	UserInfo       userInfo
 	UserTenantRole userTenantRole
 }
@@ -112,6 +116,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Tenant:         q.Tenant.clone(db),
 		Token:          q.Token.clone(db),
 		User:           q.User.clone(db),
+		UserAddress:    q.UserAddress.clone(db),
 		UserInfo:       q.UserInfo.clone(db),
 		UserTenantRole: q.UserTenantRole.clone(db),
 	}
@@ -141,6 +146,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Tenant:         q.Tenant.replaceDB(db),
 		Token:          q.Token.replaceDB(db),
 		User:           q.User.replaceDB(db),
+		UserAddress:    q.UserAddress.replaceDB(db),
 		UserInfo:       q.UserInfo.replaceDB(db),
 		UserTenantRole: q.UserTenantRole.replaceDB(db),
 	}
@@ -160,6 +166,7 @@ type queryCtx struct {
 	Tenant         ITenantDo
 	Token          ITokenDo
 	User           IUserDo
+	UserAddress    IUserAddressDo
 	UserInfo       IUserInfoDo
 	UserTenantRole IUserTenantRoleDo
 }
@@ -179,6 +186,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Tenant:         q.Tenant.WithContext(ctx),
 		Token:          q.Token.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
+		UserAddress:    q.UserAddress.WithContext(ctx),
 		UserInfo:       q.UserInfo.WithContext(ctx),
 		UserTenantRole: q.UserTenantRole.WithContext(ctx),
 	}

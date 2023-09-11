@@ -65,6 +65,17 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		userAddressSvc *service.UserAddressService,
+	) (*UserAddressController, error) {
+		obj := &UserAddressController{
+			userAddressSvc: userAddressSvc,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		permissionSvc *service.PermissionService,
 		userSvc *service.UserService,
 	) (*UserController, error) {

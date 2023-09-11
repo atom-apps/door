@@ -23,6 +23,6 @@ func routeLocationController(engine fiber.Router, controller *controller.Locatio
 	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces", basePath), DataFunc(controller.Provinces))
 	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities", basePath), DataFunc1(controller.Cities, String("province", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas", basePath), DataFunc2(controller.Areas, String("province", PathParamError), String("city", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas/:area/town", basePath), DataFunc3(controller.Towns, String("province", PathParamError), String("city", PathParamError), String("area", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas/:area/towns", basePath), DataFunc3(controller.Towns, String("province", PathParamError), String("city", PathParamError), String("area", PathParamError)))
 	engine.Get(strings.TrimPrefix("/v1/systems/locations/:code-:town", basePath), DataFunc2(controller.Location, String("code", PathParamError), String("town", PathParamError)))
 }

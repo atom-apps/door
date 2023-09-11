@@ -155,7 +155,7 @@ func (dao *LocationDao) Province(ctx context.Context, province string) (*models.
 // Cities
 func (dao *LocationDao) Cities(ctx context.Context, province string) ([]*models.Location, error) {
 	table, query := dao.query.Location, dao.Context(ctx)
-	return query.Where(table.Province.Eq(province), table.Area.Eq(""), table.Town.Eq("")).Find()
+	return query.Where(table.Province.Eq(province), table.City.Neq(""), table.Area.Eq(""), table.Town.Eq("")).Find()
 }
 
 // City
@@ -167,7 +167,7 @@ func (dao *LocationDao) City(ctx context.Context, province, city string) (*model
 // Areas
 func (dao *LocationDao) Areas(ctx context.Context, province, city string) ([]*models.Location, error) {
 	table, query := dao.query.Location, dao.Context(ctx)
-	return query.Where(table.Province.Eq(province), table.City.Eq(city), table.Area.Eq(""), table.Town.Eq("")).Find()
+	return query.Where(table.Province.Eq(province), table.City.Eq(city), table.Area.Neq(""), table.Town.Eq("")).Find()
 }
 
 // Area

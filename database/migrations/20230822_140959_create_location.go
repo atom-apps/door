@@ -9,12 +9,12 @@ func (m *Migration20230822_140959CreateLocation) table() interface{} {
 	type Location struct {
 		ModelOnlyID
 
-		Code     uint   `gorm:"unique;comment:行政区划代码"`
-		Name     string `gorm:"size:256;comment:名称"`
-		Province string `gorm:"size:256;comment:省/直辖市"`
-		City     string `gorm:"size:256;comment:市"`
-		Area     string `gorm:"size:256;comment:区县"`
-		Town     string `gorm:"size:256;comment:乡镇"`
+		Code     string `gorm:"size:6;comment:行政区划代码"`
+		Name     string `gorm:"size:128;comment:名称"`
+		Province string `gorm:"size:2;comment:省/直辖市"`
+		City     string `gorm:"size:2;comment:市"`
+		Area     string `gorm:"size:2;comment:区县"`
+		Town     string `gorm:"size:12;comment:乡镇"`
 	}
 
 	return &Location{}

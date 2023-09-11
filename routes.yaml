@@ -304,3 +304,42 @@ authorization:
             path: download
             api:
               - post#/v1/systems/menus/download
+      - title:  区域
+        name: LocationList
+        path: locations
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/systems/locations
+        children:
+          - title: 区域创建
+            name: LocationCreate
+            path: create
+            api:
+              - post#/v1/systems/locations
+          - title: 区域查看
+            name: LocationView
+            path: view/{id}
+            api:
+              - get#/v1/systems/locations/{id}
+          - title: 区域编辑
+            name: LocationEdit
+            path: edit/{id}
+            api:
+              - put#/v1/systems/locations/{id}
+              - get#/v1/systems/locations/{id}
+          - title: 区域删除
+            name: LocationDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/systems/locations/{id}
+          - title: 区域导入
+            name: LocationImport
+            path: import
+            api:
+              - post#/v1/systems/locations/import
+          - title: 区域下载
+            name: LocationDownload
+            path: download
+            api:
+              - post#/v1/systems/locations/download

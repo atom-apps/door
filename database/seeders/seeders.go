@@ -11,4 +11,5 @@ var Seeders = []contracts.SeederProvider{
 	NewRouteSeeder,
 	NewDictionarySeeder,
 	NewMenuSeeder,
+	NewLocationSeeder,
 }

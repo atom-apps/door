@@ -19,6 +19,17 @@ func Provide(opts ...opt.Option) error {
 	}
 
 	if err := container.Container.Provide(func(
+		locationDao *dao.LocationDao,
+	) (*LocationService, error) {
+		obj := &LocationService{
+			locationDao: locationDao,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
 		menuDao *dao.MenuDao,
 	) (*MenuService, error) {
 		obj := &MenuService{

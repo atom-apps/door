@@ -20,6 +20,17 @@ func Provide(opts ...opt.Option) error {
 
 	if err := container.Container.Provide(func(
 		query *query.Query,
+	) (*LocationDao, error) {
+		obj := &LocationDao{
+			query: query,
+		}
+		return obj, nil
+	}); err != nil {
+		return err
+	}
+
+	if err := container.Container.Provide(func(
+		query *query.Query,
 	) (*MenuDao, error) {
 		obj := &MenuDao{
 			query: query,

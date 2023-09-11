@@ -29,7 +29,7 @@ func newLocation(db *gorm.DB, opts ...gen.DOOption) location {
 	_location.ALL = field.NewAsterisk(tableName)
 	_location.ID = field.NewUint64(tableName, "id")
 	_location.CreatedAt = field.NewTime(tableName, "created_at")
-	_location.Code = field.NewUint64(tableName, "code")
+	_location.Code = field.NewString(tableName, "code")
 	_location.Name = field.NewString(tableName, "name")
 	_location.Province = field.NewString(tableName, "province")
 	_location.City = field.NewString(tableName, "city")
@@ -47,7 +47,7 @@ type location struct {
 	ALL       field.Asterisk
 	ID        field.Uint64 // ID
 	CreatedAt field.Time   // 创建时间
-	Code      field.Uint64 // 行政区划代码
+	Code      field.String // 行政区划代码
 	Name      field.String // 名称
 	Province  field.String // 省/直辖市
 	City      field.String // 市
@@ -71,7 +71,7 @@ func (l *location) updateTableName(table string) *location {
 	l.ALL = field.NewAsterisk(table)
 	l.ID = field.NewUint64(table, "id")
 	l.CreatedAt = field.NewTime(table, "created_at")
-	l.Code = field.NewUint64(table, "code")
+	l.Code = field.NewString(table, "code")
 	l.Name = field.NewString(table, "name")
 	l.Province = field.NewString(table, "province")
 	l.City = field.NewString(table, "city")

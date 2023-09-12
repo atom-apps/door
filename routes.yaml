@@ -382,3 +382,79 @@ authorization:
             path: download
             api:
               - post#/v1/systems/locations/download
+      - title:  存储驱动
+        name: DriverList
+        path: drivers
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/storages/drivers
+        children:
+          - title: 存储驱动创建
+            name: DriverCreate
+            path: create
+            api:
+              - post#/v1/storages/drivers
+          - title: 存储驱动查看
+            name: DriverView
+            path: view/{id}
+            api:
+              - get#/v1/storages/drivers/{id}
+          - title: 存储驱动编辑
+            name: DriverEdit
+            path: edit/{id}
+            api:
+              - put#/v1/storages/drivers/{id}
+              - get#/v1/storages/drivers/{id}
+          - title: 存储驱动删除
+            name: DriverDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/storages/drivers/{id}
+          - title: 存储驱动导入
+            name: DriverImport
+            path: import
+            api:
+              - post#/v1/storages/drivers/import
+          - title: 存储驱动下载
+            name: DriverDownload
+            path: download
+            api:
+              - post#/v1/storages/drivers/download
+    
+  - title: 存储管理
+    name: storages
+    path: storages
+    meta:
+      icon: icon-image
+      hideInMenu: false
+    children:
+      - title:  文件管理
+        name: FilesystemList
+        path: filesystems
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/storages/filesystems
+        children:
+          - title: 文件管理创建
+            name: FilesystemCreate
+            path: create
+            api:
+              - post#/v1/storages/filesystems
+          - title: 文件管理查看
+            name: FilesystemView
+            path: view/{id}
+            api:
+              - get#/v1/storages/filesystems/{id}
+          - title: 文件管理编辑
+            name: FilesystemEdit
+            path: edit/{id}
+            api:
+              - put#/v1/storages/filesystems/{id}
+              - get#/v1/storages/filesystems/{id}
+          - title: 文件管理删除
+            name: FilesystemDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/storages/filesystems/{id}

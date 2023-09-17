@@ -15,10 +15,6 @@ Version = "1.0.0"
 Addresses = ["localhost:6379"]
 Password = ""
 DB = 0
-# [Redis]
-# Addresses = ["localhost:6379"]
-# Password = ""
-# DB = 0
 
 [MySQL]
 Username = "root"
@@ -26,13 +22,6 @@ Password = "admin"
 Database = "atom"
 Host = "localhost"
 Port = 3306
-
-# [MySQL]
-# Username = "root"
-# Password = "admin"
-# Database = "atom"
-# Host = "localhost"
-# Port = 3306
 
 [OAuth]
 ClientID = "asdfasdfasdf"

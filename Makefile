@@ -43,3 +43,7 @@ mdown:
 .PHONY: model
 model:
 	@go run . model
+
+.PHONY: docker
+model:
+	@docker build -t github.com

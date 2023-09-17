@@ -22,3 +22,4 @@ go.work.sum
 # Dependency directories (remove the comment below to include it)
 # vendor/
 __debug_bin*
+door

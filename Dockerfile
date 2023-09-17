@@ -4,10 +4,10 @@ WORKDIR /src
 
 COPY . .
 
-# ENV GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=https://goproxy.cn,direct
 
-RUN rm -rf dev.go go.work go.work.sum 
-RUN go mod tidy && CGO_ENABLED=0 go build -ldflags="-w -s" -o /src/door
+RUN rm -rf dev.go go.work go.work.sum ; go mod tidy
+RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /src/door
 
 
 FROM alpine:latest as compress
@@ -16,7 +16,7 @@ WORKDIR /
 
 COPY --from=builder /src/door /door
 
-# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories 
 RUN  apk add --no-cache upx ca-certificates tzdata \
   && upx -5 door -o _upx_door \
   && mv -f _upx_door door
@@ -31,4 +31,4 @@ WORKDIR /app
 COPY --from=compress /door /app/door
 COPY ./config.prod.toml /app/door.toml
 
-ENTRYPOINT [ "/door" ]
+ENTRYPOINT [ "/app/door" ]

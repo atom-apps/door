@@ -18,7 +18,7 @@ COPY --from=builder /src/door /door
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories 
 RUN  apk add --no-cache upx ca-certificates tzdata \
-  && upx --best door -o _upx_door \
+  && upx -5 door -o _upx_door \
   && mv -f _upx_door door
 
 FROM busybox:stable-glibc

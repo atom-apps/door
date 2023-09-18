@@ -77,7 +77,7 @@ authorization:
             path: users/download
             api:
               - post#/v1/users/users/download
-      - title:  用户地址
+      - title: 用户地址
         name: UserAddressList
         path: users/{id}/addresses
         meta:
@@ -253,7 +253,7 @@ authorization:
             path: routes/download
             api:
               - post#/v1/systems/routes/download
-      - title:  字典
+      - title: 字典
         name: DictionaryList
         path: dictionaries
         meta:
@@ -292,7 +292,7 @@ authorization:
             path: download
             api:
               - post#/v1/systems/dictionaries/download
-      - title:  菜单
+      - title: 菜单
         name: MenuList
         path: menus
         meta:
@@ -343,7 +343,7 @@ authorization:
             path: download
             api:
               - post#/v1/systems/menus/download
-      - title:  区域
+      - title: 区域
         name: LocationList
         path: locations
         meta:
@@ -382,7 +382,7 @@ authorization:
             path: download
             api:
               - post#/v1/systems/locations/download
-      - title:  存储驱动
+      - title: 存储驱动
         name: DriverList
         path: drivers
         meta:
@@ -421,7 +421,7 @@ authorization:
             path: download
             api:
               - post#/v1/storages/drivers/download
-    
+
   - title: 存储管理
     name: storages
     path: storages
@@ -429,7 +429,7 @@ authorization:
       icon: icon-image
       hideInMenu: false
     children:
-      - title:  文件管理
+      - title: 文件管理
         name: FilesystemList
         path: filesystems
         meta:
@@ -458,3 +458,127 @@ authorization:
             path: delete/{id}
             api:
               - delete#/v1/storages/filesystems/{id}
+  - title: 内容管理
+    name: storages
+    path: storages
+    meta:
+      icon: icon-book
+      hideInMenu: false
+    children:
+      - title: 书籍
+        name: BookList
+        path: books
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/posts/books
+        children:
+          - title: 书籍创建
+            name: BookCreate
+            path: create
+            api:
+              - post#/v1/posts/books
+          - title: 书籍查看
+            name: BookView
+            path: view/{id}
+            api:
+              - get#/v1/posts/books/{id}
+          - title: 书籍编辑
+            name: BookEdit
+            path: edit/{id}
+            api:
+              - put#/v1/posts/books/{id}
+              - get#/v1/posts/books/{id}
+          - title: 书籍删除
+            name: BookDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/posts/books/{id}
+          - title: 书籍导入
+            name: BookImport
+            path: import
+            api:
+              - post#/v1/posts/books/import
+          - title: 书籍下载
+            name: BookDownload
+            path: download
+            api:
+              - post#/v1/posts/books/download
+      - title:  章节
+        name: ChapterList
+        path: chapters
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/posts/books/{book_id}/chapters
+        children:
+          - title: 章节创建
+            name: ChapterCreate
+            path: create
+            api:
+              - post#/v1/posts/books/{book_id}/chapters
+          - title: 章节查看
+            name: ChapterView
+            path: view/{id}
+            api:
+              - get#/v1/posts/books/{book_id}/chapters/{id}
+          - title: 章节编辑
+            name: ChapterEdit
+            path: edit/{id}
+            api:
+              - put#/v1/posts/books/{book_id}/chapters/{id}
+              - get#/v1/posts/books/{book_id}/chapters/{id}
+          - title: 章节删除
+            name: ChapterDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/posts/books/{book_id}/chapters/{id}
+          - title: 章节导入
+            name: ChapterImport
+            path: import
+            api:
+              - post#/v1/posts/books/{book_id}/chapters/import
+          - title: 章节下载
+            name: ChapterDownload
+            path: download
+            api:
+              - post#/v1/posts/books/{book_id}/chapters/download
+      - title:  文章
+        name: ArticleList
+        path: articles
+        meta:
+          hideInMenu: false
+        api:
+          - get#/v1/posts/articles
+        children:
+          - title: 文章创建
+            name: ArticleCreate
+            path: create
+            api:
+              - post#/v1/posts/articles
+          - title: 文章查看
+            name: ArticleView
+            path: view/{id}
+            api:
+              - get#/v1/posts/articles/{id}
+          - title: 文章编辑
+            name: ArticleEdit
+            path: edit/{id}
+            api:
+              - put#/v1/posts/articles/{id}
+              - get#/v1/posts/articles/{id}
+          - title: 文章删除
+            name: ArticleDelete
+            path: delete/{id}
+            api:
+              - delete#/v1/posts/articles/{id}
+          - title: 文章导入
+            name: ArticleImport
+            path: import
+            api:
+              - post#/v1/posts/articles/import
+          - title: 文章下载
+            name: ArticleDownload
+            path: download
+            api:
+              - post#/v1/posts/articles/download

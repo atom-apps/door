@@ -459,8 +459,8 @@ authorization:
             api:
               - delete#/v1/storages/filesystems/{id}
   - title: 内容管理
-    name: storages
-    path: storages
+    name: posts
+    path: posts
     meta:
       icon: icon-book
       hideInMenu: false

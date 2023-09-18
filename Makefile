@@ -45,5 +45,5 @@ model:
 	@go run . model
 
 .PHONY: docker
-model:
-	@docker build -t github.com
+docker:
+    docker build -t registry.cn-hangzhou.aliyuncs.com/atom-apps/door:dev-latest .

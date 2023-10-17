@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -26,7 +27,7 @@ func (dao *RoleDao) Context(ctx context.Context) query.IRoleDo {
 	return dao.query.Role.WithContext(ctx)
 }
 
-func (dao *RoleDao) decorateSortQueryFilter(query query.IRoleDo, sortFilter *common.SortQueryFilter) query.IRoleDo {
+func (dao *RoleDao) decorateSortQueryFilter(query query.IRoleDo, sortFilter *ds.SortQueryFilter) query.IRoleDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -104,8 +105,8 @@ func (dao *RoleDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Role,
 func (dao *RoleDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RoleListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Role, int64, error) {
 	query := dao.query.Role
 	roleQuery := query.WithContext(ctx)
@@ -117,7 +118,7 @@ func (dao *RoleDao) PageByQueryFilter(
 func (dao *RoleDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RoleListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Role, error) {
 	query := dao.query.Role
 	roleQuery := query.WithContext(ctx)
@@ -129,7 +130,7 @@ func (dao *RoleDao) FindByQueryFilter(
 func (dao *RoleDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RoleListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Role, error) {
 	query := dao.query.Role
 	roleQuery := query.WithContext(ctx)

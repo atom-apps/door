@@ -13,4 +13,14 @@ var Seeders = []contracts.SeederProvider{
 	NewMenuSeeder,
 	NewLocationSeeder,
 	NewUserAddressSeeder,
+
+	// seeders
+	NewDriverSeeder,
+	NewFilesystemSeeder,
+
+	// posts
+	NewTagSeeder,
+	NewBookSeeder,
+	NewChapterSeeder,
+	NewArticleSeeder,
 }

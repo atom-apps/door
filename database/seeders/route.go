@@ -3,7 +3,7 @@ package seeders
 import (
 	"os"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/model"
 	"github.com/atom-apps/door/database/models"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/rogeecn/atom/contracts"
@@ -32,13 +32,13 @@ type routeDefinition struct {
 	Authorization []*routeItem
 }
 type routeItem struct {
-	Title    string               `json:"name"`
-	Name     string               `json:"name"`
-	Path     string               `json:"path"`
-	Api      []string             `json:"api"`
-	Meta     common.RouteMetadata `json:"meta"`
-	Order    int                  `json:"order"`
-	Children []*routeItem         `json:"children,omitempty"`
+	Title    string              `json:"name"`
+	Name     string              `json:"name"`
+	Path     string              `json:"path"`
+	Api      []string            `json:"api"`
+	Meta     model.RouteMetadata `json:"meta"`
+	Order    int                 `json:"order"`
+	Children []*routeItem        `json:"children,omitempty"`
 }
 
 func (s *RouteSeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {

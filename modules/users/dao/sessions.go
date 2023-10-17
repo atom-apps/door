@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -26,7 +26,7 @@ func (dao *SessionDao) Context(ctx context.Context) query.ISessionDo {
 	return dao.query.Session.WithContext(ctx)
 }
 
-func (dao *SessionDao) decorateSortQueryFilter(query query.ISessionDo, sortFilter *common.SortQueryFilter) query.ISessionDo {
+func (dao *SessionDao) decorateSortQueryFilter(query query.ISessionDo, sortFilter *ds.SortQueryFilter) query.ISessionDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -94,8 +94,8 @@ func (dao *SessionDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Se
 func (dao *SessionDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.SessionListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Session, int64, error) {
 	query := dao.query.Session
 	sessionQuery := query.WithContext(ctx)
@@ -107,7 +107,7 @@ func (dao *SessionDao) PageByQueryFilter(
 func (dao *SessionDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.SessionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Session, error) {
 	query := dao.query.Session
 	sessionQuery := query.WithContext(ctx)
@@ -119,7 +119,7 @@ func (dao *SessionDao) FindByQueryFilter(
 func (dao *SessionDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.SessionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Session, error) {
 	query := dao.query.Session
 	sessionQuery := query.WithContext(ctx)

@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -26,7 +26,7 @@ func (dao *UserAddressDao) Context(ctx context.Context) query.IUserAddressDo {
 	return dao.query.UserAddress.WithContext(ctx)
 }
 
-func (dao *UserAddressDao) decorateSortQueryFilter(query query.IUserAddressDo, sortFilter *common.SortQueryFilter) query.IUserAddressDo {
+func (dao *UserAddressDao) decorateSortQueryFilter(query query.IUserAddressDo, sortFilter *ds.SortQueryFilter) query.IUserAddressDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -114,8 +114,8 @@ func (dao *UserAddressDao) GetByIDs(ctx context.Context, ids []uint64) ([]*model
 func (dao *UserAddressDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserAddressListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserAddress, int64, error) {
 	query := dao.query.UserAddress
 	userAddressQuery := query.WithContext(ctx)
@@ -127,7 +127,7 @@ func (dao *UserAddressDao) PageByQueryFilter(
 func (dao *UserAddressDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserAddressListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserAddress, error) {
 	query := dao.query.UserAddress
 	userAddressQuery := query.WithContext(ctx)
@@ -139,7 +139,7 @@ func (dao *UserAddressDao) FindByQueryFilter(
 func (dao *UserAddressDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserAddressListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.UserAddress, error) {
 	query := dao.query.UserAddress
 	userAddressQuery := query.WithContext(ctx)

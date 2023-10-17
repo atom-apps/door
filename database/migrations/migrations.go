@@ -31,3 +31,7 @@ type ModelWithUser struct {
 	TenantID uint `gorm:"comment:租户ID"`
 	UserID   uint `gorm:"comment:用户ID"`
 }
+
+type ModelWithArticle struct {
+	ArticleID uint `gorm:"comment:文章ID"`
+}

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/atom-apps/door/common"
 	"github.com/atom-apps/door/common/consts"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -64,7 +64,7 @@ func (svc *TokenService) GetByID(ctx context.Context, id uint64) (*models.Token,
 func (svc *TokenService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TokenListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Token, error) {
 	return svc.tokenDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -72,8 +72,8 @@ func (svc *TokenService) FindByQueryFilter(
 func (svc *TokenService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TokenListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Token, int64, error) {
 	return svc.tokenDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-apps/door/modules/systems/service"
 
@@ -39,22 +39,22 @@ func (c *LocationController) Show(ctx *fiber.Ctx, id uint64) (*dto.LocationItem,
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.LocationListQueryFilter	true	"LocationListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.LocationItem}
+//	@Param			pageFilter	query		ds.PageQueryFilter	true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter	true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.LocationItem}
 //	@Router			/v1/systems/locations [get]
 func (c *LocationController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.LocationListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
+) (*ds.PageDataResponse, error) {
 	items, total, err := c.locationSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
+	return &ds.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           total,
 		Items:           lo.Map(items, c.locationSvc.DecorateItem),

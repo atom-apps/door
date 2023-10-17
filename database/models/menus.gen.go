@@ -7,7 +7,7 @@ package models
 import (
 	"time"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/model"
 	"gorm.io/gorm/schema"
 )
 
@@ -15,13 +15,13 @@ const TableNameMenu = "menus"
 
 // Menu mapped from table <menus>
 type Menu struct {
-	ID        uint64              `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time           `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
-	Name      string              `gorm:"column:name;type:varchar(64);comment:名称" json:"name"`                               // 名称
-	Slug      string              `gorm:"column:slug;type:varchar(128);comment:别名" json:"slug"`                              // 别名
-	GroupID   uint64              `gorm:"column:group_id;type:bigint unsigned;comment:组" json:"group_id"`                    // 组
-	ParentID  uint64              `gorm:"column:parent_id;type:bigint unsigned;comment:父ID" json:"parent_id"`                // 父ID
-	Metadata  common.MenuMetadata `gorm:"column:metadata;type:text;comment:元数据" json:"metadata"`                             // 元数据
+	ID        uint64             `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time          `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                     // 创建时间
+	Name      string             `gorm:"column:name;type:varchar(64);comment:名称" json:"name"`                                   // 名称
+	Slug      string             `gorm:"column:slug;type:varchar(128);comment:别名" json:"slug"`                                  // 别名
+	GroupID   uint64             `gorm:"column:group_id;type:bigint(20) unsigned;comment:组" json:"group_id"`                    // 组
+	ParentID  uint64             `gorm:"column:parent_id;type:bigint(20) unsigned;comment:父ID" json:"parent_id"`                // 父ID
+	Metadata  model.MenuMetadata `gorm:"column:metadata;type:text;comment:元数据" json:"metadata"`                                 // 元数据
 }
 
 func (*Menu) TableName(namer schema.Namer) string {

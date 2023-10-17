@@ -14,12 +14,12 @@ const TableNameSession = "sessions"
 
 // Session mapped from table <sessions>
 type Session struct {
-	ID        uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
-	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                 // 更新时间
-	UserID    uint64    `gorm:"column:user_id;type:bigint unsigned;comment:用户ID" json:"user_id"`                   // 用户ID
-	SessionID string    `gorm:"column:session_id;type:varchar(64);comment:会话ID" json:"session_id"`                 // 会话ID
-	ExpireAt  time.Time `gorm:"column:expire_at;type:datetime(3);comment:过期时间" json:"expire_at"`                   // 过期时间
+	ID        uint64    `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                     // 创建时间
+	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                     // 更新时间
+	UserID    uint64    `gorm:"column:user_id;type:bigint(20) unsigned;comment:用户ID" json:"user_id"`                   // 用户ID
+	SessionID string    `gorm:"column:session_id;type:varchar(64);comment:会话ID" json:"session_id"`                     // 会话ID
+	ExpireAt  time.Time `gorm:"column:expire_at;type:datetime(3);comment:过期时间" json:"expire_at"`                       // 过期时间
 }
 
 func (*Session) TableName(namer schema.Namer) string {

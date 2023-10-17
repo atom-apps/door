@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -27,7 +27,7 @@ func (dao *PermissionDao) Context(ctx context.Context) query.IPermissionDo {
 	return dao.query.Permission.WithContext(ctx)
 }
 
-func (dao *PermissionDao) decorateSortQueryFilter(query query.IPermissionDo, sortFilter *common.SortQueryFilter) query.IPermissionDo {
+func (dao *PermissionDao) decorateSortQueryFilter(query query.IPermissionDo, sortFilter *ds.SortQueryFilter) query.IPermissionDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -76,7 +76,7 @@ func (dao *PermissionDao) Delete(ctx context.Context, id uint64) error {
 }
 
 // DeleteByTenantRole
-func (dao *PermissionDao) DeleteByTenantRole(ctx context.Context, tenantID uint64, roleID uint64) error {
+func (dao *PermissionDao) DeleteByTenantRole(ctx context.Context, tenantID, roleID uint64) error {
 	_, err := dao.Context(ctx).Where(dao.query.Permission.TenantID.Eq(tenantID), dao.query.Permission.RoleID.Eq(roleID)).Delete()
 	return err
 }
@@ -115,8 +115,8 @@ func (dao *PermissionDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models
 func (dao *PermissionDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.PermissionListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Permission, int64, error) {
 	query := dao.query.Permission
 	permissionQuery := query.WithContext(ctx)
@@ -128,7 +128,7 @@ func (dao *PermissionDao) PageByQueryFilter(
 func (dao *PermissionDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.PermissionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Permission, error) {
 	query := dao.query.Permission
 	permissionQuery := query.WithContext(ctx)
@@ -140,7 +140,7 @@ func (dao *PermissionDao) FindByQueryFilter(
 func (dao *PermissionDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.PermissionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Permission, error) {
 	query := dao.query.Permission
 	permissionQuery := query.WithContext(ctx)

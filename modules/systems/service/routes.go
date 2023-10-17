@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -62,7 +62,7 @@ func (svc *RouteService) GetByID(ctx context.Context, id uint64) (*models.Route,
 func (svc *RouteService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RouteListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Route, error) {
 	return svc.routeDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -70,8 +70,8 @@ func (svc *RouteService) FindByQueryFilter(
 func (svc *RouteService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RouteListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Route, int64, error) {
 	return svc.routeDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

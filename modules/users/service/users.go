@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
@@ -67,7 +68,7 @@ func (svc *UserService) GetByID(ctx context.Context, id uint64) (*models.User, e
 func (svc *UserService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.User, error) {
 	return svc.userDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -75,8 +76,8 @@ func (svc *UserService) FindByQueryFilter(
 func (svc *UserService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.User, int64, error) {
 	return svc.userDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

@@ -15,11 +15,11 @@ const TableNameUserAddress = "user_addresses"
 
 // UserAddress mapped from table <user_addresses>
 type UserAddress struct {
-	ID        uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`      // ID
+	ID        uint64         `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`  // ID
 	CreatedAt time.Time      `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                      // 创建时间
 	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                      // 更新时间
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
-	UserID    uint64         `gorm:"column:user_id;type:bigint unsigned;comment:用户ID" json:"user_id"`                        // 用户ID
+	UserID    uint64         `gorm:"column:user_id;type:bigint(20) unsigned;comment:用户ID" json:"user_id"`                    // 用户ID
 	Code      string         `gorm:"column:code;type:varchar(6);comment:行政区划代码" json:"code"`                                 // 行政区划代码
 	Town      string         `gorm:"column:town;type:varchar(6);comment:街道" json:"town"`                                     // 街道
 	Detail    string         `gorm:"column:detail;type:varchar(256);comment:详细地址" json:"detail"`                             // 详细地址

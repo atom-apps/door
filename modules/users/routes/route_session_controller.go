@@ -3,21 +3,21 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/controller"
 	"github.com/atom-apps/door/modules/users/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeSessionController(engine fiber.Router, controller *controller.SessionController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/users/sessions/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/sessions", basePath), DataFunc3(controller.List, Query[dto.SessionListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Post(strings.TrimPrefix("/v1/users/sessions", basePath), Func1(controller.Create, Body[dto.SessionForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/sessions/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/sessions/:sessId<int>/by-session-id", basePath), Func1(controller.DeleteBySessionID, String("sessID", PathParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/users/sessions/:id<int>", groupPrefix), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/sessions", groupPrefix), DataFunc3(controller.List, Query[dto.SessionListQueryFilter](QueryParamError), Query[ds.PageQueryFilter](QueryParamError), Query[ds.SortQueryFilter](QueryParamError)))
+	engine.Post(strings.TrimPrefix("/v1/users/sessions", groupPrefix), Func1(controller.Create, Body[dto.SessionForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/sessions/:id<int>", groupPrefix), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/sessions/:sessId<int>/by-session-id", groupPrefix), Func1(controller.DeleteBySessionID, String("sessID", PathParamError)))
 }

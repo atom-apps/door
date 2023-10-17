@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
 
@@ -22,22 +22,22 @@ type TokenController struct {
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.TokenListQueryFilter	true	"TokenListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.TokenItem}
+//	@Param			pageFilter	query		ds.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter		true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.TokenItem}
 //	@Router			/v1/users/tokens [get]
 func (c *TokenController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.TokenListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
+) (*ds.PageDataResponse, error) {
 	items, total, err := c.tokenSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
+	return &ds.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           total,
 		Items:           lo.Map(items, c.tokenSvc.DecorateItem),

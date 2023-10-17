@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -34,7 +34,7 @@ func (svc *UserTenantRoleService) GetByID(ctx context.Context, id uint64) (*mode
 func (svc *UserTenantRoleService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserTenantRoleListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserTenantRole, error) {
 	return svc.userTenantRoleDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -42,8 +42,8 @@ func (svc *UserTenantRoleService) FindByQueryFilter(
 func (svc *UserTenantRoleService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserTenantRoleListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserTenantRole, int64, error) {
 	return svc.userTenantRoleDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

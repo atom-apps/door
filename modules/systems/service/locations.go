@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -35,7 +35,7 @@ func (svc *LocationService) GetByID(ctx context.Context, id uint64) (*models.Loc
 func (svc *LocationService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.LocationListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Location, error) {
 	return svc.locationDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -43,8 +43,8 @@ func (svc *LocationService) FindByQueryFilter(
 func (svc *LocationService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.LocationListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Location, int64, error) {
 	return svc.locationDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

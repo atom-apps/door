@@ -16,28 +16,53 @@ import (
 )
 
 var (
-	Q              = new(Query)
-	Dictionary     *dictionary
-	Location       *location
-	Menu           *menu
-	Migration      *migration
-	Permission     *permission
-	PermissionRule *permissionRule
-	Role           *role
-	Route          *route
-	RouteWhitelist *routeWhitelist
-	Session        *session
-	Tenant         *tenant
-	Token          *token
-	User           *user
-	UserAddress    *userAddress
-	UserInfo       *userInfo
-	UserTenantRole *userTenantRole
+	Q                    = new(Query)
+	Article              *article
+	ArticleAttachment    *articleAttachment
+	ArticleContent       *articleContent
+	ArticleDig           *articleDig
+	ArticleForwardSource *articleForwardSource
+	ArticlePaidUser      *articlePaidUser
+	ArticlePayment       *articlePayment
+	ArticleTag           *articleTag
+	Book                 *book
+	Chapter              *chapter
+	Dictionary           *dictionary
+	Driver               *driver
+	Filesystem           *filesystem
+	Location             *location
+	Menu                 *menu
+	Migration            *migration
+	Permission           *permission
+	PermissionRule       *permissionRule
+	Role                 *role
+	Route                *route
+	RouteWhitelist       *routeWhitelist
+	Session              *session
+	Tag                  *tag
+	Tenant               *tenant
+	Token                *token
+	User                 *user
+	UserAddress          *userAddress
+	UserInfo             *userInfo
+	UserTenantRole       *userTenantRole
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Article = &Q.Article
+	ArticleAttachment = &Q.ArticleAttachment
+	ArticleContent = &Q.ArticleContent
+	ArticleDig = &Q.ArticleDig
+	ArticleForwardSource = &Q.ArticleForwardSource
+	ArticlePaidUser = &Q.ArticlePaidUser
+	ArticlePayment = &Q.ArticlePayment
+	ArticleTag = &Q.ArticleTag
+	Book = &Q.Book
+	Chapter = &Q.Chapter
 	Dictionary = &Q.Dictionary
+	Driver = &Q.Driver
+	Filesystem = &Q.Filesystem
 	Location = &Q.Location
 	Menu = &Q.Menu
 	Migration = &Q.Migration
@@ -47,6 +72,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Route = &Q.Route
 	RouteWhitelist = &Q.RouteWhitelist
 	Session = &Q.Session
+	Tag = &Q.Tag
 	Tenant = &Q.Tenant
 	Token = &Q.Token
 	User = &Q.User
@@ -57,68 +83,107 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:             db,
-		Dictionary:     newDictionary(db, opts...),
-		Location:       newLocation(db, opts...),
-		Menu:           newMenu(db, opts...),
-		Migration:      newMigration(db, opts...),
-		Permission:     newPermission(db, opts...),
-		PermissionRule: newPermissionRule(db, opts...),
-		Role:           newRole(db, opts...),
-		Route:          newRoute(db, opts...),
-		RouteWhitelist: newRouteWhitelist(db, opts...),
-		Session:        newSession(db, opts...),
-		Tenant:         newTenant(db, opts...),
-		Token:          newToken(db, opts...),
-		User:           newUser(db, opts...),
-		UserAddress:    newUserAddress(db, opts...),
-		UserInfo:       newUserInfo(db, opts...),
-		UserTenantRole: newUserTenantRole(db, opts...),
+		db:                   db,
+		Article:              newArticle(db, opts...),
+		ArticleAttachment:    newArticleAttachment(db, opts...),
+		ArticleContent:       newArticleContent(db, opts...),
+		ArticleDig:           newArticleDig(db, opts...),
+		ArticleForwardSource: newArticleForwardSource(db, opts...),
+		ArticlePaidUser:      newArticlePaidUser(db, opts...),
+		ArticlePayment:       newArticlePayment(db, opts...),
+		ArticleTag:           newArticleTag(db, opts...),
+		Book:                 newBook(db, opts...),
+		Chapter:              newChapter(db, opts...),
+		Dictionary:           newDictionary(db, opts...),
+		Driver:               newDriver(db, opts...),
+		Filesystem:           newFilesystem(db, opts...),
+		Location:             newLocation(db, opts...),
+		Menu:                 newMenu(db, opts...),
+		Migration:            newMigration(db, opts...),
+		Permission:           newPermission(db, opts...),
+		PermissionRule:       newPermissionRule(db, opts...),
+		Role:                 newRole(db, opts...),
+		Route:                newRoute(db, opts...),
+		RouteWhitelist:       newRouteWhitelist(db, opts...),
+		Session:              newSession(db, opts...),
+		Tag:                  newTag(db, opts...),
+		Tenant:               newTenant(db, opts...),
+		Token:                newToken(db, opts...),
+		User:                 newUser(db, opts...),
+		UserAddress:          newUserAddress(db, opts...),
+		UserInfo:             newUserInfo(db, opts...),
+		UserTenantRole:       newUserTenantRole(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Dictionary     dictionary
-	Location       location
-	Menu           menu
-	Migration      migration
-	Permission     permission
-	PermissionRule permissionRule
-	Role           role
-	Route          route
-	RouteWhitelist routeWhitelist
-	Session        session
-	Tenant         tenant
-	Token          token
-	User           user
-	UserAddress    userAddress
-	UserInfo       userInfo
-	UserTenantRole userTenantRole
+	Article              article
+	ArticleAttachment    articleAttachment
+	ArticleContent       articleContent
+	ArticleDig           articleDig
+	ArticleForwardSource articleForwardSource
+	ArticlePaidUser      articlePaidUser
+	ArticlePayment       articlePayment
+	ArticleTag           articleTag
+	Book                 book
+	Chapter              chapter
+	Dictionary           dictionary
+	Driver               driver
+	Filesystem           filesystem
+	Location             location
+	Menu                 menu
+	Migration            migration
+	Permission           permission
+	PermissionRule       permissionRule
+	Role                 role
+	Route                route
+	RouteWhitelist       routeWhitelist
+	Session              session
+	Tag                  tag
+	Tenant               tenant
+	Token                token
+	User                 user
+	UserAddress          userAddress
+	UserInfo             userInfo
+	UserTenantRole       userTenantRole
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		Dictionary:     q.Dictionary.clone(db),
-		Location:       q.Location.clone(db),
-		Menu:           q.Menu.clone(db),
-		Migration:      q.Migration.clone(db),
-		Permission:     q.Permission.clone(db),
-		PermissionRule: q.PermissionRule.clone(db),
-		Role:           q.Role.clone(db),
-		Route:          q.Route.clone(db),
-		RouteWhitelist: q.RouteWhitelist.clone(db),
-		Session:        q.Session.clone(db),
-		Tenant:         q.Tenant.clone(db),
-		Token:          q.Token.clone(db),
-		User:           q.User.clone(db),
-		UserAddress:    q.UserAddress.clone(db),
-		UserInfo:       q.UserInfo.clone(db),
-		UserTenantRole: q.UserTenantRole.clone(db),
+		db:                   db,
+		Article:              q.Article.clone(db),
+		ArticleAttachment:    q.ArticleAttachment.clone(db),
+		ArticleContent:       q.ArticleContent.clone(db),
+		ArticleDig:           q.ArticleDig.clone(db),
+		ArticleForwardSource: q.ArticleForwardSource.clone(db),
+		ArticlePaidUser:      q.ArticlePaidUser.clone(db),
+		ArticlePayment:       q.ArticlePayment.clone(db),
+		ArticleTag:           q.ArticleTag.clone(db),
+		Book:                 q.Book.clone(db),
+		Chapter:              q.Chapter.clone(db),
+		Dictionary:           q.Dictionary.clone(db),
+		Driver:               q.Driver.clone(db),
+		Filesystem:           q.Filesystem.clone(db),
+		Location:             q.Location.clone(db),
+		Menu:                 q.Menu.clone(db),
+		Migration:            q.Migration.clone(db),
+		Permission:           q.Permission.clone(db),
+		PermissionRule:       q.PermissionRule.clone(db),
+		Role:                 q.Role.clone(db),
+		Route:                q.Route.clone(db),
+		RouteWhitelist:       q.RouteWhitelist.clone(db),
+		Session:              q.Session.clone(db),
+		Tag:                  q.Tag.clone(db),
+		Tenant:               q.Tenant.clone(db),
+		Token:                q.Token.clone(db),
+		User:                 q.User.clone(db),
+		UserAddress:          q.UserAddress.clone(db),
+		UserInfo:             q.UserInfo.clone(db),
+		UserTenantRole:       q.UserTenantRole.clone(db),
 	}
 }
 
@@ -132,63 +197,102 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		Dictionary:     q.Dictionary.replaceDB(db),
-		Location:       q.Location.replaceDB(db),
-		Menu:           q.Menu.replaceDB(db),
-		Migration:      q.Migration.replaceDB(db),
-		Permission:     q.Permission.replaceDB(db),
-		PermissionRule: q.PermissionRule.replaceDB(db),
-		Role:           q.Role.replaceDB(db),
-		Route:          q.Route.replaceDB(db),
-		RouteWhitelist: q.RouteWhitelist.replaceDB(db),
-		Session:        q.Session.replaceDB(db),
-		Tenant:         q.Tenant.replaceDB(db),
-		Token:          q.Token.replaceDB(db),
-		User:           q.User.replaceDB(db),
-		UserAddress:    q.UserAddress.replaceDB(db),
-		UserInfo:       q.UserInfo.replaceDB(db),
-		UserTenantRole: q.UserTenantRole.replaceDB(db),
+		db:                   db,
+		Article:              q.Article.replaceDB(db),
+		ArticleAttachment:    q.ArticleAttachment.replaceDB(db),
+		ArticleContent:       q.ArticleContent.replaceDB(db),
+		ArticleDig:           q.ArticleDig.replaceDB(db),
+		ArticleForwardSource: q.ArticleForwardSource.replaceDB(db),
+		ArticlePaidUser:      q.ArticlePaidUser.replaceDB(db),
+		ArticlePayment:       q.ArticlePayment.replaceDB(db),
+		ArticleTag:           q.ArticleTag.replaceDB(db),
+		Book:                 q.Book.replaceDB(db),
+		Chapter:              q.Chapter.replaceDB(db),
+		Dictionary:           q.Dictionary.replaceDB(db),
+		Driver:               q.Driver.replaceDB(db),
+		Filesystem:           q.Filesystem.replaceDB(db),
+		Location:             q.Location.replaceDB(db),
+		Menu:                 q.Menu.replaceDB(db),
+		Migration:            q.Migration.replaceDB(db),
+		Permission:           q.Permission.replaceDB(db),
+		PermissionRule:       q.PermissionRule.replaceDB(db),
+		Role:                 q.Role.replaceDB(db),
+		Route:                q.Route.replaceDB(db),
+		RouteWhitelist:       q.RouteWhitelist.replaceDB(db),
+		Session:              q.Session.replaceDB(db),
+		Tag:                  q.Tag.replaceDB(db),
+		Tenant:               q.Tenant.replaceDB(db),
+		Token:                q.Token.replaceDB(db),
+		User:                 q.User.replaceDB(db),
+		UserAddress:          q.UserAddress.replaceDB(db),
+		UserInfo:             q.UserInfo.replaceDB(db),
+		UserTenantRole:       q.UserTenantRole.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Dictionary     IDictionaryDo
-	Location       ILocationDo
-	Menu           IMenuDo
-	Migration      IMigrationDo
-	Permission     IPermissionDo
-	PermissionRule IPermissionRuleDo
-	Role           IRoleDo
-	Route          IRouteDo
-	RouteWhitelist IRouteWhitelistDo
-	Session        ISessionDo
-	Tenant         ITenantDo
-	Token          ITokenDo
-	User           IUserDo
-	UserAddress    IUserAddressDo
-	UserInfo       IUserInfoDo
-	UserTenantRole IUserTenantRoleDo
+	Article              IArticleDo
+	ArticleAttachment    IArticleAttachmentDo
+	ArticleContent       IArticleContentDo
+	ArticleDig           IArticleDigDo
+	ArticleForwardSource IArticleForwardSourceDo
+	ArticlePaidUser      IArticlePaidUserDo
+	ArticlePayment       IArticlePaymentDo
+	ArticleTag           IArticleTagDo
+	Book                 IBookDo
+	Chapter              IChapterDo
+	Dictionary           IDictionaryDo
+	Driver               IDriverDo
+	Filesystem           IFilesystemDo
+	Location             ILocationDo
+	Menu                 IMenuDo
+	Migration            IMigrationDo
+	Permission           IPermissionDo
+	PermissionRule       IPermissionRuleDo
+	Role                 IRoleDo
+	Route                IRouteDo
+	RouteWhitelist       IRouteWhitelistDo
+	Session              ISessionDo
+	Tag                  ITagDo
+	Tenant               ITenantDo
+	Token                ITokenDo
+	User                 IUserDo
+	UserAddress          IUserAddressDo
+	UserInfo             IUserInfoDo
+	UserTenantRole       IUserTenantRoleDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Dictionary:     q.Dictionary.WithContext(ctx),
-		Location:       q.Location.WithContext(ctx),
-		Menu:           q.Menu.WithContext(ctx),
-		Migration:      q.Migration.WithContext(ctx),
-		Permission:     q.Permission.WithContext(ctx),
-		PermissionRule: q.PermissionRule.WithContext(ctx),
-		Role:           q.Role.WithContext(ctx),
-		Route:          q.Route.WithContext(ctx),
-		RouteWhitelist: q.RouteWhitelist.WithContext(ctx),
-		Session:        q.Session.WithContext(ctx),
-		Tenant:         q.Tenant.WithContext(ctx),
-		Token:          q.Token.WithContext(ctx),
-		User:           q.User.WithContext(ctx),
-		UserAddress:    q.UserAddress.WithContext(ctx),
-		UserInfo:       q.UserInfo.WithContext(ctx),
-		UserTenantRole: q.UserTenantRole.WithContext(ctx),
+		Article:              q.Article.WithContext(ctx),
+		ArticleAttachment:    q.ArticleAttachment.WithContext(ctx),
+		ArticleContent:       q.ArticleContent.WithContext(ctx),
+		ArticleDig:           q.ArticleDig.WithContext(ctx),
+		ArticleForwardSource: q.ArticleForwardSource.WithContext(ctx),
+		ArticlePaidUser:      q.ArticlePaidUser.WithContext(ctx),
+		ArticlePayment:       q.ArticlePayment.WithContext(ctx),
+		ArticleTag:           q.ArticleTag.WithContext(ctx),
+		Book:                 q.Book.WithContext(ctx),
+		Chapter:              q.Chapter.WithContext(ctx),
+		Dictionary:           q.Dictionary.WithContext(ctx),
+		Driver:               q.Driver.WithContext(ctx),
+		Filesystem:           q.Filesystem.WithContext(ctx),
+		Location:             q.Location.WithContext(ctx),
+		Menu:                 q.Menu.WithContext(ctx),
+		Migration:            q.Migration.WithContext(ctx),
+		Permission:           q.Permission.WithContext(ctx),
+		PermissionRule:       q.PermissionRule.WithContext(ctx),
+		Role:                 q.Role.WithContext(ctx),
+		Route:                q.Route.WithContext(ctx),
+		RouteWhitelist:       q.RouteWhitelist.WithContext(ctx),
+		Session:              q.Session.WithContext(ctx),
+		Tag:                  q.Tag.WithContext(ctx),
+		Tenant:               q.Tenant.WithContext(ctx),
+		Token:                q.Token.WithContext(ctx),
+		User:                 q.User.WithContext(ctx),
+		UserAddress:          q.UserAddress.WithContext(ctx),
+		UserInfo:             q.UserInfo.WithContext(ctx),
+		UserTenantRole:       q.UserTenantRole.WithContext(ctx),
 	}
 }
 

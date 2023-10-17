@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
 
@@ -40,22 +40,22 @@ func (c *PermissionController) Show(ctx *fiber.Ctx, id uint64) (*dto.PermissionI
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.PermissionListQueryFilter	true	"PermissionListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.PermissionItem}
+//	@Param			pageFilter	query		ds.PageQueryFilter	true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter	true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.PermissionItem}
 //	@Router			/v1/users/permissions [get]
 func (c *PermissionController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.PermissionListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
+) (*ds.PageDataResponse, error) {
 	items, total, err := c.permissionSvc.PageByQueryFilter(ctx.Context(), queryFilter, pageFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
+	return &ds.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           total,
 		Items:           lo.Map(items, c.permissionSvc.DecorateItem),
@@ -110,11 +110,11 @@ func (c *PermissionController) Delete(ctx *fiber.Ctx, id uint64) error {
 //	@Produce	json
 //	@Param		role_id		path		int				true	"RoleID"
 //	@Param		tenant_id	path		int				true	"TenantID"
-//	@Param		body		body		common.IDsForm	true	"IDsForm"
+//	@Param		body		body		ds.IDsForm	true	"IDsForm"
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
 //	@Router		/v1/users/permissions/attach/{role_id}/{tenant_id} [put]
-func (c *PermissionController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *common.IDsForm) error {
+func (c *PermissionController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *ds.IDsForm) error {
 	return c.userTenantRoleSvc.AttachUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }
 
@@ -126,11 +126,11 @@ func (c *PermissionController) AttachUsers(ctx *fiber.Ctx, roleID, tenantID uint
 //	@Produce	json
 //	@Param		id			path		int				true	"RoleID"
 //	@Param		tenant_id	path		int				true	"TenantID"
-//	@Param		body		body		common.IDsForm	true	"IDsForm"
+//	@Param		body		body		ds.IDsForm	true	"IDsForm"
 //	@Success	200			{string}	RoleID
 //	@Failure	500			{string}	RoleID
 //	@Router		/v1/users/permissions/detach/{role_id}/{tenant_id} [put]
-func (c *PermissionController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *common.IDsForm) error {
+func (c *PermissionController) DetachUsers(ctx *fiber.Ctx, roleID, tenantID uint64, users *ds.IDsForm) error {
 	return c.userTenantRoleSvc.DetachUsers(ctx.Context(), tenantID, roleID, users.IDs)
 }
 
@@ -154,6 +154,6 @@ func (c *PermissionController) Tree(ctx *fiber.Ctx) ([]*dto.PermissionTree, erro
 //	@Produce	json
 //	@Success	200			{array}	dto.PermissionTree
 //	@Router		/v1/users/permissions/save/{tenant_id}/{role_id} [post]
-func (c *PermissionController) TenantRoleSave(ctx *fiber.Ctx, tenantID, roleID uint64, body *common.IDsForm) error {
+func (c *PermissionController) TenantRoleSave(ctx *fiber.Ctx, tenantID, roleID uint64, body *ds.IDsForm) error {
 	return c.permissionSvc.TenantRoleSave(ctx.Context(), tenantID, roleID, body.IDs)
 }

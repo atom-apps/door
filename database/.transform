@@ -4,10 +4,24 @@ user_infos.gender => consts.Gender
 
 tokens.token_type => consts.TokenType
 
-routes.metadata => common.RouteMetadata
-routes.api => common.RouteAPI
+routes.metadata => model.RouteMetadata
+routes.api => model.RouteAPI
 
-dictionaries.items => common.LabelItems
+dictionaries.items => ds.LabelItems
 
-menus.metadata => common.MenuMetadata
+menus.metadata => model.MenuMetadata
 
+
+drivers.options => model.Options
+drivers.type => consts.FilesystemDriver
+
+filesystems.metadata => model.FilesystemMetadata
+
+
+articles.type => consts.ArticleType
+articles.format => consts.ArticleFormat
+articles.thumbnails => model.ArticleThumbnails
+articles.videos => model.ArticleVideos
+articles.audios => model.ArticleAudios
+
+article_payments.price_type => consts.ArticlePriceType

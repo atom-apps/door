@@ -23,7 +23,7 @@ type UserAddressController struct {
 //	@Param			id	path		int	true	"UserAddressID"
 //	@Success		200	{object}	dto.UserAddressItem
 //	@Router			/v1/users/users/{user_id}/addresses/{id} [get]
-func (c *UserAddressController) Show(ctx *fiber.Ctx, userId uint64, id uint64) (*dto.UserAddressItem, error) {
+func (c *UserAddressController) Show(ctx *fiber.Ctx, userId, id uint64) (*dto.UserAddressItem, error) {
 	item, err := c.userAddressSvc.GetByID(ctx.Context(), id)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (c *UserAddressController) Create(ctx *fiber.Ctx, userId uint64, body *dto.
 //	@Param			body	body		dto.UserAddressForm	true	"UserAddressForm"
 //	@Success		200		{string}	UserAddressID
 //	@Router			/v1/users/users/{user_id}/addresses/{id} [put]
-func (c *UserAddressController) Update(ctx *fiber.Ctx, userId uint64, id uint64, body *dto.UserAddressForm) error {
+func (c *UserAddressController) Update(ctx *fiber.Ctx, userId, id uint64, body *dto.UserAddressForm) error {
 	return c.userAddressSvc.Update(ctx.Context(), userId, id, body)
 }
 
@@ -88,6 +88,6 @@ func (c *UserAddressController) Update(ctx *fiber.Ctx, userId uint64, id uint64,
 //	@Param			id	path		int	true	"UserAddressID"
 //	@Success		200	{string}	UserAddressID
 //	@Router			/v1/users/users/{user_id}/addresses/{id} [delete]
-func (c *UserAddressController) Delete(ctx *fiber.Ctx, userId uint64, id uint64) error {
+func (c *UserAddressController) Delete(ctx *fiber.Ctx, userId, id uint64) error {
 	return c.userAddressSvc.Delete(ctx.Context(), userId, id)
 }

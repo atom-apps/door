@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -55,7 +56,7 @@ func (svc *SessionService) GetByID(ctx context.Context, id uint64) (*models.Sess
 func (svc *SessionService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.SessionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Session, error) {
 	return svc.sessionDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -63,8 +64,8 @@ func (svc *SessionService) FindByQueryFilter(
 func (svc *SessionService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.SessionListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Session, int64, error) {
 	return svc.sessionDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

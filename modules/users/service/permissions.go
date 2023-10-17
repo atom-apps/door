@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
+	"github.com/atom-apps/door/common/model"
 	"github.com/atom-apps/door/database/models"
 	systemDao "github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/users/dao"
@@ -53,7 +54,7 @@ func (svc *PermissionService) GetByID(ctx context.Context, id uint64) (*models.P
 func (svc *PermissionService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.PermissionListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Permission, error) {
 	return svc.permissionDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -61,8 +62,8 @@ func (svc *PermissionService) FindByQueryFilter(
 func (svc *PermissionService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.PermissionListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Permission, int64, error) {
 	return svc.permissionDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }
@@ -209,7 +210,7 @@ func (svc *PermissionService) CasbinPolicies(ctx context.Context) ([][]string, e
 	return svc.genCasbinPolicies(ctx, all, routes)
 }
 
-func (svc *PermissionService) Pages(ctx context.Context) ([]*common.RouteItem, error) {
+func (svc *PermissionService) Pages(ctx context.Context) ([]*model.RouteItem, error) {
 	routes, err := svc.routeDao.FindAll(ctx)
 	if err != nil {
 		return nil, err
@@ -218,7 +219,7 @@ func (svc *PermissionService) Pages(ctx context.Context) ([]*common.RouteItem, e
 	return svc.buildPages(routes, 0), nil
 }
 
-func (svc *PermissionService) PagesOfTenantRole(ctx context.Context, tenantID, roleID uint64) ([]*common.RouteItem, error) {
+func (svc *PermissionService) PagesOfTenantRole(ctx context.Context, tenantID, roleID uint64) ([]*model.RouteItem, error) {
 	all, err := svc.permissionDao.FindByTenantRole(ctx, tenantID, roleID)
 	if err != nil {
 		return nil, err
@@ -258,14 +259,14 @@ func (svc *PermissionService) genCasbinPolicies(ctx context.Context, ms []*model
 	return policies, nil
 }
 
-func (svc *PermissionService) buildPages(routes []*models.Route, parentID uint64) []*common.RouteItem {
-	pages := []*common.RouteItem{}
+func (svc *PermissionService) buildPages(routes []*models.Route, parentID uint64) []*model.RouteItem {
+	pages := []*model.RouteItem{}
 	lo.ForEach(routes, func(item *models.Route, _ int) {
 		if item.ParentID != parentID {
 			return
 		}
 
-		pages = append(pages, &common.RouteItem{
+		pages = append(pages, &model.RouteItem{
 			Name:     item.Name,
 			Path:     item.Path,
 			Meta:     item.Metadata,

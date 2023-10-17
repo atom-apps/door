@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/auth/controller"
 
@@ -12,8 +12,8 @@ import (
 )
 
 func routePageController(engine fiber.Router, controller *controller.PageController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/auth/signin", basePath), Func1(controller.Signin, String("appName", PathParamError)))
-	engine.Get(strings.TrimPrefix("/auth/signup", basePath), Func(controller.Signup))
-	engine.Get(strings.TrimPrefix("/auth/reset-password", basePath), Func(controller.ResetPassword))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/auth/signin", groupPrefix), Func1(controller.Signin, String("appName", PathParamError)))
+	engine.Get(strings.TrimPrefix("/auth/signup", groupPrefix), Func(controller.Signup))
+	engine.Get(strings.TrimPrefix("/auth/reset-password", groupPrefix), Func(controller.ResetPassword))
 }

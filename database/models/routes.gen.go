@@ -7,7 +7,7 @@ package models
 import (
 	"time"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/model"
 	"gorm.io/gorm/schema"
 )
 
@@ -15,14 +15,14 @@ const TableNameRoute = "routes"
 
 // Route mapped from table <routes>
 type Route struct {
-	ID        uint64               `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time            `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
-	ParentID  uint64               `gorm:"column:parent_id;type:bigint unsigned;not null;comment:父级ID" json:"parent_id"`      // 父级ID
-	Name      string               `gorm:"column:name;type:varchar(255);not null;comment:名称" json:"name"`                     // 名称
-	Path      string               `gorm:"column:path;type:varchar(1024);not null;comment:路径" json:"path"`                    // 路径
-	Metadata  common.RouteMetadata `gorm:"column:metadata;type:varchar(191);comment:元数据" json:"metadata"`                     // 元数据
-	API       common.RouteAPI      `gorm:"column:api;type:varchar(191);comment:后端路由" json:"api"`                              // 后端路由
-	Order     uint64               `gorm:"column:order;type:bigint unsigned;comment:排序" json:"order"`                         // 排序
+	ID        uint64              `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time           `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                     // 创建时间
+	ParentID  uint64              `gorm:"column:parent_id;type:bigint(20) unsigned;not null;comment:父级ID" json:"parent_id"`      // 父级ID
+	Name      string              `gorm:"column:name;type:varchar(255);not null;comment:名称" json:"name"`                         // 名称
+	Path      string              `gorm:"column:path;type:varchar(1024);not null;comment:路径" json:"path"`                        // 路径
+	Metadata  model.RouteMetadata `gorm:"column:metadata;type:varchar(191);comment:元数据" json:"metadata"`                         // 元数据
+	API       model.RouteAPI      `gorm:"column:api;type:varchar(191);comment:后端路由" json:"api"`                                  // 后端路由
+	Order     uint64              `gorm:"column:order;type:bigint(20) unsigned;comment:排序" json:"order"`                         // 排序
 }
 
 func (*Route) TableName(namer schema.Namer) string {

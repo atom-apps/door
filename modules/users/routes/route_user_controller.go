@@ -3,24 +3,24 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/controller"
-	"github.com/atom-providers/jwt"
 	"github.com/atom-apps/door/modules/users/dto"
-	"github.com/atom-apps/door/common"
+	"github.com/atom-providers/jwt"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeUserController(engine fiber.Router, controller *controller.UserController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/users/users/profile", basePath), DataFunc1(controller.Profile, JwtClaim[jwt.Claims](ClaimParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/users/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/users", basePath), DataFunc3(controller.List, Query[dto.UserListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Post(strings.TrimPrefix("/v1/users/users", basePath), Func1(controller.Create, Body[dto.UserForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.UserForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/users/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>/reset-password", basePath), DataFunc1(controller.ResetPassword, Integer[uint64]("id", PathParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/users/users/profile", groupPrefix), DataFunc1(controller.Profile, JwtClaim[jwt.Claims](ClaimParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/users/:id<int>", groupPrefix), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/users", groupPrefix), DataFunc3(controller.List, Query[dto.UserListQueryFilter](QueryParamError), Query[ds.PageQueryFilter](QueryParamError), Query[ds.SortQueryFilter](QueryParamError)))
+	engine.Post(strings.TrimPrefix("/v1/users/users", groupPrefix), Func1(controller.Create, Body[dto.UserForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>", groupPrefix), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.UserForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/users/:id<int>", groupPrefix), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/users/:id<int>/reset-password", groupPrefix), DataFunc1(controller.ResetPassword, Integer[uint64]("id", PathParamError)))
 }

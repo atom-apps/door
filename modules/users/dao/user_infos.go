@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -26,7 +26,7 @@ func (dao *UserInfoDao) Context(ctx context.Context) query.IUserInfoDo {
 	return dao.query.UserInfo.WithContext(ctx)
 }
 
-func (dao *UserInfoDao) decorateSortQueryFilter(query query.IUserInfoDo, sortFilter *common.SortQueryFilter) query.IUserInfoDo {
+func (dao *UserInfoDao) decorateSortQueryFilter(query query.IUserInfoDo, sortFilter *ds.SortQueryFilter) query.IUserInfoDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -129,8 +129,8 @@ func (dao *UserInfoDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.U
 func (dao *UserInfoDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserInfoListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserInfo, int64, error) {
 	query := dao.query.UserInfo
 	userInfoQuery := query.WithContext(ctx)
@@ -142,7 +142,7 @@ func (dao *UserInfoDao) PageByQueryFilter(
 func (dao *UserInfoDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserInfoListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserInfo, error) {
 	query := dao.query.UserInfo
 	userInfoQuery := query.WithContext(ctx)
@@ -154,7 +154,7 @@ func (dao *UserInfoDao) FindByQueryFilter(
 func (dao *UserInfoDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserInfoListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.UserInfo, error) {
 	query := dao.query.UserInfo
 	userInfoQuery := query.WithContext(ctx)

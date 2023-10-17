@@ -27,11 +27,11 @@ golang 的定义有如下规则：
 //	@Produce		json
 //	@Param			form	body	dto.SignInForm	true	"SignInForm"
 //	@Param			queryFilter	query		dto.SessionListQueryFilter	true	"SessionListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
+//	@Param			pageFilter	query		ds.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter		true	"SortQueryFilter"
 //	@Success		200	{object}	dto.SessionItem
 //	@Router			/auth/signin/{id} [post]
-func (c *AuthController) SignIn(ctx *fiber.Ctx, id string, sess *dto.SessionListQueryFilter, form *dto.SignInForm, pageFilter *common.PageQueryFilter, sortFilter *common.SortQueryFilter) (*dto.SessionItem,error)
+func (c *AuthController) SignIn(ctx *fiber.Ctx, id string, sess *dto.SessionListQueryFilter, form *dto.SignInForm, pageFilter *ds.PageQueryFilter, sortFilter *ds.SortQueryFilter) (*dto.SessionItem,error)
 ```
 1. `// SignIn Signin` 表示这个方法的名称及说明，你需要忽略它
 2. 为数据定义的分割分割空行

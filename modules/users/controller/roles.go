@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
@@ -42,22 +42,22 @@ func (c *RoleController) Show(ctx *fiber.Ctx, id uint64) (*dto.RoleItem, error) 
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.RoleListQueryFilter	true	"RoleListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter	true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.RoleItem}
+//	@Param			pageFilter	query		ds.PageQueryFilter	true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter	true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.RoleItem}
 //	@Router			/v1/users/roles [get]
 func (c *RoleController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.RoleListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
+) (*ds.PageDataResponse, error) {
 	items, err := c.roleSvc.FindByQueryFilter(ctx.Context(), queryFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
+	return &ds.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           0,
 		Items:           lo.Map(items, c.roleSvc.DecorateItem),

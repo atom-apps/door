@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -30,7 +30,7 @@ func (svc *UserInfoService) GetByID(ctx context.Context, id uint64) (*models.Use
 func (svc *UserInfoService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserInfoListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserInfo, error) {
 	return svc.userInfoDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -38,8 +38,8 @@ func (svc *UserInfoService) FindByQueryFilter(
 func (svc *UserInfoService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserInfoListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserInfo, int64, error) {
 	return svc.userInfoDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

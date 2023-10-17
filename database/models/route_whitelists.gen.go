@@ -14,9 +14,9 @@ const TableNameRouteWhitelist = "route_whitelists"
 
 // RouteWhitelist mapped from table <route_whitelists>
 type RouteWhitelist struct {
-	ID        uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
-	Route     string    `gorm:"column:route;type:varchar(255);not null;comment:路由" json:"route"`                   // 路由
+	ID        uint64    `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                     // 创建时间
+	Route     string    `gorm:"column:route;type:varchar(255);not null;comment:路由" json:"route"`                       // 路由
 }
 
 func (*RouteWhitelist) TableName(namer schema.Namer) string {

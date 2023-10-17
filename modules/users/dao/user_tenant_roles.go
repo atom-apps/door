@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -27,7 +27,7 @@ func (dao *UserTenantRoleDao) Context(ctx context.Context) query.IUserTenantRole
 	return dao.query.UserTenantRole.WithContext(ctx)
 }
 
-func (dao *UserTenantRoleDao) decorateSortQueryFilter(query query.IUserTenantRoleDo, sortFilter *common.SortQueryFilter) query.IUserTenantRoleDo {
+func (dao *UserTenantRoleDao) decorateSortQueryFilter(query query.IUserTenantRoleDo, sortFilter *ds.SortQueryFilter) query.IUserTenantRoleDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -123,8 +123,8 @@ func (dao *UserTenantRoleDao) GetByIDs(ctx context.Context, ids []uint64) ([]*mo
 func (dao *UserTenantRoleDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserTenantRoleListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserTenantRole, int64, error) {
 	query := dao.query.UserTenantRole
 	userTenantRoleQuery := query.WithContext(ctx)
@@ -136,7 +136,7 @@ func (dao *UserTenantRoleDao) PageByQueryFilter(
 func (dao *UserTenantRoleDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserTenantRoleListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserTenantRole, error) {
 	query := dao.query.UserTenantRole
 	userTenantRoleQuery := query.WithContext(ctx)
@@ -148,7 +148,7 @@ func (dao *UserTenantRoleDao) FindByQueryFilter(
 func (dao *UserTenantRoleDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.UserTenantRoleListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.UserTenantRole, error) {
 	query := dao.query.UserTenantRole
 	userTenantRoleQuery := query.WithContext(ctx)

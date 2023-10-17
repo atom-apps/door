@@ -1,7 +1,7 @@
 package consts
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/samber/lo"
 )
 
@@ -20,14 +20,14 @@ func (u UserStatus) Cn() string {
 	}
 }
 
-func UserStatusLabel(withDefault bool) []common.LabelItem {
+func UserStatusLabel(withDefault bool) []ds.LabelItem {
 	values := UserStatusValues()
 	if withDefault {
 		values = append([]UserStatus{""}, values...)
 	}
 
-	return lo.Map(values, func(v UserStatus, _ int) common.LabelItem {
-		return common.LabelItem{
+	return lo.Map(values, func(v UserStatus, _ int) ds.LabelItem {
+		return ds.LabelItem{
 			Label: v.Cn(),
 			Value: string(v),
 		}

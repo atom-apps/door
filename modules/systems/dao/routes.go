@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -27,7 +27,7 @@ func (dao *RouteDao) Context(ctx context.Context) query.IRouteDo {
 	return dao.query.Route.WithContext(ctx)
 }
 
-func (dao *RouteDao) decorateSortQueryFilter(query query.IRouteDo, sortFilter *common.SortQueryFilter) query.IRouteDo {
+func (dao *RouteDao) decorateSortQueryFilter(query query.IRouteDo, sortFilter *ds.SortQueryFilter) query.IRouteDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -159,8 +159,8 @@ func (dao *RouteDao) GetByIDsWithParents(ctx context.Context, ids []uint64) ([]*
 func (dao *RouteDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RouteListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Route, int64, error) {
 	query := dao.query.Route
 	routeQuery := query.WithContext(ctx)
@@ -172,7 +172,7 @@ func (dao *RouteDao) PageByQueryFilter(
 func (dao *RouteDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RouteListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Route, error) {
 	query := dao.query.Route
 	routeQuery := query.WithContext(ctx)
@@ -184,7 +184,7 @@ func (dao *RouteDao) FindByQueryFilter(
 func (dao *RouteDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.RouteListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Route, error) {
 	query := dao.query.Route
 	routeQuery := query.WithContext(ctx)

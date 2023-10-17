@@ -3,7 +3,7 @@ package controller
 import (
 	"encoding/json"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/model"
 	"github.com/atom-apps/door/docs"
 	"github.com/atom-apps/door/modules/auth/dto"
 	systemSvc "github.com/atom-apps/door/modules/systems/service"
@@ -43,9 +43,9 @@ func (c *RoutesController) List(ctx *fiber.Ctx) ([]*dto.Route, error) {
 //	@Tags		Systems
 //	@Accept		json
 //	@Produce	json
-//	@Success	200	{array}	common.RouteItem
+//	@Success	200	{array}	model.RouteItem
 //	@Router		/v1/auth/pages [get]
-func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*common.RouteItem, error) {
+func (c *RoutesController) Pages(ctx *fiber.Ctx, claim *jwt.Claims) ([]*model.RouteItem, error) {
 	if claim.IsSuperAdmin() {
 		return c.permissionSvc.Pages(ctx.Context())
 	}

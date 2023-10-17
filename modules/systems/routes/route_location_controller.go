@@ -3,26 +3,26 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/systems/controller"
 	"github.com/atom-apps/door/modules/systems/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeLocationController(engine fiber.Router, controller *controller.LocationController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations", basePath), DataFunc3(controller.List, Query[dto.LocationListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Post(strings.TrimPrefix("/v1/systems/locations", basePath), Func1(controller.Create, Body[dto.LocationForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/systems/locations/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.LocationForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/systems/locations/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces", basePath), DataFunc(controller.Provinces))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities", basePath), DataFunc1(controller.Cities, String("province", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas", basePath), DataFunc2(controller.Areas, String("province", PathParamError), String("city", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas/:area/towns", basePath), DataFunc3(controller.Towns, String("province", PathParamError), String("city", PathParamError), String("area", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/systems/locations/:code-:town", basePath), DataFunc2(controller.Location, String("code", PathParamError), String("town", PathParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/:id<int>", groupPrefix), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations", groupPrefix), DataFunc3(controller.List, Query[dto.LocationListQueryFilter](QueryParamError), Query[ds.PageQueryFilter](QueryParamError), Query[ds.SortQueryFilter](QueryParamError)))
+	engine.Post(strings.TrimPrefix("/v1/systems/locations", groupPrefix), Func1(controller.Create, Body[dto.LocationForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/systems/locations/:id<int>", groupPrefix), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.LocationForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/systems/locations/:id<int>", groupPrefix), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces", groupPrefix), DataFunc(controller.Provinces))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities", groupPrefix), DataFunc1(controller.Cities, String("province", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas", groupPrefix), DataFunc2(controller.Areas, String("province", PathParamError), String("city", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/provinces/:province/cities/:city/areas/:area/towns", groupPrefix), DataFunc3(controller.Towns, String("province", PathParamError), String("city", PathParamError), String("area", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/systems/locations/:code-:town", groupPrefix), DataFunc2(controller.Location, String("code", PathParamError), String("town", PathParamError)))
 }

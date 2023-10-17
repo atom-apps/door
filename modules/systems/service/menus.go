@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/systems/dao"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -59,12 +59,12 @@ func (svc *MenuService) genTree(items []*models.Menu, parentID uint64) []*dto.Me
 	return tree
 }
 
-func (svc *MenuService) PageGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, pageFilter *common.PageQueryFilter, sortFilter *common.SortQueryFilter) ([]*models.Menu, int64, error) {
+func (svc *MenuService) PageGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, pageFilter *ds.PageQueryFilter, sortFilter *ds.SortQueryFilter) ([]*models.Menu, int64, error) {
 	queryFilter.GroupID = lo.ToPtr[uint64](0)
 	return svc.menuDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }
 
-func (svc *MenuService) FindGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, sortFilter *common.SortQueryFilter) ([]*models.Menu, error) {
+func (svc *MenuService) FindGroupByQueryFilter(ctx context.Context, queryFilter *dto.MenuListQueryFilter, sortFilter *ds.SortQueryFilter) ([]*models.Menu, error) {
 	queryFilter.GroupID = lo.ToPtr[uint64](0)
 	return svc.menuDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }

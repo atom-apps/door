@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/common/errorx"
 	"github.com/atom-apps/door/modules/users/dto"
 	"github.com/atom-apps/door/modules/users/service"
@@ -42,22 +42,22 @@ func (c *TenantController) Show(ctx *fiber.Ctx, id uint64) (*dto.TenantItem, err
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.TenantListQueryFilter	true	"TenantListQueryFilter"
-//	@Param			pageFilter	query		common.PageQueryFilter		true	"PageQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter		true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.TenantItem}
+//	@Param			pageFilter	query		ds.PageQueryFilter		true	"PageQueryFilter"
+//	@Param			sortFilter	query		ds.SortQueryFilter		true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.TenantItem}
 //	@Router			/v1/users/tenants [get]
 func (c *TenantController) List(
 	ctx *fiber.Ctx,
 	queryFilter *dto.TenantListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
-) (*common.PageDataResponse, error) {
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
+) (*ds.PageDataResponse, error) {
 	items, err := c.tenantSvc.FindByQueryFilter(ctx.Context(), queryFilter, sortFilter)
 	if err != nil {
 		return nil, err
 	}
 
-	return &common.PageDataResponse{
+	return &ds.PageDataResponse{
 		PageQueryFilter: *pageFilter,
 		Total:           0,
 		Items:           lo.Map(items, c.tenantSvc.DecorateItem),

@@ -1,7 +1,7 @@
 package seeders
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	dbUtil "github.com/rogeecn/atom/utils/db"
 
@@ -23,7 +23,7 @@ func (s *DictionarySeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 			Name:        "性别",
 			Slug:        "gender",
 			Description: "性别",
-			Items: []common.LabelItem{
+			Items: []ds.LabelItem{
 				{Label: "未知", Value: "unknown"},
 				{Label: "男", Value: "male"},
 				{Label: "女", Value: "female"},
@@ -33,7 +33,7 @@ func (s *DictionarySeeder) Run(faker *gofakeit.Faker, db *gorm.DB) {
 			Name:        "状态",
 			Slug:        "status",
 			Description: "状态值表示",
-			Items: []common.LabelItem{
+			Items: []ds.LabelItem{
 				{Label: "启用", Value: "enabled"},
 				{Label: "禁用", Value: "disabled"},
 			},

@@ -3,7 +3,7 @@ package dto
 import (
 	"strings"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/model"
 )
 
 type SwaggerDoc struct {
@@ -40,10 +40,10 @@ func (doc *SwaggerDoc) ToRoues() []*Route {
 }
 
 type RouteItem struct {
-	ID       uint64               `json:"id,omitempty"`        //
-	ParentID uint64               `json:"parent_id,omitempty"` //
-	Name     string               `json:"name,omitempty"`      //
-	Path     string               `json:"path,omitempty"`      //
-	Metadata common.RouteMetadata `json:"metadata,omitempty"`  //
-	Children []*RouteItem         `json:"children,omitempty"`  //
+	ID       uint64              `json:"id,omitempty"`        //
+	ParentID uint64              `json:"parent_id,omitempty"` //
+	Name     string              `json:"name,omitempty"`      //
+	Path     string              `json:"path,omitempty"`      //
+	Metadata model.RouteMetadata `json:"metadata,omitempty"`  //
+	Children []*RouteItem        `json:"children,omitempty"`  //
 }

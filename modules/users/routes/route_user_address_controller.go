@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/users/controller"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -13,10 +13,10 @@ import (
 )
 
 func routeUserAddressController(engine fiber.Router, controller *controller.UserAddressController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", basePath), DataFunc2(controller.Show, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses", basePath), DataFunc1(controller.List, Integer[uint64]("userID", PathParamError)))
-	engine.Post(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses", basePath), Func2(controller.Create, Integer[uint64]("userId", PathParamError), Body[dto.UserAddressForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", basePath), Func3(controller.Update, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError), Body[dto.UserAddressForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", basePath), Func2(controller.Delete, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", groupPrefix), DataFunc2(controller.Show, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses", groupPrefix), DataFunc1(controller.List, Integer[uint64]("userID", PathParamError)))
+	engine.Post(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses", groupPrefix), Func2(controller.Create, Integer[uint64]("userId", PathParamError), Body[dto.UserAddressForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", groupPrefix), Func3(controller.Update, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError), Body[dto.UserAddressForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/users/:userId<int>/addresses/:id<int>", groupPrefix), Func2(controller.Delete, Integer[uint64]("userId", PathParamError), Integer[uint64]("id", PathParamError)))
 }

@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -26,7 +26,7 @@ func (dao *TenantDao) Context(ctx context.Context) query.ITenantDo {
 	return dao.query.Tenant.WithContext(ctx)
 }
 
-func (dao *TenantDao) decorateSortQueryFilter(query query.ITenantDo, sortFilter *common.SortQueryFilter) query.ITenantDo {
+func (dao *TenantDao) decorateSortQueryFilter(query query.ITenantDo, sortFilter *ds.SortQueryFilter) query.ITenantDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -97,8 +97,8 @@ func (dao *TenantDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Ten
 func (dao *TenantDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TenantListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Tenant, int64, error) {
 	query := dao.query.Tenant
 	tenantQuery := query.WithContext(ctx)
@@ -110,7 +110,7 @@ func (dao *TenantDao) PageByQueryFilter(
 func (dao *TenantDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TenantListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Tenant, error) {
 	query := dao.query.Tenant
 	tenantQuery := query.WithContext(ctx)
@@ -122,7 +122,7 @@ func (dao *TenantDao) FindByQueryFilter(
 func (dao *TenantDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TenantListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Tenant, error) {
 	query := dao.query.Tenant
 	tenantQuery := query.WithContext(ctx)

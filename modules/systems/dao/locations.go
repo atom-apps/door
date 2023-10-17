@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -26,7 +26,7 @@ func (dao *LocationDao) Context(ctx context.Context) query.ILocationDo {
 	return dao.query.Location.WithContext(ctx)
 }
 
-func (dao *LocationDao) decorateSortQueryFilter(query query.ILocationDo, sortFilter *common.SortQueryFilter) query.ILocationDo {
+func (dao *LocationDao) decorateSortQueryFilter(query query.ILocationDo, sortFilter *ds.SortQueryFilter) query.ILocationDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -106,8 +106,8 @@ func (dao *LocationDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.L
 func (dao *LocationDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.LocationListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Location, int64, error) {
 	query := dao.query.Location
 	locationQuery := query.WithContext(ctx)
@@ -119,7 +119,7 @@ func (dao *LocationDao) PageByQueryFilter(
 func (dao *LocationDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.LocationListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Location, error) {
 	query := dao.query.Location
 	locationQuery := query.WithContext(ctx)
@@ -131,7 +131,7 @@ func (dao *LocationDao) FindByQueryFilter(
 func (dao *LocationDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.LocationListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Location, error) {
 	query := dao.query.Location
 	locationQuery := query.WithContext(ctx)

@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/database/query"
 	"github.com/atom-apps/door/modules/systems/dto"
@@ -27,7 +27,7 @@ func (dao *MenuDao) Context(ctx context.Context) query.IMenuDo {
 	return dao.query.Menu.WithContext(ctx)
 }
 
-func (dao *MenuDao) decorateSortQueryFilter(query query.IMenuDo, sortFilter *common.SortQueryFilter) query.IMenuDo {
+func (dao *MenuDao) decorateSortQueryFilter(query query.IMenuDo, sortFilter *ds.SortQueryFilter) query.IMenuDo {
 	if sortFilter == nil {
 		return query
 	}
@@ -163,8 +163,8 @@ func (dao *MenuDao) GetByIDs(ctx context.Context, ids []uint64) ([]*models.Menu,
 func (dao *MenuDao) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.MenuListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Menu, int64, error) {
 	query := dao.query.Menu
 	menuQuery := query.WithContext(ctx)
@@ -176,7 +176,7 @@ func (dao *MenuDao) PageByQueryFilter(
 func (dao *MenuDao) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.MenuListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Menu, error) {
 	query := dao.query.Menu
 	menuQuery := query.WithContext(ctx)
@@ -188,7 +188,7 @@ func (dao *MenuDao) FindByQueryFilter(
 func (dao *MenuDao) FirstByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.MenuListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) (*models.Menu, error) {
 	query := dao.query.Menu
 	menuQuery := query.WithContext(ctx)

@@ -3,7 +3,7 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
 	"github.com/atom-apps/door/modules/auth/controller"
 	"github.com/atom-apps/door/modules/auth/dto"
@@ -14,12 +14,12 @@ import (
 )
 
 func routeAuthController(engine fiber.Router, controller *controller.AuthController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Post(strings.TrimPrefix("/v1/auth/signup", basePath), DataFunc1(controller.SignUp, Body[dto.SignUpForm](BodyParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/signin", basePath), DataFunc1(controller.SignIn, Body[dto.SignInForm](BodyParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/logout", basePath), Func1(controller.Logout, JwtClaim[jwt.Claims](ClaimParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/refresh-token", basePath), DataFunc1(controller.RefreshToken, JwtClaim[jwt.Claims](ClaimParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/exchange-token-by-code", basePath), DataFunc1(controller.ExchangeTokenByCode, Body[dto.ExchangeTokenByCodeForm](BodyParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/check-reset-password-code", basePath), DataFunc1(controller.CheckResetPasswordCoe, Body[dto.CheckPasswordResetCodeForm](BodyParamError)))
-	engine.Post(strings.TrimPrefix("/v1/auth/reset-password-by-token", basePath), Func1(controller.ResetPassword, Body[dto.ResetPasswordForm](BodyParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Post(strings.TrimPrefix("/v1/auth/signup", groupPrefix), DataFunc1(controller.SignUp, Body[dto.SignUpForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/signin", groupPrefix), DataFunc1(controller.SignIn, Body[dto.SignInForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/logout", groupPrefix), Func1(controller.Logout, JwtClaim[jwt.Claims](ClaimParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/refresh-token", groupPrefix), DataFunc1(controller.RefreshToken, JwtClaim[jwt.Claims](ClaimParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/exchange-token-by-code", groupPrefix), DataFunc1(controller.ExchangeTokenByCode, Body[dto.ExchangeTokenByCodeForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/check-reset-password-code", groupPrefix), DataFunc1(controller.CheckResetPasswordCoe, Body[dto.CheckPasswordResetCodeForm](BodyParamError)))
+	engine.Post(strings.TrimPrefix("/v1/auth/reset-password-by-token", groupPrefix), Func1(controller.ResetPassword, Body[dto.ResetPasswordForm](BodyParamError)))
 }

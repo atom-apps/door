@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/rogeecn/atom/contracts"
 	"gorm.io/gorm"
 )
@@ -9,10 +9,10 @@ import (
 func (m *Migration20230907_174030CreateDictionary) table() interface{} {
 	type Dictionary struct {
 		Model
-		Name        string            `gorm:"type:varchar(64);not null;comment:名称"`
-		Slug        string            `gorm:"type:varchar(64);not null;comment:别名"`
-		Description string            `gorm:"type:varchar(198);not null;comment:描述"`
-		Items       common.LabelItems `gorm:"not null;comment:选项"`
+		Name        string        `gorm:"type:varchar(64);not null;comment:名称"`
+		Slug        string        `gorm:"type:varchar(64);not null;comment:别名"`
+		Description string        `gorm:"type:varchar(198);not null;comment:描述"`
+		Items       ds.LabelItems `gorm:"not null;comment:选项"`
 	}
 
 	return &Dictionary{}

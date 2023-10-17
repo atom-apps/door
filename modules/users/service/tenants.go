@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -48,7 +48,7 @@ func (svc *TenantService) GetByID(ctx context.Context, id uint64) (*models.Tenan
 func (svc *TenantService) FindByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TenantListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Tenant, error) {
 	return svc.tenantDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -56,8 +56,8 @@ func (svc *TenantService) FindByQueryFilter(
 func (svc *TenantService) PageByQueryFilter(
 	ctx context.Context,
 	queryFilter *dto.TenantListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.Tenant, int64, error) {
 	return svc.tenantDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }

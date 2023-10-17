@@ -16,11 +16,11 @@ const TableNameUserInfo = "user_infos"
 
 // UserInfo mapped from table <user_infos>
 type UserInfo struct {
-	ID          uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`      // ID
+	ID          uint64         `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`  // ID
 	CreatedAt   time.Time      `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                      // 创建时间
 	UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime(3);comment:更新时间" json:"updated_at"`                      // 更新时间
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at" swaggertype:"string"` // 删除时间
-	UserID      uint64         `gorm:"column:user_id;type:bigint unsigned;comment:用户ID" json:"user_id"`                        // 用户ID
+	UserID      uint64         `gorm:"column:user_id;type:bigint(20) unsigned;comment:用户ID" json:"user_id"`                    // 用户ID
 	Affiliation string         `gorm:"column:affiliation;type:varchar(128);comment:工作单位" json:"affiliation"`                   // 工作单位
 	Title       string         `gorm:"column:title;type:varchar(128);comment:职称" json:"title"`                                 // 职称
 	IDCardType  string         `gorm:"column:id_card_type;type:varchar(128);not null;comment:证件类型" json:"id_card_type"`        // 证件类型

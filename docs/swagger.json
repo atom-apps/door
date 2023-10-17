@@ -489,7 +489,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -787,7 +787,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1022,7 +1022,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1102,7 +1102,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/common.IDsForm"
+                            "$ref": "#/definitions/ds.IDsForm"
                         }
                     }
                 ],
@@ -1155,7 +1155,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/common.IDsForm"
+                            "$ref": "#/definitions/ds.IDsForm"
                         }
                     }
                 ],
@@ -1366,7 +1366,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1588,7 +1588,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1782,7 +1782,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2050,7 +2050,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2212,7 +2212,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/common.PageDataResponse"
+                                    "$ref": "#/definitions/ds.PageDataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2406,7 +2406,7 @@
         }
     },
     "definitions": {
-        "common.IDsForm": {
+        "ds.IDsForm": {
             "type": "object",
             "properties": {
                 "ids": {
@@ -2417,7 +2417,7 @@
                 }
             }
         },
-        "common.PageDataResponse": {
+        "ds.PageDataResponse": {
             "type": "object",
             "properties": {
                 "current": {
@@ -2438,7 +2438,7 @@
                 }
             }
         },
-        "common.RouteMetadata": {
+        "model.RouteMetadata": {
             "type": "object",
             "properties": {
                 "icon": {
@@ -2717,7 +2717,7 @@
             "type": "object",
             "properties": {
                 "metadata": {
-                    "$ref": "#/definitions/common.RouteMetadata"
+                    "$ref": "#/definitions/model.RouteMetadata"
                 },
                 "name": {
                     "type": "string"
@@ -3036,7 +3036,7 @@
                     "type": "integer"
                 },
                 "metadata": {
-                    "$ref": "#/definitions/common.RouteMetadata"
+                    "$ref": "#/definitions/model.RouteMetadata"
                 },
                 "name": {
                     "type": "string"
@@ -3065,7 +3065,7 @@
                     "type": "integer"
                 },
                 "metadata": {
-                    "$ref": "#/definitions/common.RouteMetadata"
+                    "$ref": "#/definitions/model.RouteMetadata"
                 },
                 "name": {
                     "type": "string"

@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/database/models"
 	"github.com/atom-apps/door/modules/users/dao"
 	"github.com/atom-apps/door/modules/users/dto"
@@ -39,7 +39,7 @@ func (svc *UserAddressService) FindByQueryFilter(
 	ctx context.Context,
 	userId uint64,
 	queryFilter *dto.UserAddressListQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserAddress, error) {
 	return svc.userAddressDao.FindByQueryFilter(ctx, queryFilter, sortFilter)
 }
@@ -48,8 +48,8 @@ func (svc *UserAddressService) PageByQueryFilter(
 	ctx context.Context,
 	userId uint64,
 	queryFilter *dto.UserAddressListQueryFilter,
-	pageFilter *common.PageQueryFilter,
-	sortFilter *common.SortQueryFilter,
+	pageFilter *ds.PageQueryFilter,
+	sortFilter *ds.SortQueryFilter,
 ) ([]*models.UserAddress, int64, error) {
 	return svc.userAddressDao.PageByQueryFilter(ctx, queryFilter, pageFilter.Format(), sortFilter)
 }
@@ -68,7 +68,7 @@ func (svc *UserAddressService) Create(ctx context.Context, userId uint64, body *
 }
 
 // Update
-func (svc *UserAddressService) Update(ctx context.Context, userId uint64, id uint64, body *dto.UserAddressForm) error {
+func (svc *UserAddressService) Update(ctx context.Context, userId, id uint64, body *dto.UserAddressForm) error {
 	model, err := svc.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (svc *UserAddressService) UpdateFromModel(ctx context.Context, model *model
 }
 
 // Delete
-func (svc *UserAddressService) Delete(ctx context.Context, userId uint64, id uint64) error {
+func (svc *UserAddressService) Delete(ctx context.Context, userId, id uint64) error {
 	return svc.userAddressDao.Delete(ctx, id)
 }
 

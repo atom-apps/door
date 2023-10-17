@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atom-apps/door/common"
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/systems/dto"
 	"github.com/atom-apps/door/modules/systems/service"
 
@@ -52,10 +52,10 @@ func (c *MenuController) ShowTree(ctx *fiber.Ctx, id uint64) ([]*dto.MenuTreeIte
 //	@Accept			json
 //	@Produce		json
 //	@Param			queryFilter	query		dto.MenuListQueryFilter	true	"MenuListQueryFilter"
-//	@Param			sortFilter	query		common.SortQueryFilter	true	"SortQueryFilter"
-//	@Success		200			{object}	common.PageDataResponse{list=dto.MenuItem}
+//	@Param			sortFilter	query		ds.SortQueryFilter	true	"SortQueryFilter"
+//	@Success		200			{object}	ds.PageDataResponse{list=dto.MenuItem}
 //	@Router			/v1/systems/menus [get]
-func (c *MenuController) List(ctx *fiber.Ctx, queryFilter *dto.MenuListQueryFilter, sortFilter *common.SortQueryFilter) ([]*dto.MenuItem, error) {
+func (c *MenuController) List(ctx *fiber.Ctx, queryFilter *dto.MenuListQueryFilter, sortFilter *ds.SortQueryFilter) ([]*dto.MenuItem, error) {
 	items, err := c.menuSvc.FindGroupByQueryFilter(ctx.Context(), queryFilter, sortFilter)
 	if err != nil {
 		return nil, err

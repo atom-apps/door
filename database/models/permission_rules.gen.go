@@ -12,7 +12,7 @@ const TableNamePermissionRule = "permission_rules"
 
 // PermissionRule mapped from table <permission_rules>
 type PermissionRule struct {
-	ID    uint64 `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
+	ID    uint64 `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true" json:"id"`
 	Ptype string `gorm:"column:ptype;type:varchar(191)" json:"ptype"`
 	V0    string `gorm:"column:v0;type:varchar(191)" json:"v0"`
 	V1    string `gorm:"column:v1;type:varchar(191)" json:"v1"`

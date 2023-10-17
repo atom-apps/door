@@ -3,25 +3,25 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/controller"
 	"github.com/atom-apps/door/modules/users/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routePermissionController(engine fiber.Router, controller *controller.PermissionController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/users/permissions/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/permissions", basePath), DataFunc3(controller.List, Query[dto.PermissionListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Post(strings.TrimPrefix("/v1/users/permissions", basePath), Func1(controller.Create, Body[dto.PermissionForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/permissions/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.PermissionForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/permissions/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/permissions/attach/:roleId<int>/:tenantId", basePath), Func3(controller.AttachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/permissions/detach/:roleId<int>/:tenantId", basePath), Func3(controller.DetachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[common.IDsForm](BodyParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/permissions/tree", basePath), DataFunc(controller.Tree))
-	engine.Post(strings.TrimPrefix("/v1/users/permissions/save/:tenantId<int>/:roleId", basePath), Func3(controller.TenantRoleSave, Integer[uint64]("tenantID", PathParamError), Integer[uint64]("roleID", PathParamError), Body[common.IDsForm](BodyParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/users/permissions/:id<int>", groupPrefix), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/permissions", groupPrefix), DataFunc3(controller.List, Query[dto.PermissionListQueryFilter](QueryParamError), Query[ds.PageQueryFilter](QueryParamError), Query[ds.SortQueryFilter](QueryParamError)))
+	engine.Post(strings.TrimPrefix("/v1/users/permissions", groupPrefix), Func1(controller.Create, Body[dto.PermissionForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/permissions/:id<int>", groupPrefix), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.PermissionForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/permissions/:id<int>", groupPrefix), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/permissions/attach/:roleId<int>/:tenantId", groupPrefix), Func3(controller.AttachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[ds.IDsForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/permissions/detach/:roleId<int>/:tenantId", groupPrefix), Func3(controller.DetachUsers, Integer[uint64]("roleID", PathParamError), Integer[uint64]("tenantID", PathParamError), Body[ds.IDsForm](BodyParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/permissions/tree", groupPrefix), DataFunc(controller.Tree))
+	engine.Post(strings.TrimPrefix("/v1/users/permissions/save/:tenantId<int>/:roleId", groupPrefix), Func3(controller.TenantRoleSave, Integer[uint64]("tenantID", PathParamError), Integer[uint64]("roleID", PathParamError), Body[ds.IDsForm](BodyParamError)))
 }

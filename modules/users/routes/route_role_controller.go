@@ -3,21 +3,21 @@
 package routes
 
 import (
-	 "strings"
+	"strings"
 
+	"github.com/atom-apps/door/common/ds"
 	"github.com/atom-apps/door/modules/users/controller"
 	"github.com/atom-apps/door/modules/users/dto"
-	"github.com/atom-apps/door/common"
 
 	"github.com/gofiber/fiber/v2"
 	. "github.com/rogeecn/fen"
 )
 
 func routeRoleController(engine fiber.Router, controller *controller.RoleController) {
-	basePath := "/"+engine.(*fiber.Group).Prefix
-	engine.Get(strings.TrimPrefix("/v1/users/roles/:id<int>", basePath), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
-	engine.Get(strings.TrimPrefix("/v1/users/roles", basePath), DataFunc3(controller.List, Query[dto.RoleListQueryFilter](QueryParamError), Query[common.PageQueryFilter](QueryParamError), Query[common.SortQueryFilter](QueryParamError)))
-	engine.Post(strings.TrimPrefix("/v1/users/roles", basePath), Func1(controller.Create, Body[dto.RoleForm](BodyParamError)))
-	engine.Put(strings.TrimPrefix("/v1/users/roles/:id<int>", basePath), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.RoleForm](BodyParamError)))
-	engine.Delete(strings.TrimPrefix("/v1/users/roles/:id<int>", basePath), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
+	groupPrefix := "/" + strings.TrimLeft(engine.(*fiber.Group).Prefix, "/")
+	engine.Get(strings.TrimPrefix("/v1/users/roles/:id<int>", groupPrefix), DataFunc1(controller.Show, Integer[uint64]("id", PathParamError)))
+	engine.Get(strings.TrimPrefix("/v1/users/roles", groupPrefix), DataFunc3(controller.List, Query[dto.RoleListQueryFilter](QueryParamError), Query[ds.PageQueryFilter](QueryParamError), Query[ds.SortQueryFilter](QueryParamError)))
+	engine.Post(strings.TrimPrefix("/v1/users/roles", groupPrefix), Func1(controller.Create, Body[dto.RoleForm](BodyParamError)))
+	engine.Put(strings.TrimPrefix("/v1/users/roles/:id<int>", groupPrefix), Func2(controller.Update, Integer[uint64]("id", PathParamError), Body[dto.RoleForm](BodyParamError)))
+	engine.Delete(strings.TrimPrefix("/v1/users/roles/:id<int>", groupPrefix), Func1(controller.Delete, Integer[uint64]("id", PathParamError)))
 }

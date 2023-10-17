@@ -16,13 +16,13 @@ const TableNameToken = "tokens"
 
 // Token mapped from table <tokens>
 type Token struct {
-	ID            uint64           `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
+	ID            uint64           `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt     time.Time        `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
 	UpdatedAt     time.Time        `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
 	DeletedAt     gorm.DeletedAt   `gorm:"column:deleted_at;type:datetime(3)" json:"deleted_at" swaggertype:"string"`
-	TenantID      uint64           `gorm:"column:tenant_id;type:bigint unsigned;comment:租户ID" json:"tenant_id"`                 // 租户ID
-	UserID        uint64           `gorm:"column:user_id;type:bigint unsigned;comment:用户ID" json:"user_id"`                     // 用户ID
-	SessionID     uint64           `gorm:"column:session_id;type:bigint unsigned;comment:会话ID" json:"session_id"`               // 会话ID
+	TenantID      uint64           `gorm:"column:tenant_id;type:bigint(20) unsigned;comment:租户ID" json:"tenant_id"`             // 租户ID
+	UserID        uint64           `gorm:"column:user_id;type:bigint(20) unsigned;comment:用户ID" json:"user_id"`                 // 用户ID
+	SessionID     uint64           `gorm:"column:session_id;type:bigint(20) unsigned;comment:会话ID" json:"session_id"`           // 会话ID
 	AccessToken   string           `gorm:"column:access_token;type:varchar(1024);comment:访问令牌" json:"access_token"`             // 访问令牌
 	RefreshToken  string           `gorm:"column:refresh_token;type:varchar(1024);comment:刷新令牌" json:"refresh_token"`           // 刷新令牌
 	ExpireAt      time.Time        `gorm:"column:expire_at;type:datetime(3);comment:过期时间" json:"expire_at"`                     // 过期时间

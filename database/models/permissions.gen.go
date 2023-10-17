@@ -14,11 +14,11 @@ const TableNamePermission = "permissions"
 
 // Permission mapped from table <permissions>
 type Permission struct {
-	ID        uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                 // 创建时间
-	TenantID  uint64    `gorm:"column:tenant_id;type:bigint unsigned;not null;comment:租户ID" json:"tenant_id"`      // 租户ID
-	RoleID    uint64    `gorm:"column:role_id;type:bigint unsigned;not null;comment:角色ID" json:"role_id"`          // 角色ID
-	RouteID   uint64    `gorm:"column:route_id;type:bigint unsigned;not null;comment:路由ID" json:"route_id"`        // 路由ID
+	ID        uint64    `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);comment:创建时间" json:"created_at"`                     // 创建时间
+	TenantID  uint64    `gorm:"column:tenant_id;type:bigint(20) unsigned;not null;comment:租户ID" json:"tenant_id"`      // 租户ID
+	RoleID    uint64    `gorm:"column:role_id;type:bigint(20) unsigned;not null;comment:角色ID" json:"role_id"`          // 角色ID
+	RouteID   uint64    `gorm:"column:route_id;type:bigint(20) unsigned;not null;comment:路由ID" json:"route_id"`        // 路由ID
 }
 
 func (*Permission) TableName(namer schema.Namer) string {
